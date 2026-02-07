@@ -53,14 +53,14 @@ function Page() {
 
           <input
             type="submit"
-            value="التحقق من الحساب"
+            value="التحقق من الحساب البريد"
             className="w-90 h-12 mt-7 bg-primaryColorBlue text-auxiliaryColorWhite font-bold rounded-lg 
           hover:cursor-pointer hover:scale-105 duration-500 shadow-[0px_4px_6px_-4px_rgba(1,107,126,0.3),0px_10px_15px_-3px_rgba(1,107,126,0.3)]"
           />
         </form>
 
         <div className="mt-10 font-bold text-sm hover:cursor-pointer flex items-center gap-2">
-          <a>الرجوع لتسجيل الدخول</a>
+          <a href="/regestier">الرجوع لتسجيل الدخول</a>
           <IoMdArrowBack size={15} />
         </div>
       </div>
