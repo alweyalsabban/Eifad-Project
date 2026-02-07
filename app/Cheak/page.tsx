@@ -53,7 +53,7 @@ function Page() {
 
           <input
             type="submit"
-            value="التحقق من الحساب البريد"
+            value="التحقق من الحساب البريد أدخل الآن البريد"
             className="w-90 h-12 mt-7 bg-primaryColorBlue text-auxiliaryColorWhite font-bold rounded-lg 
           hover:cursor-pointer hover:scale-105 duration-500 shadow-[0px_4px_6px_-4px_rgba(1,107,126,0.3),0px_10px_15px_-3px_rgba(1,107,126,0.3)]"
           />
