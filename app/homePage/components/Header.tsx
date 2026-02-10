@@ -127,12 +127,10 @@ function Header() {
     <>
       <div dir="rtl" className="bg-auxiliaryColorWhite border-header border">
         <header className="flex justify-between items-center cusContaner m-auto py-2 px-4 sm:px-6">
-          {/* Logo */}
           <a href="./" className="shrink-0">
             <Image src="/assets/logo.svg" alt="logo" width={120} height={60} />
           </a>
 
-          {/* Navigation */}
           <nav className="gap-8 hidden md:flex">
             {links.map((link) => (
               <a
@@ -148,13 +146,13 @@ function Header() {
           {/* Desktop Buttons */}
           <div className="hidden md:flex gap-2">
             <a
-              href="/regestier"
+              href="/register"
               className="bg-auxiliaryColorGray p-2 w-31 h-10 rounded-lg flex items-center justify-center hover:scale-110 duration-500"
             >
               تسجيل الدخول
             </a>
             <a
-              href="/regestier"
+              href="/login"
               className="bg-primaryColorBlue p-3 w-28 h-10 rounded-lg text-auxiliaryColorWhite flex items-center justify-center hover:scale-110 duration-500"
             >
               إنشاء حساب
