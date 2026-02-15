@@ -4,9 +4,34 @@ import { CgMail } from "react-icons/cg";
 import { useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import ErroeMessage from "../(auth)/components/erroeMessage";
 
 function Page() {
   const [email, setEmail] = useState("");
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [isError, setisError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  async function forgetPassword(e) {
+    e.preventDefault();
+    setLoading(true);
+    const response = await fetch("/api/auth/forgot-password", {
+      method: "POST",
+      body: JSON.stringify({ email: email }),
+    });
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      setisError(true);
+      setErrorMessage(responseData.message);
+    } else {
+      setLoading(false);
+      router.push("/cheak");
+    }
+  }
   return (
     <>
       <div
@@ -27,7 +52,11 @@ function Page() {
           المرتبط بحسابك.
         </p>
 
-        <form action="" className="mt-6  w-100 flex flex-col items-center ">
+        <form
+          action=""
+          className="mt-6  w-100 flex flex-col items-center "
+          onSubmit={forgetPassword}
+        >
           <label htmlFor="" className="relative left-32">
             البريد الإلكتروني
           </label>
@@ -42,17 +71,25 @@ function Page() {
             }}
           />
           <CgMail className="relative  bottom-7 right-40" />
-
-          <input
+          {isError && <ErroeMessage errorMessage={errorMessage} />}
+          <button
             type="submit"
-            value="أرسل الرمز"
-            className="w-90 h-12 bg-primaryColorBlue text-auxiliaryColorWhite font-bold rounded-lg 
-          hover:cursor-pointer hover:scale-105 duration-500 shadow-[0px_4px_6px_-4px_rgba(1,107,126,0.3),0px_10px_15px_-3px_rgba(1,107,126,0.3)]"
-          />
+            disabled={loading}
+            className={`w-full h-12  font-bold rounded-lg mt-4
+          ${
+            loading
+              ? "bg-auxiliaryColorGray cursor-not-allowed text-secondColorBlack opacity-50 "
+              : `bg-primaryColorBlue text-auxiliaryColorWhite hover:cursor-pointer hover:scale-105 duration-500  
+              shadow-[0px_4px_6px_-4px_rgba(1,107,126,0.3),0px_10px_15px_-3px_rgba(1,107,126,0.3)]`
+          }
+          `}
+          >
+            {loading ? "جاري التحقق ..." : "التحقق من الحساب"}
+          </button>
         </form>
 
         <div className="mt-10 font-bold text-sm hover:cursor-pointer flex items-center gap-2">
-          <a>الرجوع لتسجيل الدخول</a>
+          <Link href="/">الرجوع لتسجيل الدخول</Link>
           <IoMdArrowBack size={15} />
         </div>
       </div>

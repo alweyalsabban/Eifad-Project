@@ -12,9 +12,9 @@ function Page({ children }: { children: React.ReactNode }) {
     <>
       <div className="cusContaner m-auto mb-10" dir="rtl">
         <header className="flex items-center justify-between w-full max-w-230 m-auto px-4 sm:px-0 py-2">
-          <a href="./" className="shrink-0">
+          <Link href="./" className="shrink-0">
             <Image src="/assets/logo.svg" alt="logo" width={120} height={60} />
-          </a>
+          </Link>
 
           <Link
             href="/"
@@ -63,7 +63,10 @@ function Page({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Second Section */}
-          <div className="w-full lg:w-105 bg-linear-to-r from-[#016B7E] to-[#37B9C5] rounded-3xl lg:rounded-l-3xl lg:rounded-r-none px-6 sm:px-10 pt-10 hidden flex-col lg:flex">
+          <div
+            className="w-full lg:w-105 bg-linear-to-r from-[#016B7E] to-[#37B9C5] rounded-3xl lg:rounded-l-3xl 
+          lg:rounded-r-none px-6 sm:px-10 pt-10 hidden flex-col lg:flex "
+          >
             <div className="flex flex-col gap-5">
               <h1 className="text-auxiliaryColorWhite text-2xl font-bold leading-10">
                 ابحث عن خطوتك المهنية التالية مع خاصية المطابقة الذكية.
