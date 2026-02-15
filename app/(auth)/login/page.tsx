@@ -64,6 +64,8 @@ function LogInPage() {
         <div className="relative mt-4">
           <input
             type="email"
+            name="email"
+            autoComplete="email"
             className="border border-auxiliaryColorGray rounded-lg w-full h-10 pl-10 pr-10"
             placeholder="البريد الإلكتروني"
             value={form.email}
@@ -84,6 +86,8 @@ function LogInPage() {
         <div className="relative mt-4">
           <input
             type="password"
+            name="password"
+            autoComplete="password"
             className="border border-auxiliaryColorGray rounded-lg w-full h-10 pl-10 pr-10"
             placeholder="كلمة المرور"
             value={form.password}

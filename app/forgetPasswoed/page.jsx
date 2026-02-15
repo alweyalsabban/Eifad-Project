@@ -71,6 +71,8 @@ function Page() {
           </label>
           <input
             type="email"
+            name="email"
+            autoComplete="email"
             className="border border-auxiliaryColorGray rounded-lg w-90 h-10 pl-10 pr-5 mt-4"
             placeholder="البريد الإلكتروني"
             value={email}
