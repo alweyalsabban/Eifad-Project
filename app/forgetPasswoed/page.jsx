@@ -7,29 +7,38 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ErroeMessage from "../(auth)/components/erroeMessage";
+import { ValiEmail } from "@/app/lib/validators";
 
 function Page() {
   const [email, setEmail] = useState("");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [isError, setisError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isEmailError, setEmailError] = useState(false);
 
   async function forgetPassword(e) {
     e.preventDefault();
-    setLoading(true);
-    const response = await fetch("/api/auth/forgot-password", {
-      method: "POST",
-      body: JSON.stringify({ email: email }),
-    });
-    const responseData = await response.json();
 
-    if (!response.ok) {
-      setisError(true);
-      setErrorMessage(responseData.message);
+    if (ValiEmail(email)) {
+      setLoading(true);
+      const response = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        body: JSON.stringify({ email: email }),
+      });
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        isEmailError(true);
+        setErrorMessage(responseData.message);
+        setLoading(false);
+      } else {
+        setLoading(false);
+        localStorage.setItem("pending_email", email);
+        router.push("/verify");
+      }
     } else {
-      setLoading(false);
-      router.push("/cheak");
+      setEmailError(true);
+      setErrorMessage("صيغة البريد غير صحيحة");
     }
   }
   return (
@@ -71,7 +80,9 @@ function Page() {
             }}
           />
           <CgMail className="relative  bottom-7 right-40" />
-          {isError && <ErroeMessage errorMessage={errorMessage} />}
+          {isEmailError && (
+            <p className="errorMessageStayle"> * {errorMessage}</p>
+          )}
           <button
             type="submit"
             disabled={loading}
