@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 "use client";
 import React from "react";
 import { IoPersonOutline } from "react-icons/io5";
 import { CgMail } from "react-icons/cg";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlinePhone } from "react-icons/md";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ErroeMessage from "../components/erroeMessage";
 import { useRouter } from "next/navigation";
 import ScoialMeadia from "../components/scoialMeadia";
@@ -16,16 +17,19 @@ import { ValiPassword } from "@/app/lib/validators";
 import { ValiConformPassword } from "@/app/lib/validators";
 
 function RegesterPage() {
+  const initialFrom =
+    typeof window !== "undefined" ? sessionStorage.getItem("LinkFrom") : null;
   const [form, setForm] = useState({
     full_name: "",
     email: "",
     password: "",
     password_confirmation: "",
     phone: "",
-    role: "",
+    role: initialFrom === "company" ? "Company" : "JobSeeker",
   });
-
-  const [isManager, setManager] = useState(false);
+  const [isManager, setManager] = useState(() => {
+    return initialFrom === "company";
+  });
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setisError] = useState(false);
@@ -97,6 +101,8 @@ function RegesterPage() {
     }
   }
 
+  useEffect(() => {}, []);
+
   return (
     <>
       {isError && <ErroeMessage errorMessage={errorMessage} />}
@@ -106,16 +112,16 @@ function RegesterPage() {
           className={`w-1/2 hover:cursor-pointer ${isManager && "btnActiveSing"}`}
           onClick={() => {
             setManager(true);
-            setForm({ ...form, role: "JobSeeker" });
+            setForm({ ...form, role: "Company" });
           }}
         >
-          للمدراء
+          للشركات
         </button>
         <button
           className={`w-1/2 hover:cursor-pointer ${!isManager && "btnActiveSing"}`}
           onClick={() => {
             setManager(false);
-            setForm({ ...form, role: "Company" });
+            setForm({ ...form, role: "JobSeeker" });
           }}
         >
           باحث عن عمل

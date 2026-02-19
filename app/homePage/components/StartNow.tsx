@@ -8,7 +8,7 @@ function StartNow() {
       <div className="bg-auxiliaryColorWhite" dir="rtl">
         <div className="cusContaner m-auto flex items-center justify-center px-4 sm:px-6 py-10">
           <div
-            className="w-full max-w-275min-h-[320px] sm:min-h-95 rounded-4xl sm:rounded-[48px] bg-primaryColorBlue 
+            className="w-full p-10 rounded-4xl bg-primaryColorBlue 
             flex flex-col justify-center items-center gap-6 sm:gap-10 relative overflow-hidden px-6 sm:px-10"
           >
             <Image
@@ -20,12 +20,13 @@ function StartNow() {
             />
 
             <h1 className="text-auxiliaryColorWhite text-2xl sm:text-4xl font-bold text-center leading-relaxed">
-              ابدأ رحلتك المهنية اليوم
+              خطوتك التالية تبدأ من هنا
             </h1>
 
             <p className="text-base sm:text-[20px] text-center text-auxiliaryColorGray max-w-175 leading-relaxed">
-              انضم إلى آلاف المحترفين والشركات الذين اختاروا إيفاد كشريك
-              لنجاحهم.
+              سواء كنت تسعى لبناء مستقبلك المهني أو تبحث عن الكفاءات المناسبة
+              لشركتك، توفر لك إيفاد بيئة رقمية متكاملة تجعل عملية التوظيف أكثر
+              تنظيمًا وسهولة.
             </p>
 
             <Link
