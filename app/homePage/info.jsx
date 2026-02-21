@@ -3,17 +3,17 @@ export const links = [
   {
     nameEnglish: "Jobs",
     nameArabic: "الوظائف",
-    hrf: "#",
+    hrf: "/jobs",
   },
   {
     nameEnglish: "Service",
     nameArabic: "خدماتنا",
-    hrf: "#",
+    hrf: "/service",
   },
   {
     nameEnglish: "About us",
     nameArabic: "معلومات عنا",
-    hrf: "#",
+    hrf: "/about-us",
   },
 ];
 
