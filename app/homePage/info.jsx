@@ -3,17 +3,17 @@ export const links = [
   {
     nameEnglish: "Jobs",
     nameArabic: "الوظائف",
-    hrf: "#",
+    hrf: "/jobs",
   },
   {
     nameEnglish: "Service",
     nameArabic: "خدماتنا",
-    hrf: "#",
+    hrf: "/service",
   },
   {
     nameEnglish: "About us",
     nameArabic: "معلومات عنا",
-    hrf: "#",
+    hrf: "/about-us",
   },
 ];
 
@@ -21,23 +21,23 @@ export const links = [
 export const statistc = [
   {
     key: 1,
-    name: "خط المرشحين",
-    number: "12,500+",
+    name: "تحليل CV خلال ثوانٍ",
+    number: "",
   },
   {
     key: 2,
-    name: "تقليل وقت التوظيف",
-    number: "30%",
+    name: "مطابقة دقيقة حسب المهارات والخبرة",
+    number: "",
   },
   {
     key: 3,
-    name: "نسبة المقابلات إلى العروض",
-    number: "1:3",
+    name: "تقليل الجهد اليدوي في الفرز والتقييم",
+    number: "",
   },
   {
     key: 4,
-    name: "مرشحون مؤهلون تم تحديدهم",
-    number: "92%",
+    name: "تواصل مباشر بين الشركات والمتقدمين",
+    number: "",
   },
 ];
 
@@ -46,27 +46,30 @@ export const statistc = [
 export const EmployeeFeatcher = [
   {
     key: 1,
-    icon: "/assets/icons/1.svg",
+    icon: "/assets/iconsForJobSeeker/cv.svg",
     title: "تحليل السيرة الذاتية",
-    describtion: `هذه الميزة تعمل بمثابة "مدقق آلي" وخبير توظيف افتراضي يراجع ملفك قبل إر ساله.`,
+    describtion: `يستخرج النظام نقاط القوة والضعف والفجوات ، ثم يقدم توصيات لتحسين السيرة الذاتية وزيادة فرص القبول.`,
   },
   {
     key: 2,
-    icon: "/assets/icons/2.svg",
-    title: "مطابقة المتطلبات مع الملف الشخصي",
-    describtion: `هذه الميزة هي مرحلة "قياس التوافق" بين ما تملكه أنت وما تطلبه الشركة.`,
+    icon: "/assets/iconsForJobSeeker/target.svg",
+    title: "مطابقة الوظائف مع CV ",
+    describtion: `يتم مقارنة مؤهلات الباحث بمتطلبات الوظائف المتاحة
+وحساب درجة توافق تساعده على معرفة فرصه قبل التقديم.`,
   },
   {
     key: 3,
     icon: "/assets/icons/3.svg",
     title: "إنشاء خريطة تطويرية",
-    describtion: `بناءً على نتائج التحليل والمطابقة، هذه الميزة ترسم لك "خطة العمل" للمستقبل.`,
+    describtion: `يحدد النظام الفجوات ويقترح خطوات تطوير عملية
+لتحسين الجاهزية لسوق العمل.`,
   },
   {
     key: 4,
-    icon: "/assets/icons/4.svg",
+    icon: "/assets/iconsForJobSeeker/recomdation.svg",
     title: "ترشيح الوظائف المناسبة ",
-    describtion: `هذه الميزة تعمل كمساعد شخصي يبحث لك عن عمل وأنت نائم.`,
+    describtion: `يعرض النظام فرص عمل مقترحة بناءً على تحليل الملف الشخصي
+بدلاً من الاعتماد على البحث التقليدي فقط.`,
   },
 ];
 
@@ -75,27 +78,28 @@ export const EmployeeFeatcher = [
 export const CompanyFeatcher = [
   {
     key: 1,
-    icon: "/assets/icons/1.svg",
-    title: "تحليل السيرة الذاتية2",
-    describtion: `هذه الميزة تعمل بمثابة "مدقق آلي" وخبير توظيف افتراضي يراجع ملفك قبل إرساله.`,
+    icon: "/assets/iconsForCompany/fiter.svg",
+    title: "فلترة المرشحين تلقائيًا",
+    describtion: `يقوم النظام بتصنيف المتقدمين بناءً على مدى توافقهم مع متطلبات الوظيفة بدلا من الفرز اليدوي .`,
   },
   {
     key: 2,
-    icon: "/assets/icons/1.svg",
-    title: "مطابقة المتطلبات مع الملف الشخصي",
-    describtion: `هذه الميزة هي مرحلة "قياس التوافق" بين ما تملكه أنت وما تطلبه الشركة.`,
+    icon: "/assets/iconsForCompany/analay.svg",
+    title: "درجة المطابقة للمتقدم ",
+    describtion: `يتم تقدير درجة مطابقة توضح مدى توافق المرشح مع الوظيفة مما يدعم اتخاذ القرار بشكل موضوعي.`,
   },
   {
     key: 3,
-    icon: "/assets/icons/1.svg",
-    title: "تحليل السيرة الذاتية2",
-    describtion: `هذه الميزة تعمل بمثابة "مدقق آلي" وخبير توظيف افتراضي يراجع ملفك قبل إرساله.`,
+    icon: "/assets/iconsForCompany/apply.svg",
+    title: "تحليل منظم للسير الذاتية",
+    describtion: `يحوّل النظام بيانات السيرة الذاتية إلى معلومات منظمة
+تسهل المقارنة بين المرشحين.`,
   },
   {
     key: 4,
-    icon: "/assets/icons/1.svg",
-    title: "تحليل السيرة الذاتية2",
-    describtion: `هذه الميزة تعمل بمثابة "مدقق آلي" وخبير توظيف افتراضي يراجع ملفك قبل إرساله.`,
+    icon: "/assets/iconsForCompany/cirtificat.svg",
+    title: "التحقق من الشهادات",
+    describtion: `يساعد النظام الشركات على التحقق من صحة الشهادات والوثائق المقدمة من المتقدمين لزيادة الموثوقية.`,
   },
 ];
 
@@ -104,50 +108,37 @@ export const CompanyFeatcher = [
 export const RoadToSingForEmployee = [
   {
     key: 1,
-    postionId: "relative left-2",
-    title: "إنشاء ملف شخصي",
-    describtion: `أرفع سيرتك الذاتية ودع ذكاءنا الأصطناعي يبني ملفك الشخصي المهني الشامل تلقائياً`,
+    title: "إنشاء حساب شخصي",
+    describtion: `قم بالتسجيل وإكمال ملفك المهني وإضافة مهاراتك وخبراتك.`,
     postion: "relative right-30 bottom-25",
   },
   {
     key: 2,
-    postionId: "relative right-20 bottom-35",
-    title: `مطابقة المرشحين بالذكاء الاصطناعي`,
-    describtion: `يقوم محركنا الذكي بتحديد وترتيب المرشحين، ويزودك بمجموعة مواهب مؤهلة مسبقًا.`,
-    postion: "relative right-0 bottom-25",
+    title: `تحليل ومطابقة ذكية`,
+    describtion: `يقوم النظام بتحليل سيرتك الذاتية ومطابقتها مع الوظائف المناسبة.`,
   },
   {
     key: 3,
-    postionId: "relative right-40",
-    title: "تسريع التوظيف",
-    describtion: `تواصل مع أفضل المواهب وأجرِ المقابلات معهم
-وقم بتوظيفهم بشكل أسرع من خلال سير عمل
-مبسط وقرارات مبنية على البيانات.`,
-    postion: "relative left-30 bottom-25",
+    title: "التقديم ومتابعة الطلبات",
+    describtion: `قدّم على الوظائف المناسبة وتابع حالة طلباتك بسهولة.`,
   },
 ];
 
 export const RoadToSingForCompany = [
   {
     key: 1,
-    postionId: "relative left-2",
-    title: "إنشاء ملف شخصي",
-    describtion: `أرفع سيرتك الذاتية ودع ذكاءنا الأصطناعي يبني ملفك الشخصي المهني الشامل تلقائياً`,
-    postion: "relative right-30 bottom-25",
+    title: "إنشاء حساب شركة",
+    describtion: `قم بتسجيل شركتك وإضافة بياناتها الأساسية.`,
   },
   {
     key: 2,
-    postionId: "relative right-20 bottom-35",
-    title: "إنشاء ملف شخصي",
-    describtion: `أرفع سيرتك الذاتية ودع ذكاءنا الأصطناعي يبني ملفك الشخصي المهني الشامل تلقائياً`,
-    postion: "relative right-0 bottom-25",
+    title: "نشر الوظائف واستقبال المتقدمين",
+    describtion: `أنشئ إعلانك الوظيفي وابدأ باستقبال طلبات التقديم.`,
   },
   {
     key: 3,
-    postionId: "relative right-40",
-    title: "إنشاء ملف شخصي",
-    describtion: `أرفع سيرتك الذاتية ودع ذكاءنا الأصطناعي يبني ملفك الشخصي المهني الشامل تلقائياً`,
-    postion: "relative left-30 bottom-25",
+    title: "فرز واختيار المرشحين",
+    describtion: `استخدم أدوات التحليل والمطابقة لاختيار المرشح الأنسب بسرعة ودقة.`,
   },
 ];
 

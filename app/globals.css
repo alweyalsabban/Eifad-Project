@@ -24,7 +24,10 @@
     @apply bg-primaryColorBlue text-auxiliaryColorWhite font-bold rounded-lg;
   }
   .btnActiveSing {
-    @apply bg-auxiliaryColorWhite rounded-md h-9 items-center m-auto text-secondColorBlack font-bold;
+    @apply bg-auxiliaryColorWhite py-2 rounded-sm  items-center text-secondColorBlack font-bold;
+  }
+  .errorMessageStayle {
+    @apply my-2 pr-2 text-[70%] font-bold text-red-500;
   }
 }
 
