@@ -28,7 +28,13 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    "app/api/auth/login/route.js",
+    "app/forgetPasswoed/page.jsx",
+    "app/verify/page.jsx",
+    "app/verify/page.jsx",
+    "app/(auth)/register/page.jsx",
+    "app/api/auth/verify-account/route.js"
   ],
   "exclude": ["node_modules"]
 }
