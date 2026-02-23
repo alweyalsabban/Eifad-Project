@@ -1,4 +1,4 @@
-import HomePage from "./homePage/HomePage";
+import HomePage from "./(authentactionModel)/homePage/HomePage";
 
 export const metadata = {
   title: "إفادة - منصة توظيف",

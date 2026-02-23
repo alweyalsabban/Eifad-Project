@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import DashBoard from "./DashBoard";
+import JobsPage from "./components/JobsPage";
 
 export const metadata: Metadata = {
-  title: "لوحة التحكم",
+  title: "الوظائف",
 };
 
 export default function Page() {
-  return <DashBoard />;
+  return <JobsPage />;
 }

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import DashBoard from "./DashBoard";
+import LogInPage from "../components/LogInPage";
 
 export const metadata: Metadata = {
-  title: "لوحة التحكم",
+  title: "تسجيل الدخول",
 };
 
 export default function Page() {
-  return <DashBoard />;
+  return <LogInPage />;
 }
