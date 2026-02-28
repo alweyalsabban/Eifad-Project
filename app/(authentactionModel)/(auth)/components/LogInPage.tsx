@@ -1,8 +1,10 @@
 "use client";
 import React from "react";
+
 import { CgMail } from "react-icons/cg";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import SetCookies from "@/app/lib/setCookies";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -68,10 +70,8 @@ function LogInPage() {
           setisError(false);
           localStorage.clear();
           sessionStorage.clear();
-          localStorage.setItem("email", data.data.email);
-          localStorage.setItem("token", data.data.token);
-          document.cookie = `token=${data.data.token}; path=/; max-age=${60 * 60 * 24 * 30}`;
-          route.push("/dashBoard");
+          SetCookies(data.data.token);
+          route.replace("/dashBoard");
         }
       } else {
         // كلمة المرور

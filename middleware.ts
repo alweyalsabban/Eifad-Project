@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import SetCookies from "./app/lib/setCookies";
 
-// الصفحات المسموحة للضيوف فقط (إذا مسجّل → امنعه منها)
 const guestOnlyPaths = [
   "/",
   "/login",
@@ -14,45 +14,54 @@ const guestOnlyPaths = [
   "/verify",
 ];
 
-// أي مسار يبدأ بهذه الأشياء يعتبر “محمّي” (إذا غير مسجّل → امنعه)
-const protectedPrefixes = ["/dashBoard/*"];
-
-function isGuestOnly(pathname: string) {
-  return guestOnlyPaths.includes(pathname);
-}
-
-function isProtected(pathname: string) {
-  return protectedPrefixes.some(
-    (p) => pathname === p || pathname.startsWith(p + "/"),
-  );
-}
+const protectedPrefixes = ["/dashBoard"];
 
 export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+  const { pathname, searchParams } = req.nextUrl;
 
-  // نحن نعتبره مسجّل إذا عنده Cookie اسمها token
-  const token = req.cookies.get("token")?.value;
-  const isLoggedIn = Boolean(token);
+  // 1. استخراج التوكن من الرابط (Query Params) في حال كان قادماً من Google/Laravel
+  const tokenFromUrl = searchParams.get("token");
 
-  // إذا مسجّل وحاول يدخل صفحات الضيوف → ودّه dashboard
-  if (isLoggedIn && isGuestOnly(pathname)) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/dashBoard";
-    return NextResponse.redirect(url);
+  // 2. قراءة التوكن الموجود مسبقاً في الكوكيز
+  const cookieToken = req.cookies.get("token")?.value;
+  const isLoggedIn = !!cookieToken || !!tokenFromUrl;
+
+  // --- منطق معالجة التوكن القادم من الرابط ---
+  if (tokenFromUrl) {
+    SetCookies(tokenFromUrl);
+    /* // توجيه المستخدم لصفحة الداشبورد لتنظيف الرابط من التوكن (URL Cleanup)
+    const response = NextResponse.redirect(new URL("/dashBoard", req.url));
+    // تخزين التوكن في الكوكيز فوراً
+    response.cookies.set("token", tokenFromUrl, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 60 * 60, // ساعة واحدة
+    });
+
+    return response; */
   }
 
-  // إذا غير مسجّل وحاول يدخل صفحة محمية → ودّه login (أو /)
-  if (!isLoggedIn && isProtected(pathname)) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/login"; // تقدر تخليها "/"
-    return NextResponse.redirect(url);
+  // --- منطق الحماية والتحقق من المسارات ---
+  const isGuestPath = guestOnlyPaths.includes(pathname);
+  const isProtectedPath = protectedPrefixes.some(
+    (p) => pathname === p || pathname.startsWith(p + "/"),
+  );
+
+  // إذا كان مسجلاً ويحاول دخول صفحات الضيوف (مثل صفحة اللوجن)
+  if (isLoggedIn && isGuestPath) {
+    return NextResponse.redirect(new URL("/dashBoard", req.url));
   }
 
-  // غير كذا، خله يكمل طبيعي
+  // إذا لم يكن مسجلاً ويحاول دخول لوحة التحكم
+  if (!isLoggedIn && isProtectedPath) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
+
   return NextResponse.next();
 }
 
-// نطبّق الميدلوير على كل الصفحات
 export const config = {
-  matcher: ["/:path*"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

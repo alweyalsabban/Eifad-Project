@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
+import SetCookies from "@/app/lib/setCookies";
 
 const cx = (...c) => c.filter(Boolean).join(" ");
 
@@ -109,7 +110,7 @@ export default function ResetPasswordPage() {
         } catch (_) {}
         console.log("al");
         console.log(data);
-        document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24 * 30}`;
+        SetCookies(token);
         window.location.replace("/dashBoard");
       }, 900);
     } catch (err) {

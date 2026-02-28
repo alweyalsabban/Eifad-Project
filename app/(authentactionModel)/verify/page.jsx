@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
+import SetCookies from "@/app/lib/setCookies";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -116,7 +117,7 @@ export default function OTPVerificationPage() {
 
       localStorage.setItem("user_email", email); // اختياري
       localStorage.setItem("token", token); // اختياري
-      document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24 * 30}`;
+      SetCookies(data.token);
       localStorage.removeItem("pending_email");
 
       setToast({

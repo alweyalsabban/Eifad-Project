@@ -81,6 +81,14 @@ function Header() {
             setMenu(false);
           }}
         >
+          <h1
+            className="absolute top-10 left-10 text-xl font-bold hover:cursor-pointer"
+            onClick={() => {
+              setMenu(false);
+            }}
+          >
+            X
+          </h1>
           <nav className="flex flex-col w-full max-w-md">
             {links.map((link) => (
               <Link

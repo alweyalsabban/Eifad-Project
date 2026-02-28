@@ -9,7 +9,8 @@ function ScoialMeadia() {
   };
   const onlinkedin = () => {
     //window.open("/api/auth/login/linkedin", "popup", "width=500,height=600");
-    window.location.href = "/api/auth/login/linkedin";
+    window.location.href =
+      "https://eifad.laravel.cloud/api/auth/login/linkedin";
   };
 
   return (
