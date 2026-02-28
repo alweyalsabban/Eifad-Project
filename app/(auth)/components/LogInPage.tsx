@@ -8,9 +8,9 @@ import SetCookies from "@/app/lib/setCookies";
 
 import { useState } from "react";
 import Link from "next/link";
-import ErroeMessage from "../components/erroeMessage";
+import ErroeMessage from "./erroeMessage";
 import { useRouter } from "next/navigation";
-import ScoialMeadia from "../components/scoialMeadia";
+import ScoialMeadia from "./scoialMeadia";
 import { ValiEmail, ValiPassword } from "@/app/lib/validators";
 
 export const metadata = {

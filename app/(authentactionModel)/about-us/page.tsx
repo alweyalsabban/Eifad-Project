@@ -12,11 +12,9 @@ export const metadata: Metadata = {
 function AboutUs() {
   return (
     <>
-      <Header />
       <HeroSection />
       <WhoWe />
       <Team />
-      <Footer />
     </>
   );
 }

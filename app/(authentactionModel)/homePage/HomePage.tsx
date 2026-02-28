@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
 import FeatcherAI from "./components/FeatcherAI";
 import StartNow from "./components/StartNow";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 function HomePage() {

@@ -6,9 +6,9 @@ import { CgMail } from "react-icons/cg";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlinePhone } from "react-icons/md";
 import { useState, useEffect } from "react";
-import ErroeMessage from "../components/erroeMessage";
+import ErroeMessage from "./erroeMessage";
 import { useRouter } from "next/navigation";
-import ScoialMeadia from "../components/scoialMeadia";
+import ScoialMeadia from "./scoialMeadia";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 
 /// validate

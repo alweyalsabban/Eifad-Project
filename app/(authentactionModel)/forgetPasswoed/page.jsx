@@ -6,7 +6,7 @@ import { IoMdArrowBack } from "react-icons/io";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import ErroeMessage from "../(auth)/components/erroeMessage";
+import ErroeMessage from "../../(auth)/components/erroeMessage";
 import { ValiEmail } from "@/app/lib/validators";
 
 function Page() {

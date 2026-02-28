@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import SetCookies from "./app/lib/setCookies";
-import { redirect } from "next/navigation";
 
 const guestOnlyPaths = [
   "/",
@@ -18,22 +16,16 @@ const guestOnlyPaths = [
 const protectedPrefixes = ["/dashBoard"];
 
 export function middleware(req: NextRequest) {
-  const { pathname, searchParams } = req.nextUrl;
+  const { pathname, searchParams } = req.nextUrl; // 1. استخراج التوكن من الرابط (Query Params) في حال كان قادماً من Google/Laravel
 
-  // 1. استخراج التوكن من الرابط (Query Params) في حال كان قادماً من Google/Laravel
-  const tokenFromUrl = searchParams.get("token");
+  const tokenFromUrl = searchParams.get("token"); // 2. قراءة التوكن الموجود مسبقاً في الكوكيز
 
-  // 2. قراءة التوكن الموجود مسبقاً في الكوكيز
   const cookieToken = req.cookies.get("token")?.value;
-  const isLoggedIn = !!cookieToken || !!tokenFromUrl;
+  const isLoggedIn = !!cookieToken || !!tokenFromUrl; // --- منطق معالجة التوكن القادم من الرابط ---
 
-  // --- منطق معالجة التوكن القادم من الرابط ---
   if (tokenFromUrl) {
-    SetCookies(tokenFromUrl);
-    redirect("/dashBoard");
-    /* // توجيه المستخدم لصفحة الداشبورد لتنظيف الرابط من التوكن (URL Cleanup)
-    const response = NextResponse.redirect(new URL("/dashBoard", req.url));
-    // تخزين التوكن في الكوكيز فوراً
+    // توجيه المستخدم لصفحة الداشبورد لتنظيف الرابط من التوكن (URL Cleanup)
+    const response = NextResponse.redirect(new URL("/dashBoard", req.url)); // تخزين التوكن في الكوكيز فوراً
     response.cookies.set("token", tokenFromUrl, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -42,21 +34,18 @@ export function middleware(req: NextRequest) {
       maxAge: 60 * 60, // ساعة واحدة
     });
 
-    return response; */
-  }
+    return response;
+  } // --- منطق الحماية والتحقق من المسارات ---
 
-  // --- منطق الحماية والتحقق من المسارات ---
   const isGuestPath = guestOnlyPaths.includes(pathname);
   const isProtectedPath = protectedPrefixes.some(
     (p) => pathname === p || pathname.startsWith(p + "/"),
-  );
+  ); // إذا كان مسجلاً ويحاول دخول صفحات الضيوف (مثل صفحة اللوجن)
 
-  // إذا كان مسجلاً ويحاول دخول صفحات الضيوف (مثل صفحة اللوجن)
   if (isLoggedIn && isGuestPath) {
     return NextResponse.redirect(new URL("/dashBoard", req.url));
-  }
+  } // إذا لم يكن مسجلاً ويحاول دخول لوحة التحكم
 
-  // إذا لم يكن مسجلاً ويحاول دخول لوحة التحكم
   if (!isLoggedIn && isProtectedPath) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
