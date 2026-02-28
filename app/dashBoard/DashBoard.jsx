@@ -1,17 +1,23 @@
 "use client";
+
 import logout from "@/app/lib/deleteCookies";
-import { redirect, useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import SetCookies from "../lib/setCookies";
 
 export default function DashBoard() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const token = searchParams.get("token");
-  if (token !== "" || token != null) {
-    console.log("Cookies");
-    SetCookies(token);
-    redirect("/dashBoard");
-  }
+
+  useEffect(() => {
+    if (token) {
+      console.log("Cookies");
+      SetCookies(token);
+      router.push("/dashBoard");
+    }
+  }, [token, router]);
+
   useEffect(() => {
     async function fetc() {
       const res = await fetch("/api/user");
@@ -22,6 +28,7 @@ export default function DashBoard() {
     }
     fetc();
   }, []);
+
   return (
     <>
       <h1>dashBoard page</h1>
