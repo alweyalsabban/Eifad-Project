@@ -1,6 +1,4 @@
-export const dynamic = "force-dynamic";
-
-("use client");
+"use client";
 
 import logout from "@/app/lib/deleteCookies";
 import { useSearchParams, useRouter } from "next/navigation";
