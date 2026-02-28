@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import DashBoard from "./DashBoard";
+import Modal from "./Modal";
 
 export const metadata: Metadata = {
-  title: "لوحة التحكم",
+  title: "إعادة تعين",
 };
 
 export default function Page() {
-  return <DashBoard />;
+  return <Modal />;
 }

@@ -4,10 +4,13 @@ import { FaLinkedin } from "react-icons/fa";
 
 function ScoialMeadia() {
   const onGoogle = () => {
-    window.open("/api/auth/login/google", "popup", "width=500,height=600");
+    //window.open("/api/auth/login/google", "popup", "width=500,height=600");
+    window.location.href = "/api/auth/login/google";
   };
   const onlinkedin = () => {
-    window.open("/api/auth/login/linkedin", "popup", "width=500,height=600");
+    //window.open("/api/auth/login/linkedin", "popup", "width=500,height=600");
+    window.location.href =
+      "https://eifad.laravel.cloud/api/auth/login/linkedin";
   };
 
   return (

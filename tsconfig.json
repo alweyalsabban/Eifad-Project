@@ -29,12 +29,12 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
-    "app/api/auth/login/route.js",
-    "app/forgetPasswoed/page.jsx",
-    "app/verify/page.jsx",
-    "app/verify/page.jsx",
-    "app/(auth)/register/page.jsx",
-    "app/api/auth/verify-account/route.js"
+    "app/(authentactionModel)/api/auth/login/route.js",
+    "app/(authentactionModel)/forgetPasswoed/page.jsx",
+    "app/(authentactionModel)/verify/page.tsx",
+    "app/(authentactionModel)/verify/page.tsx",
+    "app/(auth)/register/page.tsx",
+    "app/(authentactionModel)/api/auth/verify-account/route.js"
   ],
   "exclude": ["node_modules"]
 }
