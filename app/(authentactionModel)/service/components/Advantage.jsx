@@ -20,8 +20,8 @@ function Advantage() {
   return (
     <section className="cusContaner m-auto my-3">
       <div
-        className="bg-auxiliaryColorGray w-full   m-auto gap-5 flex justify-center 
-      items-center text-center px-2 py-3 rounded-xl"
+        className="bg-auxiliaryColorGray w-full xl:w-100 m-auto gap-5 flex justify-center 
+      items-center text-center px-2 py-3 rounded-xl animate-fade-up"
       >
         <h1
           className={`hover:cursor-pointer px-7 rounded-xl py-1 ${activeTab === tabs[1] && "bg-auxiliaryColorWhite"} `}

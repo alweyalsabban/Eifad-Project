@@ -14,15 +14,21 @@ function FeatcherAI() {
     <>
       <div className="cusContaner bg-auxiliaryColorWhite m-auto " dir="rtl">
         <div className="flex flex-col items-center justify-center m-auto gap-6 mt-10">
-          <h1 className="text-3xl font-bold text-secondColorBlack m-auto text-center">
-            كيف تساعدك إيفاد باستخدام الذكاء الاصطناعي؟{" "}
+          <h1 className="text-3xl font-bold text-secondColorBlack m-auto text-center animate-fade-up">
+            كيف تساعدك إيفاد باستخدام الذكاء الاصطناعي؟
           </h1>
-          <p className="text-secondColorBlack w-[70%] sm:w-[45%] text-center leading-relaxed">
+          <p
+            className="text-secondColorBlack w-[70%] sm:w-[45%] text-center leading-relaxed animate-fade-up"
+            style={{ animationDelay: "0.2s" }}
+          >
             تعتمد منصة إيفاد على تقنيات الذكاء الاصطناعي لتطوير تجربة التوظيف
             وتحسين الربط بين الباحثين عن عمل وأصحاب الشركات، من خلال توفير بيئة
             رقمية أكثر كفاءة ودقة في إدارة عملية التوظيف.
           </p>
-          <div className="inline-flex mb-7 items-center gap-2 w-fit h-12 p-4 rounded-xl bg-[#F0FDFA] border border-[#E2E8F0] shadow-[inset_0_2px_4px_1px_rgba(0,0,0,0.05)] ">
+          <div
+            className="inline-flex mb-7 items-center gap-2 w-fit h-12 p-4 rounded-xl animate-fade-up 
+          bg-[#F0FDFA] border border-[#E2E8F0] shadow-[inset_0_2px_4px_1px_rgba(0,0,0,0.05)] "
+          >
             <button
               className={`w-27 h-9 hover:cursor-pointer cusFeatcherBtn ${isEmployee && "btnActive"} `}
               onClick={() => {
@@ -42,7 +48,7 @@ function FeatcherAI() {
           </div>
         </div>
         {/* Featcher */}
-        <div className="mb-10 grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-3 2xl:grid-cols-4">
+        <div className="mb-10 grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-3 2xl:grid-cols-4 animate-fade-up">
           {featcher.map((e) => (
             <div
               key={e.key}

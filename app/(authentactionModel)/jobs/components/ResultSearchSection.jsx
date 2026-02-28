@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import FilterInput from "./FilterInput";
 import AdsJob from "./AdsJob";
 import DeatilsAdJobs from "./DeatilsAdJobs";
+import Lottie from "lottie-react";
+import animationData from "@/public/animations/animationData.json";
 
 function ResultSearchSection({ keyword }) {
   const [isFilter, setFilter] = useState(false);
@@ -128,7 +130,11 @@ function ResultSearchSection({ keyword }) {
           </div>
         )}
         <h1 className="font-bold text-l mt-4">
-          تم العثور على {allJobs.length} وظيفة
+          {allJobs.length > 0
+            ? ` تم العثور على ${allJobs.length} وظيفة`
+            : isFoundJobs
+              ? `جاري البحث عن وظائف ...`
+              : ""}
         </h1>
       </div>
       {/* Result Section */}
@@ -154,9 +160,24 @@ function ResultSearchSection({ keyword }) {
           </div>
         </div>
       ) : isFoundJobs ? (
-        <p className="my-10">جاري التحميل ... </p>
+        <div className="flex gap-2 w-full">
+          <div className="w-[40%]">
+            <div className="bg-gray-100  h-70 rounded-xl flex flex-col gap-3 px-10 py-4 mt-4 animate-pulse"></div>
+            <div className="bg-gray-100  h-70 rounded-xl flex flex-col gap-3 px-10 py-4 mt-4 animate-pulse"></div>
+          </div>
+
+          <div
+            dir="rtl"
+            className="bg-gray-100 w-[60%] h-100 rounded-2xl p-6 mt-3 animate-pulse"
+          ></div>
+        </div>
       ) : (
-        <p className="my-10">لا يوجد وظائف </p>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-30 h-30">
+            <Lottie animationData={animationData} loop={true} autoplay={true} />
+          </div>
+          لا يوجد وظائف
+        </div>
       )}
     </div>
   );

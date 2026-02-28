@@ -4,7 +4,8 @@ export default function NewAdvantage({ advantage }) {
   return (
     <div
       dir="rtl"
-      className="w-121 scale-80 md:scale-63 lg:scale-85 xl:scale-100 h-84 max-w-3xl bg-white border border-slate-200 rounded-3xl px-5 py-4 hover:scale-85 md:hover:scale-68 lg:hover:scale-90 xl:hover:scale-105 duration-300"
+      className="w-121 scale-80 md:scale-70 lg:scale-85 xl:scale-100 h-84 max-w-3xl bg-white border border-slate-200 rounded-3xl px-5 py-4 hover:scale-85 
+      md:hover:scale-68 lg:hover:scale-90 xl:hover:scale-105 duration-300 animate-fade-up"
     >
       <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-sky-700 text-2xl">
         {advantage.icons}

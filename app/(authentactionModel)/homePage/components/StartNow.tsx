@@ -6,7 +6,7 @@ function StartNow() {
   return (
     <>
       <div className="bg-auxiliaryColorWhite" dir="rtl">
-        <div className="cusContaner m-auto flex items-center justify-center px-4 sm:px-6 py-10">
+        <div className="cusContaner m-auto flex items-center justify-center px-4 sm:px-6 py-10 animate-fade-up">
           <div
             className="w-full p-10 rounded-4xl bg-primaryColorBlue 
             flex flex-col justify-center items-center gap-6 sm:gap-10 relative overflow-hidden px-6 sm:px-10"

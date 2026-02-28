@@ -7,9 +7,12 @@ export default function HeroSection() {
       className="bg-linear-to-r from-sky-50 via-white to-sky-50"
     >
       <div className="py-20 cusContaner m-auto text-center flex flex-col gap-5">
-        <h1 className="text-3xl font-bold">خدمات توظيف ذكية</h1>
+        <h1 className="text-3xl font-bold animate-fade-up">خدمات توظيف ذكية</h1>
 
-        <p className="text-slate-600">
+        <p
+          className="text-slate-600 animate-fade-up"
+          style={{ animationDelay: "0.2s" }}
+        >
           من أول سيرة ذاتية إلى قرار التوظيف.. كل ما تحتاجه في منصة واحدة
         </p>
 
@@ -18,7 +21,9 @@ export default function HeroSection() {
             href="/register"
             type="button"
             onClick={() => sessionStorage.setItem("LinkFrom", "company")}
-            className="px-6 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 font-semibold hover:cursor-pointer hover:bg-slate-50 transition"
+            className="px-6 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 font-semibold hover:cursor-pointer hover:bg-slate-50 transition
+            animate-fade-up"
+            style={{ animationDelay: "0.3s" }}
           >
             ابدأ كـشركة
           </Link>
@@ -29,7 +34,8 @@ export default function HeroSection() {
             onClick={() => sessionStorage.setItem("LinkFrom", "jobSeeker")}
             className="px-6 py-2.5 rounded-xl text-white font-semibold
                            bg-linear-to-r from-sky-600 to-violet-500
-                           hover:opacity-95 transition shadow-sm hover:cursor-pointer"
+                           hover:opacity-95 transition shadow-sm hover:cursor-pointer animate-fade-up"
+            style={{ animationDelay: "0.5s" }}
           >
             ابدأ كـباحث عن عمل
           </Link>

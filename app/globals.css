@@ -29,6 +29,22 @@
   .errorMessageStayle {
     @apply my-2 pr-2 text-[70%] font-bold text-red-500;
   }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-up {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
 }
 
 body {

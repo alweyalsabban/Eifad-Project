@@ -8,7 +8,7 @@ function HeroSection() {
     <section dir="rtl" className="bg-[#F0FDFA]">
       <div className="cusContaner m-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 px-4 sm:px-6 lg:px-12 py-10 sm:py-12">
         <div className="flex flex-col gap-6 sm:gap-8 lg:gap-10 ">
-          <h1 className="text-[181%] sm:text-[244%] lg:text-[275%] font-bold leading-[1.7] ">
+          <h1 className="text-[181%] sm:text-[244%] lg:text-[275%] font-bold leading-[1.7] animate-fade-up ">
             و ظيفتك القادمة، وموظفك المثــالـي
             <span> </span>
             <span className="bg-linear-to-l from-[#00B8B8] to-[#0E5A5D] bg-clip-text text-transparent">
@@ -16,7 +16,10 @@ function HeroSection() {
             </span>
           </h1>
 
-          <p className="leading-8 sm:leading-9 text-justify text-base sm:text-[16px]">
+          <p
+            className="leading-8 sm:leading-9 text-justify text-base sm:text-[16px] animate-fade-up"
+            style={{ animationDelay: "0.3s" }}
+          >
             إيفاد هي منصة توظيف ذكية تجمع الباحثين عن عمل وأصحاب الشركات ضمن
             بيئة رقمية موحدة، وتعتمد على تقنيات الذكاء الاصطناعي لتحليل السير
             الذاتية، تقييم المهارات، وتقديم مطابقة دقيقة بين المتقدمين وفرص
@@ -25,18 +28,20 @@ function HeroSection() {
           </p>
 
           <div>
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-stretch sm:items-center justify-center sm:justify-start font-bold">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-stretch sm:items-center justify-center sm:justify-start font-bold ">
               <Link
                 href="/register"
                 onClick={() => sessionStorage.setItem("LinkFrom", "jobSeeker")}
-                className="bg-primaryColorBlue rounded-lg drop-shadow-2xl drop-shadow-[#134E4A33] text-auxiliaryColorWhite px-8 sm:px-10 py-3.5 sm:py-4 hover:scale-110 duration-500 text-center"
+                className="bg-primaryColorBlue rounded-lg drop-shadow-2xl drop-shadow-[#134E4A33] text-auxiliaryColorWhite px-8 sm:px-10 py-3.5 sm:py-4 hover:scale-110 duration-500 text-center animate-fade-up"
+                style={{ animationDelay: "0.5s" }}
               >
                 ابدأ كباحث عن عمل
               </Link>
               <Link
                 href="/register"
                 onClick={() => sessionStorage.setItem("LinkFrom", "company")}
-                className="border text-secondColorBlack rounded-lg border-secondColorBlack px-8 sm:px-10 py-3.5 sm:py-4 hover:scale-110 duration-500 text-center"
+                className="border text-secondColorBlack rounded-lg border-secondColorBlack px-8 sm:px-10 py-3.5 sm:py-4 hover:scale-110 duration-500 text-center animate-fade-up"
+                style={{ animationDelay: "0.7s" }}
               >
                 ابدأ كشركة
               </Link>
@@ -44,7 +49,10 @@ function HeroSection() {
           </div>
         </div>
 
-        <div className="grid justify-center items-start gap-4">
+        <div
+          className="grid justify-center items-start gap-4 animate-fade-up"
+          style={{ animationDelay: "0.4s" }}
+        >
           <Image
             src="/assets/bg.png"
             alt="bg"
