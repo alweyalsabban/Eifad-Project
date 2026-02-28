@@ -1,4 +1,6 @@
-"use client";
+export const dynamic = "force-dynamic";
+
+("use client");
 
 import logout from "@/app/lib/deleteCookies";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -12,7 +14,6 @@ export default function DashBoard() {
 
   useEffect(() => {
     if (token) {
-      console.log("Cookies");
       SetCookies(token);
       router.push("/dashBoard");
     }
