@@ -23,12 +23,7 @@ export function middleware(req: NextRequest) {
   const cookieToken = req.cookies.get("token")?.value;
 
   if (tokenFromUrl) {
-    const response = NextResponse.redirect(
-      new URL(
-        "/dashBoard",
-        "https://eifad-project-git-completeauthe-7a7445-alwey-alsabbans-projects.vercel.app",
-      ),
-    );
+    const response = NextResponse.redirect(new URL("/dashBoard", req.url));
     SetCookies(tokenFromUrl);
 
     return response;
