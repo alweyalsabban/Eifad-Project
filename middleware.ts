@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import SetCookies from "./app/lib/setCookies";
+import { redirect } from "next/navigation";
 
 const guestOnlyPaths = [
   "/",
@@ -29,6 +30,7 @@ export function middleware(req: NextRequest) {
   // --- منطق معالجة التوكن القادم من الرابط ---
   if (tokenFromUrl) {
     SetCookies(tokenFromUrl);
+    redirect("/dashBoard");
     /* // توجيه المستخدم لصفحة الداشبورد لتنظيف الرابط من التوكن (URL Cleanup)
     const response = NextResponse.redirect(new URL("/dashBoard", req.url));
     // تخزين التوكن في الكوكيز فوراً
