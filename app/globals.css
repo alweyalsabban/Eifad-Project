@@ -36,6 +36,10 @@
     @apply hover:cursor-pointer hover:text-[#155DFC] duration-300 text-[#314158];
   }
 
+  .mainAnimation {
+    @apply hover:cursor-pointer hover:scale-105 duration-300;
+  }
+
   @keyframes fadeInUp {
     from {
       opacity: 0;

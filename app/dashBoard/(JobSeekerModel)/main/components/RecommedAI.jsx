@@ -10,7 +10,7 @@ function RecommedAI() {
       <div className="flex flex-col gap-4 w-full mr-10 flex-wrap">
         <h1 className="font-bold text-xl">توصيات الذكاء الاصطناعي</h1>
         <p>لديك 23 وظيفة بمطابقة عالية (90%+) تنتظرك!</p>
-        <button className="bg-auxiliaryColorWhite rounded-2xl w-30 flex-wrap py-3 text-[#00A63E] hover:cursor-pointer">
+        <button className="bg-auxiliaryColorWhite rounded-2xl w-30 flex-wrap py-3 text-[#00A63E] mainAnimation">
           عرض الوظائف
         </button>
       </div>

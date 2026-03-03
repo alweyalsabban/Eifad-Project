@@ -42,7 +42,7 @@ export default function Sidebar({
                   }
                 }}
               >
-                {j.icon}
+                <Link href={j.href}>{j.icon}</Link>
               </span>
             </div>
           );

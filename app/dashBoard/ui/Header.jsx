@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { GoBell } from "react-icons/go";
@@ -14,8 +13,8 @@ function Header() {
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setName(localStorage.getItem("name") || "");
-    setRole(localStorage.getItem("role") || "");
+    setName(localStorage.getItem("name") || personInformation.name);
+    setRole(localStorage.getItem("role") || personInformation.role);
   }, []);
   return (
     <div
@@ -35,7 +34,9 @@ function Header() {
               ? "باحث عن عمل"
               : personInformation.role || role === "Employer"
                 ? "صاحب شركة"
-                : "مسؤول النظام"}
+                : personInformation.role || role === "Admin"
+                  ? "مسؤول النظام"
+                  : ""}
           </h1>
         </div>
         <div className="flex gap-4 text-[#C6C8CC]">

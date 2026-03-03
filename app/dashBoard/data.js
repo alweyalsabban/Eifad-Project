@@ -10,6 +10,7 @@ import { BiMessage } from "react-icons/bi";
 import { LuSettings } from "react-icons/lu";
 
 import { MdOutlineMarkunreadMailbox } from "react-icons/md";
+import { href } from "react-router-dom";
 
 export const JobseekerSideBar = (number) => [
   {
@@ -164,6 +165,7 @@ export const TwoIcon = (number) => [
     icon: (
       <IoIosLogOut size={25} className="iconSildeBarStyle text-red-500! " />
     ),
+    href: "/login",
   },
 ];
 
