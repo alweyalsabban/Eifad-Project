@@ -3,10 +3,13 @@
 
 @theme inline {
   --color-primaryColorBlue: #016b7e;
+  --color-primaryBlue: #2b7fff;
+  --color-gray: #45556c;
   --color-secondColorBlack: #2b2b2b;
   --color-auxiliaryColorOrange: #f5a623;
   --color-auxiliaryColorGray: #e2e8f0;
   --color-auxiliaryColorWhite: #ffffff;
+  --color-secondGray: #e2e8f0;
   --color-header: #e2e8f0;
   /*   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -29,6 +32,9 @@
   .errorMessageStayle {
     @apply my-2 pr-2 text-[70%] font-bold text-red-500;
   }
+  .iconSildeBarStyle {
+    @apply hover:cursor-pointer hover:text-[#155DFC] duration-300 text-[#314158];
+  }
 
   @keyframes fadeInUp {
     from {
@@ -48,5 +54,5 @@
 }
 
 body {
-  font-family: "Cairo", sans-serif;
+  font-family: "Cairo";
 }

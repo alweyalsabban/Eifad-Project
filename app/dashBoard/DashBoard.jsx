@@ -1,49 +1,41 @@
-export const dynamic = "force-dynamic";
-
-("use client");
-
-import logout from "@/app/lib/deleteCookies";
-import { useSearchParams, useRouter } from "next/navigation";
+"use client";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import SetCookies from "../lib/setCookies";
+import { personInformation } from "./data";
 
 export default function DashBoard() {
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const token = searchParams.get("token");
 
-  useEffect(() => {
-    if (token) {
-      SetCookies(token);
-      router.push("/dashBoard");
-    }
-  }, [token, router]);
+  function setInformaion(data) {
+    personInformation.name = data.data.full_name;
+    personInformation.gmail = data.data.email;
+    personInformation.role = data.data.role;
+    personInformation.gender = data.data.gender;
+    localStorage.setItem("name", data.data.full_name);
+    localStorage.setItem("gmail", data.data.email);
+    localStorage.setItem("role", data.data.role);
+    localStorage.setItem("gender", data.data.gender);
+  }
 
   useEffect(() => {
     async function fetc() {
       const res = await fetch("/api/user");
       const data = await res.json();
+      setInformaion(data);
       if (res.ok) {
-        console.log(data);
+        if (data.data.role === "JobSeeker") {
+          router.replace("/dashBoard/main");
+        } else if (data.data.role === "Employer") {
+          router.replace("/dashBoard/panale");
+        } else if (data.data.role === "Admin") {
+          router.replace("/dashBoard/controll");
+        } else {
+          alert("Error In data fetch");
+        }
       }
     }
     fetc();
   }, []);
 
-  return (
-    <>
-      <h1>dashBoard page</h1>
-
-      <button
-        onClick={() => {
-          localStorage.clear();
-          sessionStorage.clear();
-          logout();
-        }}
-        className="bg-red-500 p-2 hover:cursor-pointer"
-      >
-        تسجيل الخروج
-      </button>
-    </>
-  );
+  return null;
 }

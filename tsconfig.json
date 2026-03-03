@@ -34,7 +34,10 @@
     "app/(authentactionModel)/verify/page.tsx",
     "app/(authentactionModel)/verify/page.tsx",
     "app/(auth)/register/page.tsx",
-    "app/(authentactionModel)/api/auth/verify-account/route.js"
+    "app/(authentactionModel)/api/auth/verify-account/route.js",
+    "app/dashBoard/(JobSeekerModel)/main/page.jsx",
+    "app/dashBoard/DashBoard.jsx",
+    "app/dashBoard/page.tsx"
   ],
   "exclude": ["node_modules"]
 }
