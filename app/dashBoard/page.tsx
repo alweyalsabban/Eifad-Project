@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { NamePageProvider } from "../dashBoard/(JobSeekerModel)/context/NamePageContext";
 
 import DashBoard from "./DashBoard";
 
@@ -10,9 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return (
-    <>
-      <DashBoard />
-    </>
-  );
+  return <DashBoard />;
 }

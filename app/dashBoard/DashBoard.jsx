@@ -1,5 +1,4 @@
 "use client";
-
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { personInformation } from "./data";
@@ -38,5 +37,5 @@ export default function DashBoard() {
     fetc();
   }, []);
 
-  return;
+  return null;
 }
