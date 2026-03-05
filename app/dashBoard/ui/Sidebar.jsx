@@ -13,7 +13,10 @@ export default function Sidebar({
   const smallSidebar = TwoIcon(numberOfSideBar);
 
   return (
-    <div className="w-20 p-3 bg-auxiliaryColorWhite border border-secondGray rounded-full my-10 mr-10 scale-80 absolute top-[-90] ">
+    <div
+      className="w-20 p-3 bg-auxiliaryColorWhite border border-secondGray z-50
+    rounded-full my-10 mr-10 scale-80 absolute top-[-90] hidden md:block  "
+    >
       <div className="flex flex-col items-center justify-center gap-9 py-10 ">
         {sidebar.map((j) => {
           return (

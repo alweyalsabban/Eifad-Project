@@ -18,7 +18,8 @@ function Header() {
   }, []);
   return (
     <div
-      className="bg-auxiliaryColorWhite border border-secondGray w-[80%] py-1 px-5 m-auto my-10 rounded-full flex items-center justify-between"
+      className="bg-auxiliaryColorWhite border border-secondGray w-[80%] py-1 px-5 
+      m-auto my-10 rounded-full flex  items-center justify-between"
       dir="rtl"
     >
       <div className="flex justify-center items-center gap-4">

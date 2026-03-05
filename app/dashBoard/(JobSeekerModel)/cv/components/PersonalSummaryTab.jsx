@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-function PersonalSummaryCard() {
+function PersonalSummaryTab() {
   const [summary, setSummary] = useState("");
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5 mt-5">
@@ -19,4 +19,4 @@ function PersonalSummaryCard() {
   );
 }
 
-export default PersonalSummaryCard;
+export default PersonalSummaryTab;

@@ -36,7 +36,7 @@ function MainDashBorad() {
           return <ActionCard key={i.id} icons={i.icons} name={i.name} />;
         })}
       </div>
-      <div className="mt-5 block w-[95%] m-auto gap-4 justify-between md:flex">
+      <div className="mt-5 block w-[95%] m-auto gap-4 justify-between md:flex mb-40">
         <QuckliyAction name={"الوظائف الموصى بها"} NameData={RecommedJobs} />
         <QuckliyAction name={"الطلبات الأخيرة"} NameData={RecommedJobs} />
       </div>
