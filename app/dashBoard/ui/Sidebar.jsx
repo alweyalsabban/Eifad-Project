@@ -1,19 +1,42 @@
 "use client";
-import { JobseekerSideBar } from "../data";
-import { TwoIcon } from "../data";
+import {
+  JobseekerSideBar,
+  CompanySideBar,
+  AdminSideBar,
+  TwoIcon,
+  personInformation,
+} from "../data";
 import logout from "@/app/lib/deleteCookies";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function Sidebar({
   setName,
   numberOfSideBar,
   setnumberOfSideBar,
 }) {
-  const sidebar = JobseekerSideBar(numberOfSideBar);
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    setRole(localStorage.getItem("role"));
+  }, []);
+
+  const sidebar =
+    personInformation.role === "JobSeeker" || role === "JobSeeker"
+      ? JobseekerSideBar(numberOfSideBar)
+      : personInformation.role === "Employer" || role === "Employer"
+        ? CompanySideBar(numberOfSideBar)
+        : personInformation.role === "Admin" || role === "Admin"
+          ? AdminSideBar(numberOfSideBar)
+          : [];
+
   const smallSidebar = TwoIcon(numberOfSideBar);
 
   return (
-    <div className="w-20 p-3 bg-auxiliaryColorWhite border border-secondGray rounded-full my-10 mr-10 scale-80 absolute top-[-90] ">
+    <div
+      className="w-15 p-3 bg-auxiliaryColorWhite border border-secondGray z-50
+    rounded-full  mr-10 mb-10 hidden md:block  "
+    >
       <div className="flex flex-col items-center justify-center gap-9 py-10 ">
         {sidebar.map((j) => {
           return (
@@ -42,7 +65,7 @@ export default function Sidebar({
                   }
                 }}
               >
-                {j.icon}
+                <Link href={j.href}>{j.icon}</Link>
               </span>
             </div>
           );

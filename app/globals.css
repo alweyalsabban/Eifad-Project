@@ -36,6 +36,17 @@
     @apply hover:cursor-pointer hover:text-[#155DFC] duration-300 text-[#314158];
   }
 
+  .mainAnimation {
+    @apply hover:cursor-pointer hover:scale-105 duration-300;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
   @keyframes fadeInUp {
     from {
       opacity: 0;

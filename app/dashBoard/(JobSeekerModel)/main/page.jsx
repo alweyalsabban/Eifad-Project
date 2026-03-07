@@ -18,7 +18,7 @@ function MainDashBorad() {
 
   return (
     <section>
-      <div className="flex gap-2 mt-5 justify-between mr-3 flex-wrap  w-[98%]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4  gap-2 mt-5 justify-between mr-3 flex-wrap w-[98%]">
         {InfoCardMain.map((i) => {
           return (
             <InfoCard
@@ -30,13 +30,17 @@ function MainDashBorad() {
           );
         })}
       </div>
-      <RecommedAI />
-      <div className="flex  gap-2 mt-5 justify-between   mr-3 flex-wrap w-[98%]">
+      <RecommedAI
+        title={"توصيات الذكاء الاصطناعي "}
+        description={`لديك 23 وظيفة بمطابقة عالية (90%+) تنتظرك!`}
+        textBtn={"عرض الوظائف"}
+      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4  gap-2 mt-5 justify-between   mr-3 flex-wrap w-[98%]">
         {InfoCardAction.map((i) => {
           return <ActionCard key={i.id} icons={i.icons} name={i.name} />;
         })}
       </div>
-      <div className="mt-5 block w-[95%] m-auto gap-4 justify-between md:flex">
+      <div className="mt-5 block w-[95%] m-auto gap-4 justify-between md:flex mb-40">
         <QuckliyAction name={"الوظائف الموصى بها"} NameData={RecommedJobs} />
         <QuckliyAction name={"الطلبات الأخيرة"} NameData={RecommedJobs} />
       </div>

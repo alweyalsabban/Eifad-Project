@@ -11,7 +11,7 @@ import Link from "next/link";
 import ErroeMessage from "./erroeMessage";
 import { useRouter } from "next/navigation";
 import ScoialMeadia from "./scoialMeadia";
-import { ValiEmail, ValiPassword } from "@/app/lib/validators";
+import { ValiEmail } from "@/app/lib/validators";
 
 export const metadata = {
   title: "تسجيل الدخول",
@@ -44,38 +44,34 @@ function LogInPage() {
     e.preventDefault();
     if (ValiEmail(form.email)) {
       setEmailError(false);
-      if (ValiPassword(form.password)) {
-        setPasswordError(false);
-        setLoading(true);
 
-        const response = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        });
-        setLoading(false);
-        const data = await response.json();
+      setPasswordError(false);
+      setLoading(true);
 
-        if (data.requires_verification) {
-          sendCode();
-          localStorage.clear();
-          localStorage.setItem("pending_email", form.email);
-          route.replace("/verify");
-        }
-        if (!response.ok) {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          setErrorMessage(data.message);
-          setisError(true);
-        } else {
-          setisError(false);
-          localStorage.clear();
-          sessionStorage.clear();
-          SetCookies(data.data.token);
-          route.replace("/dashBoard");
-        }
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      setLoading(false);
+      const data = await response.json();
+
+      if (data.requires_verification) {
+        sendCode();
+        localStorage.clear();
+        localStorage.setItem("pending_email", form.email);
+        route.replace("/verify");
+      }
+      if (!response.ok) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        setErrorMessage(data.message);
+        setisError(true);
       } else {
-        // كلمة المرور
-        setPasswordError(true);
+        setisError(false);
+        localStorage.clear();
+        sessionStorage.clear();
+        SetCookies(data.data.token);
+        route.replace("/dashBoard");
       }
     } else {
       // البريد
