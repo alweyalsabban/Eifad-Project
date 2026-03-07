@@ -30,7 +30,11 @@ function MainDashBorad() {
           );
         })}
       </div>
-      <RecommedAI />
+      <RecommedAI
+        title={"توصيات الذكاء الاصطناعي "}
+        description={`لديك 23 وظيفة بمطابقة عالية (90%+) تنتظرك!`}
+        textBtn={"عرض الوظائف"}
+      />
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4  gap-2 mt-5 justify-between   mr-3 flex-wrap w-[98%]">
         {InfoCardAction.map((i) => {
           return <ActionCard key={i.id} icons={i.icons} name={i.name} />;

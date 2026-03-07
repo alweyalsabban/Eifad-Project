@@ -16,23 +16,21 @@ function MainPage({ children }) {
   } = useContext(NamePageContex);
 
   return (
-    <main className="flex flex-col " dir="rtl">
-      <span className="hidden md:block">
+    <main className="" dir="rtl">
+      <span className="hidden md:block ">
         <Header />
       </span>
       <span className="block md:hidden  w-[85%] m-auto">
         <SmHeader />
       </span>
 
-      <div>
+      <div className="flex ">
         <div>
           <Sidebar
             setName={setnameOfSideBar}
             numberOfSideBar={numberOfSideBar}
             setnumberOfSideBar={setnumberOfSideBar}
           />
-        </div>
-        <div>
           <SmSidebar
             setName={setnameOfSideBar}
             numberOfSideBar={numberOfSideBar}
@@ -40,7 +38,7 @@ function MainPage({ children }) {
           />
         </div>
 
-        <div className="cusContaner m-auto">
+        <div className="cusContaner mr-10">
           <div className="flex items-center gap-15">
             <div className="w-2 h-10 bg-[#155DFC] mr-6"></div>
             <h1 className="text-2xl font-bold">{nameOfSideBar}</h1>

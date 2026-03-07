@@ -1,6 +1,6 @@
 import { MdOutlineAutoAwesome } from "react-icons/md";
 
-function RecommedAI() {
+function RecommedAI({ title, description, textBtn }) {
   return (
     <div
       className="w-[98%] m-auto rounded-2xl bg-linear-to-r from-[#009966] to-[#00C950]
@@ -8,10 +8,10 @@ function RecommedAI() {
     >
       <MdOutlineAutoAwesome size={30} className="mt-2" />
       <div className="flex flex-col gap-4 w-full mr-10 flex-wrap">
-        <h1 className="font-bold text-xl">توصيات الذكاء الاصطناعي</h1>
-        <p>لديك 23 وظيفة بمطابقة عالية (90%+) تنتظرك!</p>
+        <h1 className="font-bold text-xl"> {title}</h1>
+        <p> {description} </p>
         <button className="bg-auxiliaryColorWhite rounded-2xl w-30 flex-wrap py-3 text-[#00A63E] mainAnimation">
-          عرض الوظائف
+          {textBtn}
         </button>
       </div>
     </div>
