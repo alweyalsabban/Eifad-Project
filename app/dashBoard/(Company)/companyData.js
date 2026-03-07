@@ -2,6 +2,7 @@ import { FiBriefcase, FiUsers, FiUserCheck } from "react-icons/fi";
 import { BiMessageDetail } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
+import { FiMapPin, FiDollarSign } from "react-icons/fi";
 
 export const InfoMainCard = [
   {
@@ -89,5 +90,88 @@ export const jobs = [
     applicants: 19,
     views: 289,
     daysAgo: 3,
+  },
+];
+
+export const basicFields = [
+  {
+    label: "المسمى الوظيفي*",
+    name: "title",
+    placeholder: "مثال: مهندس برمجيات أول",
+    icon: FiBriefcase,
+    colSpan: "sm:col-span-2",
+  },
+  {
+    label: "الفئة*",
+    name: "category",
+    colSpan: "sm:col-span-2",
+  },
+  {
+    label: "الموقع*",
+    name: "location",
+    icon: FiMapPin,
+  },
+  {
+    label: "نوع العمل*",
+    name: "workType",
+  },
+  {
+    label: "مستوى الخبرة*",
+    name: "experienceLevel",
+  },
+  {
+    label: "نوع التوظيف*",
+    name: "employmentType",
+  },
+  {
+    label: "الحد الأدنى",
+    name: "salaryMin",
+    placeholder: "الحد الأدنى",
+    icon: FiDollarSign,
+  },
+  {
+    label: "الحد الأقصى",
+    name: "salaryMax",
+    placeholder: "الحد الأقصى",
+    icon: FiDollarSign,
+  },
+];
+
+export const detailsFields = [
+  {
+    label: "وصف الوظيفة*",
+    name: "description",
+    placeholder: "اكتب وصفًا تفصيليًا للوظيفة...",
+    textarea: true,
+    rows: 5,
+  },
+  {
+    label: "المتطلبات*",
+    name: "requirements",
+    placeholder: "اكتب متطلبات الوظيفة (كل متطلب في سطر جديد)",
+    textarea: true,
+    rows: 5,
+  },
+  {
+    label: "المسؤوليات*",
+    name: "responsibilities",
+    placeholder: "اكتب مسؤوليات الدور (كل مسؤولية في سطر جديد)",
+    textarea: true,
+    rows: 5,
+  },
+  {
+    label: "المهارات المطلوبة*",
+    name: "skills",
+    placeholder: "React, Node.js, AWS",
+  },
+  {
+    label: "من تاريخ",
+    name: "startDate",
+    type: "date",
+  },
+  {
+    label: "إلى تاريخ",
+    name: "endDate",
+    type: "date",
   },
 ];

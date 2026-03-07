@@ -3,7 +3,6 @@ import { useContext, useEffect } from "react";
 import { NamePageContex } from "../../(JobSeekerModel)/context/NamePageContext";
 import CompanyInfoForm from "./components/CompanyInfoForm";
 import CompanyStatsCard from "./components/CompanyStatsCard";
-import CompanyImageCard from "./components/CompanyImageCard";
 import ProfileCompletionCard from "./components/ProfileCompletionCard";
 
 function CompanyProfile() {
@@ -22,7 +21,6 @@ function CompanyProfile() {
 
       <div>
         <CompanyStatsCard />
-        <CompanyImageCard />
         <ProfileCompletionCard />
       </div>
     </div>
