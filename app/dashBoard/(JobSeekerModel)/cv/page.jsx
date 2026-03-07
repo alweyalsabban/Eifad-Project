@@ -3,13 +3,16 @@ import { useContext, useState } from "react";
 import { NamePageContex } from "../context/NamePageContext";
 import { useEffect } from "react";
 import CvTab from "./components/CvTab";
-import PersonalSummaryTab from "./components/PersonalSummaryTab";
-import EducationTab from "./components/EducationTab";
-import ExperienceTab from "./components/ExperienceTab";
-import SkillsTab from "./components/SkillsTab";
-import LanguagesTab from "./components/LanguagesTab";
-import CertificatesTab from "./components/CertificatesTab";
+import dynamic from "next/dynamic";
 
+const PersonalSummaryTab = dynamic(
+  () => import("./components/PersonalSummaryTab"),
+);
+const EducationTab = dynamic(() => import("./components/EducationTab"));
+const ExperienceTab = dynamic(() => import("./components/ExperienceTab"));
+const SkillsTab = dynamic(() => import("./components/SkillsTab"));
+const LanguagesTab = dynamic(() => import("./components/LanguagesTab"));
+const CertificatesTab = dynamic(() => import("./components/CertificatesTab"));
 import {
   DocumentTextIcon,
   ArrowDownTrayIcon,

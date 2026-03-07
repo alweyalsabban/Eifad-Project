@@ -186,7 +186,7 @@ export const CompanySideBar = (number) => [
   },
   {
     id: 4,
-    name: "المرشحين",
+    name: "إدارة المرشحين",
     icon: (
       <LuUsers
         size={20}

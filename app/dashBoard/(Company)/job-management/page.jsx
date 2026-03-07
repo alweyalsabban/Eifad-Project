@@ -4,7 +4,16 @@ import { NamePageContex } from "../../(JobSeekerModel)/context/NamePageContext";
 import JobsToolbar from "./components/JobsToolbar";
 import JobsTabs from "./components/JobsTabs";
 import JobListingCard from "./components/JobListingCard";
-import JobForm from "./components/JobForm";
+
+import dynamic from "next/dynamic";
+
+const JobForm = dynamic(() => import("./components/JobForm"));
+const tabs = [
+  { id: "all", label: "الكل", count: 5 },
+  { id: "open", label: "مفتوح", count: 3 },
+  { id: "closed", label: "مغلق", count: 1 },
+  { id: "draft", label: "مسودات", count: 1 },
+];
 
 function JobManagement() {
   const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
@@ -27,7 +36,7 @@ function JobManagement() {
       >
         <JobsToolbar />
         <div className="my-5 h-px w-full bg-slate-200" />
-        <JobsTabs setPostJob={setPostJob} />
+        <JobsTabs setPostJob={setPostJob} tabs={tabs} />
       </section>
       <div className="w-[98%] mx-auto gap-2 grid grid-cols-1 md:grid-cols-2 ">
         <JobListingCard

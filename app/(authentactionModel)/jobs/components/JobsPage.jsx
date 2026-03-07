@@ -1,7 +1,11 @@
 "use client";
 
+import { useState } from "react";
+import dynamic from "next/dynamic";
 import SearchSection from "./SearchSection";
-import ResultSearchSection from "./ResultSearchSection";
+
+const ResultSearchSection = dynamic(() => import("./ResultSearchSection"));
+
 import { useState } from "react";
 
 function JobsPage() {
