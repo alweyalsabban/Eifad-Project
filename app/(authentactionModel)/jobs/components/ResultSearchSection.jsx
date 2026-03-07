@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import FilterInput from "./FilterInput";
 import AdsJob from "./AdsJob";
 import DeatilsAdJobs from "./DeatilsAdJobs";
-import Lottie from "lottie-react";
-import animationData from "@/public/animations/animationData.json";
+
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 function ResultSearchSection({ keyword }) {
   const [isFilter, setFilter] = useState(false);

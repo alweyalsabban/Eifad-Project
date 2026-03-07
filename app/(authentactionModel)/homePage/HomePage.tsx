@@ -1,11 +1,11 @@
 "use client";
-import React from "react";
-import HeroSection from "./components/HeroSection";
-import FeatcherAI from "./components/FeatcherAI";
-import StartNow from "./components/StartNow";
+import dynamic from "next/dynamic";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
+import HeroSection from "./components/HeroSection";
 
+const FeatcherAI = dynamic(() => import("./components/FeatcherAI"));
+const StartNow = dynamic(() => import("./components/StartNow"));
+const Footer = dynamic(() => import("./components/Footer"));
 function HomePage() {
   return (
     <>

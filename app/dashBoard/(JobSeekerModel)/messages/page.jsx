@@ -1,8 +1,12 @@
 "use client";
 import { NamePageContex } from "../context/NamePageContext";
 import { useEffect, useState, useContext } from "react";
+
+import dynamic from "next/dynamic";
 import ThreadsList from "./components/ThreadsList";
-import ChatWindow from "./components/ChatWindow";
+
+const ChatWindow = dynamic(() => import("./components/ChatWindow"));
+
 function Messages() {
   const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
   useEffect(() => {

@@ -1,6 +1,8 @@
+import dynamic from "next/dynamic";
 import HeroSection from "./components/HeroSection";
 import WhoWe from "./components/WhoWe";
-import Team from "./components/Team";
+
+const Team = dynamic(() => import("./components/Team"));
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

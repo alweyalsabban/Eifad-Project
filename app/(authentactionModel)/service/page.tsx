@@ -1,5 +1,7 @@
+import dynamic from "next/dynamic";
 import HeroSection from "./components/HeroSection";
-import Advantage from "./components/Advantage";
+
+const Advantage = dynamic(() => import("./components/Advantage"));
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

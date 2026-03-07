@@ -1,20 +1,10 @@
 "use client";
 import { useState } from "react";
 
-const tabs = [
-  { id: "all", label: "الكل", count: 5 },
-  { id: "open", label: "مفتوح", count: 3 },
-  { id: "closed", label: "مغلق", count: 1 },
-  { id: "draft", label: "مسودات", count: 1 },
-];
-
-export default function JobsTabs({ setPostJob }) {
+export default function JobsTabs({ setPostJob, tabs }) {
   const [active, setActive] = useState("all");
   return (
-    <div
-      dir="rtl"
-      className="flex flex-wrap text-l font-medium justify-between md:space-y-1 space-y-5"
-    >
+    <div className="flex flex-wrap text-l font-medium justify-between md:space-y-1 space-y-5">
       <div className="space-x-4">
         {tabs.map((tab) => (
           /*  className="rounded-2xl px-4 py-2 bg-blue-100  text-blue-600" */
