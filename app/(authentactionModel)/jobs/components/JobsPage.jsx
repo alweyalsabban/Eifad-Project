@@ -6,8 +6,6 @@ import SearchSection from "./SearchSection";
 
 const ResultSearchSection = dynamic(() => import("./ResultSearchSection"));
 
-import { useState } from "react";
-
 function JobsPage() {
   const [keyword, setkeyword] = useState("");
   return (
