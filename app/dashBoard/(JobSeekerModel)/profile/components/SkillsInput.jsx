@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { PlusIcon } from "@heroicons/react/24/outline";
-import { skills } from "../profileData";
+import { BsFillPlusCircleFill } from "react-icons/bs";
+
+/* import { PlusIcon } from "@heroicons/react/24/outline";
+ */ import { skills } from "../profileData";
 import SkillTag from "./SkillTag";
 
 export default function SkillsInput() {
@@ -42,7 +44,7 @@ export default function SkillsInput() {
           className="flex h-14 w-20 items-center justify-center rounded-2xl bg-primaryBlue 
           text-white hover:bg-blue-700 hover:cursor-pointer"
         >
-          <PlusIcon className="h-6 w-6" />
+          <BsFillPlusCircleFill className="h-6 w-6" />
         </button>
       </div>
     </div>

@@ -10,6 +10,7 @@ import ErroeMessage from "./erroeMessage";
 import { useRouter } from "next/navigation";
 import ScoialMeadia from "./scoialMeadia";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import { ApiFetchClient } from "@/app/lib/ApiFetchClient";
 
 /// validate
 import { Valiname } from "@/app/lib/validators";
@@ -49,8 +50,12 @@ function RegesterPage() {
     useState(false);
 
   async function sendCode() {
-    await fetch("/api/auth/send-verification", {
+    await ApiFetchClient("/auth/send-verification", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
       body: JSON.stringify({ email: form.email }),
     });
   }
@@ -69,16 +74,17 @@ function RegesterPage() {
             if (form.phone.length >= 9) {
               setPhoneError(false);
               setLoading(true);
-              const response = await fetch("/api/auth/register", {
+              const response = await ApiFetchClient("/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form),
               });
+
               setLoading(false);
-              const data = await response.json();
-              if (!response.ok) {
+
+              if (!response.isSusses) {
                 if (
-                  data.message ===
+                  response.dataResponse.message ===
                   "البريد الإلكتروني مسجل مسبقاً ولكنه غير مفعل. يرجى تفعيل الحساب."
                 ) {
                   sendCode();
@@ -86,7 +92,7 @@ function RegesterPage() {
 
                   router.replace("/verify");
                 } else {
-                  setErrorMessage(data.message);
+                  setErrorMessage(response.dataResponse.message);
                   window.scrollTo({ top: 0, behavior: "smooth" });
                   setisError(true);
                 }
@@ -94,7 +100,7 @@ function RegesterPage() {
                 setisError(false);
                 sendCode();
                 localStorage.setItem("pending_email", form.email);
-                localStorage.setItem("token", data.data.token);
+                localStorage.setItem("token", response.dataResponse.data.token);
 
                 //localStorage.setItem("token", data.data.token);
                 sessionStorage.setItem("is_registering", "true");

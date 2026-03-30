@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { personInformation } from "./data";
+import { ApiFetchServer } from "@/app/lib/ApiFetchServer";
 
 export default function DashBoard() {
   const router = useRouter();
@@ -19,15 +20,15 @@ export default function DashBoard() {
 
   useEffect(() => {
     async function fetc() {
-      const res = await fetch("/api/user");
-      const data = await res.json();
-      setInformaion(data);
-      if (res.ok) {
-        if (data.data.role === "JobSeeker") {
+      const res = await ApiFetchServer("/auth/me");
+      setInformaion(res.dataResponse);
+
+      if (res.isSusses) {
+        if (res.dataResponse.data.role === "JobSeeker") {
           router.replace("/dashBoard/main");
-        } else if (data.data.role === "Employer") {
+        } else if (res.dataResponse.data.role === "Employer") {
           router.replace("/dashBoard/panale");
-        } else if (data.data.role === "Admin") {
+        } else if (res.dataResponse.data.role === "Admin") {
           router.replace("/dashBoard/controll");
         } else {
           alert("Error In data fetch");

@@ -1,16 +1,21 @@
 "use client";
 
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { FiCheckCircle } from "react-icons/fi";
 import { Badge } from "../profileData";
 import { Field } from "./Field";
 import { useState } from "react";
 import Image from "next/image";
-import {
+import { HiMiniArrowUpTray } from "react-icons/hi2";
+import { FiMapPin } from "react-icons/fi";
+import { FaRegEnvelope } from "react-icons/fa6";
+import { FaPhoneAlt } from "react-icons/fa";
+
+/* import {
   ArrowUpTrayIcon,
   MapPinIcon,
   EnvelopeIcon,
   PhoneIcon,
-} from "@heroicons/react/24/outline";
+} from "@heroicons/react/24/"; */
 
 export default function BasicInfoCard() {
   const [formData, setFormData] = useState({
@@ -66,7 +71,7 @@ export default function BasicInfoCard() {
               htmlFor="profile-image-upload"
               className="inline-flex cursor-pointer items-center gap-2 rounded-[10px] border border-slate-300 bg-white px-4 py-2 text-sm text-slate-900 hover:bg-slate-50"
             >
-              <ArrowUpTrayIcon className="h-4 w-4" />
+              <HiMiniArrowUpTray className="h-4 w-4" />
               تحميل صورة
             </label>
 
@@ -89,7 +94,7 @@ export default function BasicInfoCard() {
               className="inline-flex items-center gap-2 rounded-[10px] bg-green-100 px-3 py-1 text-sm text-green-700"
             >
               {b.icon ? (
-                <CheckCircleIcon className="h-4 w-4 text-green-700" />
+                <FiCheckCircle className="h-4 w-4 text-green-700" />
               ) : null}
               {b.label}
             </span>
@@ -117,7 +122,7 @@ export default function BasicInfoCard() {
           label="الموقع"
           value={formData.location}
           onChange={(v) => setFormData({ ...formData, location: v })}
-          icon={<MapPinIcon className="h-5 w-5" />}
+          icon={<FiMapPin className="h-5 w-5" />}
           inputProps={{ id: "location" }}
         />
 
@@ -125,7 +130,7 @@ export default function BasicInfoCard() {
           label="البريد الإلكتروني"
           value={formData.email}
           onChange={(v) => setFormData({ ...formData, email: v })}
-          icon={<EnvelopeIcon className="h-5 w-5" />}
+          icon={<FaRegEnvelope className="h-5 w-5" />}
           inputProps={{ id: "email", type: "email" }}
         />
 
@@ -133,7 +138,7 @@ export default function BasicInfoCard() {
           label="رقم الهاتف"
           value={formData.phone}
           onChange={(v) => setFormData({ ...formData, phone: v })}
-          icon={<PhoneIcon className="h-5 w-5" />}
+          icon={<FaPhoneAlt className="h-5 w-5" />}
           inputProps={{ id: "phone", type: "tel" }}
         />
       </form>

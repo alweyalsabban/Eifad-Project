@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import SetCookies from "@/app/lib/setCookies";
 import Image from "next/image";
 import Link from "next/link";
+import { ApiFetchClient } from "../../lib/ApiFetchClient";
 import {
   IoMdArrowBack,
   IoMdCheckmarkCircle,
@@ -29,12 +30,6 @@ export default function OTPVerificationPage() {
 
   // ✅ Guard: إذا المستخدم مسجل دخول لا تسمح له يبقى هنا (حتى لو رجع بالزر)
   useEffect(() => {
-    /*  const existingToken = localStorage.getItem("token");
-    if (existingToken && existingToken !== "undefined") {
-      window.location.replace("/dashBoard");
-      return;
-    } */
-
     const savedEmail = localStorage.getItem("pending_email");
     if (!savedEmail) {
       window.location.replace("/register");
@@ -87,17 +82,20 @@ export default function OTPVerificationPage() {
     try {
       const isForget = sessionStorage.getItem("isForget");
 
-      const res = await fetch(
-        `/api/auth/${isForget === "true" ? "verify-reset-code" : "verify-account"}`,
+      const res = await ApiFetchClient(
+        `/auth/${isForget === "true" ? "verify-reset-code" : "verify-account"}`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
           body: JSON.stringify({ email, token: enteredOtp }),
         },
       );
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || "الرمز غير صحيح");
+      console.log("first");
+      if (!res.isSusses)
+        throw new Error(res.dataResponse?.message || "الرمز غير صحيح");
 
       // ✅ عدّل هذا إذا اسم التوكن مختلف في استجابة السيرفر
       const token = localStorage.getItem("token");
@@ -117,7 +115,8 @@ export default function OTPVerificationPage() {
 
       localStorage.setItem("user_email", email); // اختياري
       localStorage.setItem("token", token); // اختياري
-      SetCookies(data.token);
+      SetCookies(res.dataResponse.token);
+      console.log(res.dataResponse.token);
       localStorage.removeItem("pending_email");
 
       setToast({
@@ -146,18 +145,26 @@ export default function OTPVerificationPage() {
     const isForget = sessionStorage.getItem("isForget");
     setIsLoading(true);
     try {
-      const res = await fetch(
-        `/api/auth/${isForget === "true" ? "forgot-password" : "send-verification"}`,
+      const res = await ApiFetchClient(
+        `/auth/${isForget === "true" ? "forgot-password" : "send-verification"}`,
         {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
           body: JSON.stringify({ email }),
         },
       );
 
-      const data = await res.json().catch(() => ({}));
+      /* const data = await res.json().catch(() => ({})); */
 
-      if (!res.ok) {
-        throw new Error(data?.message || data?.error || "فشل إرسال الرمز");
+      if (!res.isSusses) {
+        throw new Error(
+          res.dataResponse?.message ||
+            res.dataResponse?.error ||
+            "فشل إرسال الرمز",
+        );
       }
 
       setOtp(Array(CONFIG.OTP_LEN).fill(""));

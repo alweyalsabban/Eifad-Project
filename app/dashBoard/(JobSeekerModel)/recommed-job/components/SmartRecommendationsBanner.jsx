@@ -1,6 +1,6 @@
 "use client";
 
-import { SparklesIcon } from "@heroicons/react/24/outline";
+import { IoSparklesOutline } from "react-icons/io5";
 
 export default function SmartRecommendationsBanner({ jobs = 23 }) {
   return (
@@ -18,7 +18,7 @@ export default function SmartRecommendationsBanner({ jobs = 23 }) {
         </div>
 
         {/* icon */}
-        <SparklesIcon className="h-7 w-7 text-white" />
+        <IoSparklesOutline className="h-7 w-7 text-white" />
       </div>
     </section>
   );

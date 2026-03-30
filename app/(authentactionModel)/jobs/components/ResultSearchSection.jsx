@@ -3,16 +3,16 @@ import { useState, useEffect } from "react";
 import FilterInput from "./FilterInput";
 import AdsJob from "./AdsJob";
 import DeatilsAdJobs from "./DeatilsAdJobs";
-
-import dynamic from "next/dynamic";
-
-const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+import { ApiFetchClient } from "@/app/lib/ApiFetchClient";
+import Lottie from "lottie-react";
+import animationData from "@/public/animations/animationData.json";
 
 function ResultSearchSection({ keyword }) {
   const [isFilter, setFilter] = useState(false);
   const [isFoundJobs, setFoundJobs] = useState(true);
   const [allJobs, setAllJobs] = useState([]);
   const [IDJob, setIDJob] = useState(0);
+  const [error, setError] = useState(null);
 
   //Filter
   const [WorkplaceType, setWorkplaceType] = useState("");
@@ -24,22 +24,43 @@ function ResultSearchSection({ keyword }) {
 
   useEffect(() => {
     async function jobs() {
-      const params = new URLSearchParams({
-        keyword: keyword,
+      const parameter = {
+        keyword,
         location: Location,
         work_type: WorkWorkType,
         workplace_type: WorkplaceType,
         salary_min: SalaryMin,
         salary_max: SalaryMax,
         per_page: "30",
-      });
-      const response = await fetch(`/api/jobs?${params}`);
-      const data = await response.json();
-      setAllJobs(data.data);
+      };
+
+      let Url = "/jobs";
+      let isFirstParameter = true;
+      for (const [key, value] of Object.entries(parameter)) {
+        if (value !== "") {
+          if (isFirstParameter) {
+            Url += `?${key}=${value}`;
+            isFirstParameter = false;
+          } else {
+            Url += `&${key}=${value}`;
+          }
+        }
+      }
+
+      const ResultFetch = await ApiFetchClient(Url);
+      if (!ResultFetch.isSusses) {
+        setError(new Error(` ${ResultFetch.error} خطأ في جلب البيانات `));
+      }
+
+      setAllJobs(ResultFetch.dataResponse.data);
       setFoundJobs(false);
     }
     jobs();
   }, [keyword, WorkplaceType, WorkWorkType, Location, SalaryMin, SalaryMax]);
+
+  if (error) {
+    throw error;
+  }
 
   return (
     <div className="cusContaner  m-auto my-10 " dir="rtl">

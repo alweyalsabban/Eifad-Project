@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { ApiFetchClient } from "@/app/lib/ApiFetchClient";
 
 import { CgMail } from "react-icons/cg";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -24,7 +25,7 @@ function LogInPage() {
   });
 
   async function sendCode() {
-    await fetch("/api/auth/send-verification", {
+    await ApiFetchClient("/auth/send-verification", {
       method: "POST",
       body: JSON.stringify({ email: form.email }),
     });
@@ -48,29 +49,33 @@ function LogInPage() {
       setPasswordError(false);
       setLoading(true);
 
-      const response = await fetch("/api/auth/login", {
+      const response = await ApiFetchClient("/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      setLoading(false);
-      const data = await response.json();
 
-      if (data.requires_verification) {
+      setLoading(false);
+      /*       const data = await response.json();
+       */
+      if (
+        /* data.requires_verification */ response.dataResponse
+          .requires_verification
+      ) {
         sendCode();
         localStorage.clear();
         localStorage.setItem("pending_email", form.email);
         route.replace("/verify");
       }
-      if (!response.ok) {
+      if (/* !response.ok */ !response.isSusses) {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        setErrorMessage(data.message);
+        setErrorMessage(/* data.message */ response.dataResponse.message);
         setisError(true);
       } else {
         setisError(false);
         localStorage.clear();
         sessionStorage.clear();
-        SetCookies(data.data.token);
+        SetCookies(/* data.data.token */ response.dataResponse.data.token);
         route.replace("/dashBoard");
       }
     } else {
