@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 function setCookies(response: NextResponse, key: string, value: string) {
   response.cookies.set(key, value, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NEXT_PUBLIC_API_BASE_URL === "production",
     sameSite: "strict",
     path: "/",
     maxAge: 60 * 60,
