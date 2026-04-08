@@ -67,7 +67,7 @@ export default function SmSidebar({
               >
                 {j.icon}
               </span>
-              <span className="text-[10px] mt-1 whitespace-nowrap">
+              <span className="text-[10px] mt-1 text-center ">
                 {j.name || (j.id === 14 ? "خروج" : "")}
               </span>
             </Link>

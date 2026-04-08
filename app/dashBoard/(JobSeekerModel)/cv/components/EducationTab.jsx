@@ -1,19 +1,33 @@
 "use client";
 
 import React from "react";
-import { PlusIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-export default function EducationTab() {
-  const [form, setForm] = useState({
-    degree: "",
-    place: "",
-    graduationYear: "",
-  });
-
+export default function EducationTab({ objectEducation, setObjectEducation }) {
   const onAdd = () => {
-    // هنا تربطه مع إضافة عنصر جديد/قائمة تعليم
-    console.log("Add Education:", form);
+    setObjectEducation([
+      ...objectEducation,
+      {
+        DegreeName: "",
+        Institution: "",
+        Major: "",
+        GraduationYear: "",
+      },
+    ]);
+  };
+
+  const handleChange = (index, field, value) => {
+    const updatedEducation = [...objectEducation];
+    updatedEducation[index] = {
+      ...updatedEducation[index],
+      [field]: value,
+    };
+    setObjectEducation(updatedEducation);
+  };
+
+  const removeRow = (index) => {
+    const updated = objectEducation.filter((_, i) => i !== index);
+    setObjectEducation(updated);
   };
 
   return (
@@ -23,30 +37,56 @@ export default function EducationTab() {
       </h3>
 
       <div className="mt-5 space-y-4">
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <input
-            value={form.degree}
-            onChange={(e) => setForm({ ...form, degree: e.target.value })}
-            placeholder="الشهادة العلمية"
-            className="h-12 w-full rounded-xl border border-slate-200 px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        {objectEducation.map((item, index) => {
+          return (
+            <div
+              className="grid grid-cols-1 gap-3 sm:grid-cols-[30%_30%_15%_15%_5%]"
+              key={index}
+            >
+              <input
+                value={item.DegreeName || ""}
+                onChange={(e) =>
+                  handleChange(index, "DegreeName", e.target.value)
+                }
+                placeholder="الشهادة العلمية"
+                className="h-12 w-full rounded-xl border border-slate-200 px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
+              />
 
-          <input
-            value={form.place}
-            onChange={(e) => setForm({ ...form, place: e.target.value })}
-            placeholder="المكان التعليمي"
-            className="h-12 w-full rounded-xl border border-slate-200 px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
-          />
+              <input
+                value={item.Institution || ""}
+                onChange={(e) =>
+                  handleChange(index, "Institution", e.target.value)
+                }
+                placeholder="المكان التعليمي"
+                className="h-12 w-full rounded-xl border border-slate-200 px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                value={item.Major || ""}
+                onChange={(e) => handleChange(index, "Major", e.target.value)}
+                placeholder="التخصص"
+                className="h-12 w-full rounded-xl border border-slate-200 px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
+              />
 
-          <input
-            value={form.graduationYear}
-            onChange={(e) =>
-              setForm({ ...form, graduationYear: e.target.value })
-            }
-            placeholder="سنة التخرج"
-            className="h-12 w-full rounded-xl border border-slate-200 px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+              <input
+                value={item.GraduationYear || ""}
+                onChange={(e) =>
+                  handleChange(index, "GraduationYear", e.target.value)
+                }
+                placeholder="سنة التخرج"
+                className="h-12 w-full rounded-xl border border-slate-200 px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                type="button"
+                onClick={() => removeRow(index)}
+                className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600"
+                aria-label="حذف"
+                title="حذف"
+              >
+                <TrashIcon className="h-5 w-5" />
+              </button>
+            </div>
+          );
+        })}
 
         <button
           type="button"

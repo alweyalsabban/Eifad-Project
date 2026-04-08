@@ -1,4 +1,6 @@
 import { NamePageProvider } from "./dashBoard/(JobSeekerModel)/context/NamePageContext";
+import { PersentProfileProvider } from "./dashBoard/(JobSeekerModel)/context/PersentProfileContext";
+
 import "./globals.css";
 
 export const metadata = {
@@ -17,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NamePageProvider>{children}</NamePageProvider>
+        <PersentProfileProvider>
+          <NamePageProvider>{children}</NamePageProvider>
+        </PersentProfileProvider>
       </body>
     </html>
   );

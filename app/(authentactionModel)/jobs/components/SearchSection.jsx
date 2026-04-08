@@ -15,15 +15,18 @@ function SearchSection({ setkeyword }) {
     <div className="bg-linear-to-r from-sky-50 via-white to-sky-50 h-75 ">
       <div className="cusContaner m-auto flex flex-col pt-10  items-center">
         <div className="text-center flex flex-col gap-5">
-          <h1 className="text-2xl font-bold">استكشف الوظائف المناسبة لك</h1>
-          <h2>
+          <h1 className="text-2xl font-bold animate-fade-up">
+            استكشف الوظائف المناسبة لك
+          </h1>
+          <h2 className="animate-fade-up" style={{ animationDelay: "0.2s" }}>
             إبحث عن الوظيفة التي تريدها و أعرف تفاصيلها و بإمكانك أن تسخدم
             الفلترة
           </h2>
           <div
             className="bg-secondColorBlack rounded-2xl w-s md:w-md duration-300 xl:w-4xl h-[65] flex items-center 
-          justify-between text-auxiliaryColorWhite"
+          justify-between text-auxiliaryColorWhite animate-fade-up"
             dir="rtl"
+            style={{ animationDelay: "0.3s" }}
           >
             <input
               type="text"

@@ -15,6 +15,10 @@ import { GoShieldCheck } from "react-icons/go";
 
 import { MdOutlineMarkunreadMailbox } from "react-icons/md";
 
+import { FiGrid, FiUsers } from "react-icons/fi";
+import { LiaCertificateSolid } from "react-icons/lia";
+import { FiBriefcase } from "react-icons/fi";
+
 export const JobseekerSideBar = (number) => [
   {
     id: 1,
@@ -235,12 +239,89 @@ export const AdminSideBar = (number) => [
     id: 1,
     name: "لوحة التحكم",
     icon: (
-      <RiHome3Line
+      <FiGrid
         size={20}
         className={`iconSildeBarStyle ${number === 1 && "text-[#155DFC]!"}`}
       />
     ),
-    href: "/dashBoard/panale",
+    href: "/dashBoard/controll",
+  },
+  {
+    id: 2,
+    name: "إدارة المستخدمين",
+    icon: (
+      <FiUsers
+        size={20}
+        className={`iconSildeBarStyle ${number === 2 && "text-[#155DFC]!"}`}
+      />
+    ),
+    href: "/dashBoard/User-Management",
+  },
+  {
+    id: 3,
+    name: "التحقق من الشركات",
+    icon: (
+      <LuBuilding2
+        size={20}
+        className={`iconSildeBarStyle ${number === 3 && "text-[#155DFC]!"}`}
+      />
+    ),
+    href: "/dashBoard/Company-verification",
+  },
+  {
+    id: 4,
+    name: "التحقق من الشهادات",
+    icon: (
+      <LiaCertificateSolid
+        size={25}
+        className={`iconSildeBarStyle ${number === 4 && "text-[#155DFC]!"}`}
+      />
+    ),
+    href: "/dashBoard/Certificate-verification",
+  },
+  {
+    id: 5,
+    name: "إدارة الإعلانات الوظيفية",
+    icon: (
+      <FiBriefcase
+        size={20}
+        className={`iconSildeBarStyle ${number === 5 && "text-[#155DFC]!"}`}
+      />
+    ),
+    href: "/dashBoard/Job-posting-management",
+  },
+  {
+    id: 6,
+    name: "مراقبة التطبيقات",
+    icon: (
+      <FiFileText
+        size={20}
+        className={`iconSildeBarStyle ${number === 6 && "text-[#155DFC]!"}`}
+      />
+    ),
+    href: "/dashBoard/App-monitoring",
+  },
+  {
+    id: 7,
+    name: "التقارير و التحليلات",
+    icon: (
+      <AiOutlineBarChart
+        size={23}
+        className={`iconSildeBarStyle ${number === 7 && "text-[#155DFC]!"}`}
+      />
+    ),
+    href: "/dashBoard/Reports-analyses",
+  },
+  {
+    id: 8,
+    name: "صندوق الدعم",
+    icon: (
+      <BiMessage
+        size={20}
+        className={`iconSildeBarStyle ${number === 8 && "text-[#155DFC]!"}`}
+      />
+    ),
+    href: "/dashBoard/Support-Fund",
   },
 ];
 

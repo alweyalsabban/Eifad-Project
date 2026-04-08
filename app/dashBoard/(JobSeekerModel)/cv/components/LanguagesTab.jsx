@@ -1,37 +1,64 @@
 "use client";
 
-import React, { useState } from "react";
+import { useEffect } from "react";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const LEVELS = [
-  { value: "beginner", label: "Beginner" },
+  { value: "Beginner", label: "Beginner" },
   { value: "intermediate", label: "Intermediate" },
   { value: "advanced", label: "Advanced" },
-  { value: "expert", label: "Expert" },
+  { value: "Native", label: "Native" },
 ];
 
-export default function LanguagesTab() {
-  const [rows, setRows] = useState([
-    { id: 1, language: "English", level: "expert" },
-    { id: 2, language: "Arabic", level: "expert" },
-  ]);
-
-  const updateRow = (id, key, value) => {
-    setRows((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, [key]: value } : r)),
-    );
+export default function LanguagesTab({
+  objectLanguage,
+  setObjectLanguage,
+  CVID,
+}) {
+  const handleLanguageNameChange = (index, value) => {
+    const updated = [...objectLanguage];
+    updated[index] = {
+      ...updated[index],
+      language: {
+        ...updated[index].language,
+        LanguageName: value,
+      },
+    };
+    setObjectLanguage(updated);
+  };
+  const handleLevelChange = (index, value) => {
+    const updated = [...objectLanguage];
+    updated[index] = {
+      ...updated[index],
+      LanguageLevel: value,
+    };
+    setObjectLanguage(updated);
   };
 
   const addRow = () => {
-    setRows((prev) => [
-      ...prev,
-      { id: Date.now(), language: "", level: "expert" },
+    setObjectLanguage([
+      ...objectLanguage,
+      {
+        CVID: CVID,
+        CVLanguageID: Date.now(),
+        LanguageID: null,
+        LanguageLevel: "Beginner",
+        language: {
+          LanguageID: null,
+          LanguageName: "",
+        },
+      },
     ]);
   };
 
-  const removeRow = (id) => {
-    setRows((prev) => prev.filter((r) => r.id !== id));
+  const removeRow = (index) => {
+    const updated = objectLanguage.filter((_, i) => i !== index);
+    setObjectLanguage(updated);
   };
+
+  useEffect(() => {
+    console.log("objectLanguage:", objectLanguage);
+  }, [objectLanguage]);
 
   return (
     <section className="w-full rounded-2xl border border-secondGray bg-auxiliaryColorWhite p-6 mt-5">
@@ -40,49 +67,47 @@ export default function LanguagesTab() {
       </h3>
 
       <div className="mt-5 space-y-4">
-        <div className="rounded-2xl border border-secondGray p-4">
-          <div className="space-y-4">
-            {rows.map((row) => (
-              <div
-                key={row.id}
-                className="grid grid-cols-[1fr_140px_28px] items-center gap-3"
+        <div className="space-y-4">
+          {objectLanguage.map((item, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-[1fr_140px_28px] items-center gap-3"
+            >
+              {/* Input اللغة */}
+              <input
+                value={item.language?.LanguageName || ""}
+                onChange={(e) =>
+                  handleLanguageNameChange(index, e.target.value)
+                }
+                placeholder="أضف لغة"
+                className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
+              />
+
+              {/* Dropdown المستوى */}
+              <select
+                value={item.LanguageLevel || ""}
+                onChange={(e) => handleLevelChange(index, e.target.value)}
+                className="h-12 w-full rounded-xl border border-secondGray bg-white px-3 text-center outline-none focus:ring-2 focus:ring-blue-500"
               >
-                {/* Input اللغة */}
-                <input
-                  value={row.language}
-                  onChange={(e) =>
-                    updateRow(row.id, "language", e.target.value)
-                  }
-                  placeholder="أضف لغة"
-                  className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                {LEVELS.map((l) => (
+                  <option key={l.value} value={l.value}>
+                    {l.label}
+                  </option>
+                ))}
+              </select>
 
-                {/* Dropdown المستوى */}
-                <select
-                  value={row.level}
-                  onChange={(e) => updateRow(row.id, "level", e.target.value)}
-                  className="h-12 w-full rounded-xl border border-secondGray bg-white px-3 text-center outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {LEVELS.map((l) => (
-                    <option key={l.value} value={l.value}>
-                      {l.label}
-                    </option>
-                  ))}
-                </select>
-
-                {/* حذف */}
-                <button
-                  type="button"
-                  onClick={() => removeRow(row.id)}
-                  className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600"
-                  aria-label="حذف"
-                  title="حذف"
-                >
-                  <TrashIcon className="h-5 w-5" />
-                </button>
-              </div>
-            ))}
-          </div>
+              {/* حذف */}
+              <button
+                type="button"
+                onClick={() => removeRow(index)}
+                className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600"
+                aria-label="حذف"
+                title="حذف"
+              >
+                <TrashIcon className="h-5 w-5" />
+              </button>
+            </div>
+          ))}
         </div>
 
         {/* زر الإضافة */}

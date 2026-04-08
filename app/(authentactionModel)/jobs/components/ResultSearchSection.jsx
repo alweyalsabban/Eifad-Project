@@ -64,7 +64,7 @@ function ResultSearchSection({ keyword }) {
 
   return (
     <div className="cusContaner  m-auto my-10 " dir="rtl">
-      <div>
+      <div className="animate-fade-up">
         <button
           className={`border border-secondColorBlack px-3 py-2 rounded-xl hover:cursor-pointer ${isFilter && "bg-blue-100"} hover:bg-blue-100`}
           onClick={() => {

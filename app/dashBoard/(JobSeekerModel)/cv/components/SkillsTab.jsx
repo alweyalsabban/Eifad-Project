@@ -1,38 +1,59 @@
 "use client";
-
-import { useState } from "react";
+import { useEffect } from "react";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const LEVELS = [
-  { value: "beginner", label: "Beginner" },
-  { value: "intermediate", label: "Intermediate" },
-  { value: "advanced", label: "Advanced" },
-  { value: "expert", label: "Expert" },
+  { value: "Beginner", label: "Beginner" },
+  { value: "Intermediate", label: "Intermediate" },
+  { value: "Advanced", label: "Advanced" },
+  { value: "Expert", label: "Expert" },
 ];
 
-export default function SkillsTab() {
-  const [rows, setRows] = useState([
-    { id: 1, skill: "React", level: "expert" },
-    { id: 2, skill: "Node.js", level: "expert" },
-    { id: 3, skill: "TypeScript", level: "expert" },
-    { id: 4, skill: "AWS", level: "expert" },
-  ]);
+export default function SkillsTab({ objectSkills, setObjectSkills, CVID }) {
+  useEffect(() => {
+    console.log("objectSkills updated:", objectSkills);
+  }, [objectSkills]);
+  const handleSkillNameChange = (index, value) => {
+    const updated = [...objectSkills];
+    updated[index] = {
+      ...updated[index],
+      skill: {
+        ...updated[index].skill,
+        SkillName: value,
+      },
+    };
+    setObjectSkills(updated);
+  };
 
-  const updateRow = (id, key, value) => {
-    setRows((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, [key]: value } : r)),
-    );
+  const handleLevelChange = (index, value) => {
+    const updated = [...objectSkills];
+    updated[index] = {
+      ...updated[index],
+      SkillLevel: value,
+    };
+    setObjectSkills(updated);
   };
 
   const addRow = () => {
-    setRows((prev) => [
-      ...prev,
-      { id: Date.now(), skill: "", level: "expert" },
+    setObjectSkills([
+      ...objectSkills,
+      {
+        CVID: CVID,
+        CVSkillID: Date.now(),
+        SkillID: null,
+        SkillLevel: "Beginner",
+        skill: {
+          CategoryID: null,
+          SkillID: null,
+          SkillName: "",
+        },
+      },
     ]);
   };
 
-  const removeRow = (id) => {
-    setRows((prev) => prev.filter((r) => r.id !== id));
+  const removeRow = (index) => {
+    const updated = objectSkills.filter((_, i) => i !== index);
+    setObjectSkills(updated);
   };
 
   return (
@@ -42,50 +63,41 @@ export default function SkillsTab() {
       </h3>
 
       <div className="mt-5 space-y-4">
-        <div className="rounded-2xl border border-secondGray p-4">
-          <div className="space-y-4">
-            {rows.map((row) => (
-              <div
-                key={row.id}
-                className="grid grid-cols-[1fr_140px_28px] items-center gap-3"
+        {objectSkills.map((item, index) => (
+          <div className="space-y-4" key={index}>
+            <div className="grid grid-cols-[1fr_140px_28px] items-center gap-3">
+              <input
+                value={item.skill?.SkillName || ""}
+                onChange={(e) => handleSkillNameChange(index, e.target.value)}
+                placeholder="أضف مهارة"
+                className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
+              />
+
+              <select
+                value={item.SkillLevel || ""}
+                onChange={(e) => handleLevelChange(index, e.target.value)}
+                className="h-12 w-full rounded-xl border border-secondGray bg-white px-3 text-center outline-none focus:ring-2 focus:ring-blue-500"
               >
-                {/* Input المهارة */}
-                <input
-                  value={row.skill}
-                  onChange={(e) => updateRow(row.id, "skill", e.target.value)}
-                  placeholder="أضف مهارة"
-                  className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                {LEVELS.map((l) => (
+                  <option key={l.value} value={l.value}>
+                    {l.label}
+                  </option>
+                ))}
+              </select>
 
-                {/* Dropdown المستوى */}
-                <select
-                  value={row.level}
-                  onChange={(e) => updateRow(row.id, "level", e.target.value)}
-                  className="h-12 w-full rounded-xl border border-secondGray bg-white px-3 text-center outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {LEVELS.map((l) => (
-                    <option key={l.value} value={l.value}>
-                      {l.label}
-                    </option>
-                  ))}
-                </select>
-
-                {/* حذف */}
-                <button
-                  type="button"
-                  onClick={() => removeRow(row.id)}
-                  className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600"
-                  aria-label="حذف"
-                  title="حذف"
-                >
-                  <TrashIcon className="h-5 w-5" />
-                </button>
-              </div>
-            ))}
+              <button
+                type="button"
+                onClick={() => removeRow(index)}
+                className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600"
+                aria-label="حذف"
+                title="حذف"
+              >
+                <TrashIcon className="h-5 w-5" />
+              </button>
+            </div>
           </div>
-        </div>
+        ))}
 
-        {/* زر الإضافة */}
         <button
           type="button"
           onClick={addRow}
