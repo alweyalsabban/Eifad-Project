@@ -9,10 +9,17 @@ const LEVELS = [
   { value: "Expert", label: "Expert" },
 ];
 
-export default function SkillsTab({ objectSkills, setObjectSkills, CVID }) {
+export default function SkillsTab({
+  objectSkills,
+  setObjectSkills,
+  CVID,
+  AllSkills,
+}) {
   useEffect(() => {
     console.log("objectSkills updated:", objectSkills);
-  }, [objectSkills]);
+    console.log(AllSkills);
+  }, [objectSkills, AllSkills]);
+
   const handleSkillNameChange = (index, value) => {
     const updated = [...objectSkills];
     updated[index] = {
@@ -57,46 +64,63 @@ export default function SkillsTab({ objectSkills, setObjectSkills, CVID }) {
   };
 
   return (
-    <section className="w-full rounded-2xl border border-secondGray bg-auxiliaryColorWhite p-6 mt-5">
+    <section className="mt-5 w-full rounded-2xl border border-secondGray bg-auxiliaryColorWhite p-6">
       <h3 className="text-right text-lg font-semibold text-slate-900">
         المهارات
       </h3>
 
       <div className="mt-5 space-y-4">
-        {objectSkills.map((item, index) => (
-          <div className="space-y-4" key={index}>
-            <div className="grid grid-cols-[1fr_140px_28px] items-center gap-3">
-              <input
-                value={item.skill?.SkillName || ""}
-                onChange={(e) => handleSkillNameChange(index, e.target.value)}
-                placeholder="أضف مهارة"
-                className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
-              />
+        {objectSkills.map((item, index) => {
+          const currentValue = item.skill?.SkillName || "";
 
-              <select
-                value={item.SkillLevel || ""}
-                onChange={(e) => handleLevelChange(index, e.target.value)}
-                className="h-12 w-full rounded-xl border border-secondGray bg-white px-3 text-center outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {LEVELS.map((l) => (
-                  <option key={l.value} value={l.value}>
-                    {l.label}
-                  </option>
-                ))}
-              </select>
+          const filteredSkills = AllSkills.filter((skill) =>
+            skill.SkillName.toLowerCase().includes(currentValue.toLowerCase()),
+          ).slice(0, 4);
 
-              <button
-                type="button"
-                onClick={() => removeRow(index)}
-                className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600"
-                aria-label="حذف"
-                title="حذف"
-              >
-                <TrashIcon className="h-5 w-5" />
-              </button>
+          const datalistId = `skills-list-${index}`;
+
+          return (
+            <div className="space-y-4" key={index}>
+              <div className="grid grid-cols-[1fr_140px_28px] items-center gap-3">
+                <input
+                  value={currentValue}
+                  list={datalistId}
+                  onChange={(e) => handleSkillNameChange(index, e.target.value)}
+                  placeholder="أضف مهارة"
+                  className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                <datalist id={datalistId}>
+                  {filteredSkills.map((skill, i) => (
+                    <option value={skill.SkillName} key={i} />
+                  ))}
+                </datalist>
+
+                <select
+                  value={item.SkillLevel || ""}
+                  onChange={(e) => handleLevelChange(index, e.target.value)}
+                  className="h-12 w-full rounded-xl border border-secondGray bg-white px-3 text-center outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {LEVELS.map((l) => (
+                    <option key={l.value} value={l.value}>
+                      {l.label}
+                    </option>
+                  ))}
+                </select>
+
+                <button
+                  type="button"
+                  onClick={() => removeRow(index)}
+                  className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600"
+                  aria-label="حذف"
+                  title="حذف"
+                >
+                  <TrashIcon className="h-5 w-5" />
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         <button
           type="button"

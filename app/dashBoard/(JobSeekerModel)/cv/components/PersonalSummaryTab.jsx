@@ -1,4 +1,10 @@
-function PersonalSummaryTab({ summary, setSummary, title, setTitle }) {
+function PersonalSummaryTab({
+  summary,
+  setSummary,
+  title,
+  setTitle,
+  MessageError,
+}) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5 mt-5">
       <h3 className="text-right text-base font-semibold text-slate-900">
@@ -8,8 +14,12 @@ function PersonalSummaryTab({ summary, setSummary, title, setTitle }) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="اكتب عنوانك الوظيفي "
-        className="mt-3 mb-5 w-full resize-none rounded-2xl border border-slate-200 p-4 text-right text-slate-900 outline-none focus:ring-2 focus:ring-blue-500"
+        className="mt-3 mb-2 w-full resize-none rounded-2xl border border-slate-200 p-4 text-right text-slate-900 outline-none focus:ring-2 focus:ring-blue-500"
       />
+
+      <h1 className="mb-5 mr-3 font-bold text-red-600 text-[10px]">
+        {MessageError !== "" && MessageError}
+      </h1>
       <h3 className="text-right text-base font-semibold text-slate-900">
         الملخص الشخصي
       </h3>

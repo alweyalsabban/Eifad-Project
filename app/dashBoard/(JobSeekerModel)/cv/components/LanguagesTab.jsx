@@ -14,6 +14,7 @@ export default function LanguagesTab({
   objectLanguage,
   setObjectLanguage,
   CVID,
+  GetLanguages,
 }) {
   const handleLanguageNameChange = (index, value) => {
     const updated = [...objectLanguage];
@@ -26,6 +27,7 @@ export default function LanguagesTab({
     };
     setObjectLanguage(updated);
   };
+
   const handleLevelChange = (index, value) => {
     const updated = [...objectLanguage];
     updated[index] = {
@@ -58,59 +60,75 @@ export default function LanguagesTab({
 
   useEffect(() => {
     console.log("objectLanguage:", objectLanguage);
-  }, [objectLanguage]);
+    console.log("GetLanguages:", GetLanguages);
+  }, [objectLanguage, GetLanguages]);
 
   return (
-    <section className="w-full rounded-2xl border border-secondGray bg-auxiliaryColorWhite p-6 mt-5">
+    <section className="mt-5 w-full rounded-2xl border border-secondGray bg-auxiliaryColorWhite p-6">
       <h3 className="text-right text-lg font-semibold text-slate-900">
         اللغات
       </h3>
 
       <div className="mt-5 space-y-4">
         <div className="space-y-4">
-          {objectLanguage.map((item, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-[1fr_140px_28px] items-center gap-3"
-            >
-              {/* Input اللغة */}
-              <input
-                value={item.language?.LanguageName || ""}
-                onChange={(e) =>
-                  handleLanguageNameChange(index, e.target.value)
-                }
-                placeholder="أضف لغة"
-                className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
-              />
+          {objectLanguage.map((item, index) => {
+            const currentValue = item.language?.LanguageName || "";
 
-              {/* Dropdown المستوى */}
-              <select
-                value={item.LanguageLevel || ""}
-                onChange={(e) => handleLevelChange(index, e.target.value)}
-                className="h-12 w-full rounded-xl border border-secondGray bg-white px-3 text-center outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {LEVELS.map((l) => (
-                  <option key={l.value} value={l.value}>
-                    {l.label}
-                  </option>
-                ))}
-              </select>
+            const filteredLanguages = GetLanguages.filter((lang) =>
+              lang.LanguageName.toLowerCase().includes(
+                currentValue.toLowerCase(),
+              ),
+            ).slice(0, 4);
 
-              {/* حذف */}
-              <button
-                type="button"
-                onClick={() => removeRow(index)}
-                className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600"
-                aria-label="حذف"
-                title="حذف"
+            const datalistId = `languages-list-${index}`;
+
+            return (
+              <div
+                key={index}
+                className="grid grid-cols-[1fr_140px_28px] items-center gap-3"
               >
-                <TrashIcon className="h-5 w-5" />
-              </button>
-            </div>
-          ))}
+                <input
+                  value={currentValue}
+                  list={datalistId}
+                  onChange={(e) =>
+                    handleLanguageNameChange(index, e.target.value)
+                  }
+                  placeholder="أضف لغة"
+                  className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                <datalist id={datalistId}>
+                  {filteredLanguages.map((lang, i) => (
+                    <option value={lang.LanguageName} key={i} />
+                  ))}
+                </datalist>
+
+                <select
+                  value={item.LanguageLevel || ""}
+                  onChange={(e) => handleLevelChange(index, e.target.value)}
+                  className="h-12 w-full rounded-xl border border-secondGray bg-white px-3 text-center outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {LEVELS.map((l) => (
+                    <option key={l.value} value={l.value}>
+                      {l.label}
+                    </option>
+                  ))}
+                </select>
+
+                <button
+                  type="button"
+                  onClick={() => removeRow(index)}
+                  className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600"
+                  aria-label="حذف"
+                  title="حذف"
+                >
+                  <TrashIcon className="h-5 w-5" />
+                </button>
+              </div>
+            );
+          })}
         </div>
 
-        {/* زر الإضافة */}
         <button
           type="button"
           onClick={addRow}

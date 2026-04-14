@@ -1,9 +1,13 @@
 "use client";
 
-import React from "react";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-export default function EducationTab({ objectEducation, setObjectEducation }) {
+export default function EducationTab({
+  objectEducation,
+  setObjectEducation,
+  DeletedField,
+  setDeletedField,
+}) {
   const onAdd = () => {
     setObjectEducation([
       ...objectEducation,
@@ -26,6 +30,9 @@ export default function EducationTab({ objectEducation, setObjectEducation }) {
   };
 
   const removeRow = (index) => {
+    const Deleted = objectEducation.filter((_, i) => i === index);
+    setDeletedField((prev) => [...prev, ...Deleted]);
+
     const updated = objectEducation.filter((_, i) => i !== index);
     setObjectEducation(updated);
   };

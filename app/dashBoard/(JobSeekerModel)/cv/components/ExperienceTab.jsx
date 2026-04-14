@@ -3,7 +3,12 @@
 import React from "react";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-export default function ExperienceTab({ objectexperience, setexperience }) {
+export default function ExperienceTab({
+  objectexperience,
+  setexperience,
+  DeletedExperienceField,
+  setDeletedExperienceField,
+}) {
   const handleChange = (index, field, value) => {
     const updatedEducation = [...objectexperience];
     updatedEducation[index] = {
@@ -34,6 +39,9 @@ export default function ExperienceTab({ objectexperience, setexperience }) {
   };
 
   const removeRow = (index) => {
+    const Deleted = objectexperience.filter((_, i) => i === index);
+    setDeletedExperienceField((prev) => [...prev, ...Deleted]);
+
     const updated = objectexperience.filter((_, i) => i !== index);
     setexperience(updated);
   };

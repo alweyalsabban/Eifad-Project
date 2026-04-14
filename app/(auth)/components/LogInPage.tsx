@@ -54,8 +54,6 @@ function LogInPage() {
         body: JSON.stringify(form),
       });
 
-      setLoading(false);
-
       if (response.dataResponse.requires_verification) {
         sendCode();
         localStorage.clear();
@@ -87,6 +85,7 @@ function LogInPage() {
       // البريد
       setEmailError(true);
     }
+    setLoading(false);
   }
 
   return (

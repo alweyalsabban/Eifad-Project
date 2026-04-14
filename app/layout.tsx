@@ -1,5 +1,6 @@
 import { NamePageProvider } from "./dashBoard/(JobSeekerModel)/context/NamePageContext";
 import { PersentProfileProvider } from "./dashBoard/(JobSeekerModel)/context/PersentProfileContext";
+import { ToastContainer } from "react-toastify";
 
 import "./globals.css";
 
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <ToastContainer />
         <PersentProfileProvider>
           <NamePageProvider>{children}</NamePageProvider>
         </PersentProfileProvider>
