@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MessageSquareText, X, CheckCircle2 } from "lucide-react";
 import type { Ticket } from "../types";
 
@@ -29,15 +29,13 @@ export default function TicketDetailsModal({
 }: Props) {
   const [reply, setReply] = useState("");
 
-  useEffect(() => {
-    setReply("");
-  }, [ticket]);
-
   if (!open || !ticket) return null;
+
+  const ticketId = ticket.id;
 
   function handleSendReply() {
     if (!reply.trim()) return;
-    onReply(ticket.id, reply);
+    onReply(ticketId, reply);
     setReply("");
   }
 
@@ -64,7 +62,7 @@ export default function TicketDetailsModal({
           <div className="flex items-center gap-2">
             <MessageSquareText size={18} />
             <h2 className="text-2xl font-bold text-slate-900">
-              Support Ticket #{ticket.id}
+              Support Ticket #{ticketId}
             </h2>
           </div>
         </div>
@@ -135,7 +133,7 @@ export default function TicketDetailsModal({
 
           <button
             type="button"
-            onClick={() => onEscalate(ticket.id)}
+            onClick={() => onEscalate(ticketId)}
             className="rounded-xl border border-slate-200 px-4 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-50"
           >
             تصعيد
@@ -143,7 +141,7 @@ export default function TicketDetailsModal({
 
           <button
             type="button"
-            onClick={() => onResolve(ticket.id)}
+            onClick={() => onResolve(ticketId)}
             className="flex items-center justify-center gap-2 rounded-xl border border-emerald-200 px-4 py-3 text-base font-semibold text-emerald-600 transition hover:bg-emerald-50"
           >
             <CheckCircle2 size={18} />
