@@ -56,3 +56,38 @@ export interface QuickActionsProps {
   heading?: string;
   actions: QuickActionItem[];
 }
+
+export type CertificateDecision = "pending" | "accepted" | "rejected";
+export type CertificateStatus = "موثق" | "قيد الانتظار";
+
+export type CertificateItem = {
+  id: number;
+  user: string;
+  name: string;
+  provider: string;
+  date: string;
+  status: CertificateStatus;
+  score: number;
+  certificateId?: string;
+};
+
+export type JobStatus =
+  | "نشط"
+  | "قيد الانتظار"
+  | "مغلقة"
+  | "مبلغ عنها"
+  | "محذوفة";
+
+export type JobItem = {
+  id: number;
+  title: string;
+  company: string;
+  publishDate: string;
+  status: JobStatus;
+  applicantsCount: number;
+  employmentType: string;
+  salaryRange: string;
+  location: string;
+  description: string;
+  requirements: string[];
+};

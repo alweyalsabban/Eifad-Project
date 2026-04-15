@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 function ControllPage() {
   return (
     <div className="mb-50">
-      <TitlePage />
+      <TitlePage title="لوحة التحكم" number={1} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 w-[98%] justify-between m-auto mt-5">
         {InfoCardData.map((item) => {
           return (
