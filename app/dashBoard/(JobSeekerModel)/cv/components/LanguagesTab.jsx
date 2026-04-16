@@ -5,26 +5,45 @@ import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const LEVELS = [
   { value: "Beginner", label: "Beginner" },
-  { value: "intermediate", label: "Intermediate" },
-  { value: "advanced", label: "Advanced" },
+  { value: "Intermediate", label: "Intermediate" },
+  { value: "Advanced", label: "Advanced" },
   { value: "Native", label: "Native" },
 ];
 
 export default function LanguagesTab({
   objectLanguage,
   setObjectLanguage,
+  DeletedLanguageField,
+  setDeletedLanguageField,
   CVID,
   GetLanguages,
 }) {
   const handleLanguageNameChange = (index, value) => {
+    const found = GetLanguages.find((item) => value === item.LanguageName);
     const updated = [...objectLanguage];
-    updated[index] = {
-      ...updated[index],
-      language: {
-        ...updated[index].language,
-        LanguageName: value,
-      },
-    };
+
+    if (found) {
+      updated[index] = {
+        ...updated[index],
+        LanguageID: found.LanguageID,
+        language: {
+          ...updated[index].language,
+          LanguageID: found.LanguageID,
+          LanguageName: found.LanguageName,
+        },
+      };
+    } else {
+      updated[index] = {
+        ...updated[index],
+        LanguageID: null,
+        language: {
+          ...updated[index].language,
+          LanguageID: null,
+          LanguageName: value,
+        },
+      };
+    }
+
     setObjectLanguage(updated);
   };
 
@@ -54,6 +73,12 @@ export default function LanguagesTab({
   };
 
   const removeRow = (index) => {
+    const item = objectLanguage[index];
+
+    if (item?.LanguageID) {
+      setDeletedLanguageField([...DeletedLanguageField, item]);
+    }
+
     const updated = objectLanguage.filter((_, i) => i !== index);
     setObjectLanguage(updated);
   };

@@ -10,16 +10,26 @@ export default function ExperienceTab({
   setDeletedExperienceField,
 }) {
   const handleChange = (index, field, value) => {
-    const updatedEducation = [...objectexperience];
-    updatedEducation[index] = {
-      ...updatedEducation[index],
+    const updatedExperience = [...objectexperience];
+    updatedExperience[index] = {
+      ...updatedExperience[index],
       [field]: value,
     };
-    setexperience(updatedEducation);
+    setexperience(updatedExperience);
+  };
+
+  const handleCurrentWorkChange = (index, checked) => {
+    const updatedExperience = [...objectexperience];
+    updatedExperience[index] = {
+      ...updatedExperience[index],
+      IsCurrent: checked,
+      EndDate: checked ? "حالياً" : "",
+    };
+    setexperience(updatedExperience);
   };
 
   const formatMonthValue = (date) => {
-    if (!date) return "";
+    if (!date || date === "حالياً") return "";
     const d = new Date(date);
     if (isNaN(d.getTime())) return "";
     return d.toISOString().slice(0, 7);
@@ -34,6 +44,7 @@ export default function ExperienceTab({
         StartDate: "",
         EndDate: "",
         Responsibilities: "",
+        IsCurrent: false,
       },
     ]);
   };
@@ -56,7 +67,7 @@ export default function ExperienceTab({
         {objectexperience.map((item, index) => {
           return (
             <div
-              className="rounded-2xl border border-secondGray  p-4"
+              className="rounded-2xl border border-secondGray p-4"
               key={index}
             >
               <div className="mb-3 flex justify-end">
@@ -70,32 +81,44 @@ export default function ExperienceTab({
                   <TrashIcon className="h-5 w-5" />
                 </button>
               </div>
+
               <input
                 value={item.JobTitle}
                 onChange={(e) =>
                   handleChange(index, "JobTitle", e.target.value)
                 }
                 placeholder="المسمى الوظيفي"
-                className="h-12 w-full rounded-xl border border-secondGray  px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
+                className="h-12 w-full rounded-xl border border-secondGray px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
               />
 
-              <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-[160px_100px_1fr]">
+              <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-[20%_20%_auto]">
                 <input
+                  type="month"
                   value={formatMonthValue(item.StartDate)}
                   onChange={(e) =>
                     handleChange(index, "StartDate", e.target.value)
                   }
                   placeholder="من"
-                  className="h-12 w-full rounded-xl border border-secondGray  px-4 text-center outline-none focus:ring-2 focus:ring-blue-500"
+                  className="h-12 w-full rounded-xl border border-secondGray px-4 text-center outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <input
-                  value={formatMonthValue(item.EndDate)}
-                  onChange={(e) =>
-                    handleChange(index, "EndDate", e.target.value)
-                  }
-                  placeholder="إلى"
-                  className="h-12 w-full rounded-xl border border-secondGray  px-4 text-center outline-none focus:ring-2 focus:ring-blue-500"
-                />
+
+                {item.IsCurrent ? (
+                  <input
+                    value="حالياً"
+                    disabled
+                    className="h-12 w-full rounded-xl border border-secondGray bg-slate-100 px-4 text-center text-slate-500 outline-none"
+                  />
+                ) : (
+                  <input
+                    type="month"
+                    value={formatMonthValue(item.EndDate)}
+                    onChange={(e) =>
+                      handleChange(index, "EndDate", e.target.value)
+                    }
+                    placeholder="إلى"
+                    className="h-12 w-full rounded-xl border border-secondGray px-4 text-center outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                )}
 
                 <input
                   value={item.CompanyName}
@@ -106,6 +129,18 @@ export default function ExperienceTab({
                   className="h-12 w-full rounded-xl border border-secondGray px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
+
+              <label className="mt-3 flex items-center justify-end gap-2 text-sm text-slate-700">
+                <span>أعمل حالياً فيه</span>
+                <input
+                  type="checkbox"
+                  checked={item.IsCurrent || false}
+                  onChange={(e) =>
+                    handleCurrentWorkChange(index, e.target.checked)
+                  }
+                  className="h-4 w-4"
+                />
+              </label>
 
               <textarea
                 value={item.Responsibilities}

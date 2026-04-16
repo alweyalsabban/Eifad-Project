@@ -6,6 +6,7 @@ import CompanyCard from "./components/CompanyCard";
 function SearchPages() {
   const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
   const [active, setActive] = useState("search");
+  const [AllPageFollow, setAllPageFollow] = useState([]);
 
   useEffect(() => {
     setnameOfSideBar("الصفحات");

@@ -48,7 +48,7 @@ function DeatilJob() {
             year: "numeric",
           })
         }
-        applicants={"غير موجود"}
+        applicants={JobDetials?.applications_count}
         salaryFrom={JobDetials?.SalaryMin}
         salaryTo={JobDetials?.SalaryMax}
         currency={JobDetials?.Currency}

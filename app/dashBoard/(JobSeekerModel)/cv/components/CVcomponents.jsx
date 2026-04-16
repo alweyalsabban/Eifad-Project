@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CvTab from "../components/CvTab";
 import dynamic from "next/dynamic";
 import { UpdateCv } from "../../callFunctionsForJobseeker";
-
+import { toast } from "react-toastify";
+import ResumePage from "./CVPDF";
 const PersonalSummaryTab = dynamic(
   () => import("../components/PersonalSummaryTab"),
 );
@@ -20,13 +21,13 @@ const SkillsTab = dynamic(() => import("../components/SkillsTab"));
 const LanguagesTab = dynamic(() => import("../components/LanguagesTab"));
 const CertificatesTab = dynamic(() => import("../components/CertificatesTab"));
 
-function CVcomponents({ CVInfo, AllSkills, GetLanguages }) {
+function CVcomponents({ CVInfo, AllSkills, GetLanguages, CategoryIdSkills }) {
+  const [showPreview, setShowPreview] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [MessageError, setMessageError] = useState("");
   const [summary, setSummary] = useState(CVInfo?.PersonalSummary ?? "");
   const [title, setTitle] = useState(CVInfo?.Title ?? "");
   const [objectEducation, setObjectEducation] = useState(
-    CVInfo?.education ?? "",
+    CVInfo?.education ?? [],
   );
   const [DeletedField, setDeletedField] = useState([]);
   const [lengthOfEducationFelid] = useState(objectEducation.length);
@@ -35,8 +36,21 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages }) {
   const [DeletedExperienceField, setDeletedExperienceField] = useState([]);
   const [lengthOfExperienceFelid] = useState(objectexperience.length);
 
-  const [objectSkills, setObjectSkills] = useState(CVInfo?.skills ?? "");
-  const [objectLanguage, setObjectLanguage] = useState(CVInfo?.languages ?? "");
+  const [backUpSkills] = useState(CVInfo?.skills ?? []);
+  const [objectSkills, setObjectSkills] = useState(CVInfo?.skills ?? []);
+  const [categoryIdSkills, setCategoryIdSkills] = useState(CategoryIdSkills);
+  const [lengthOfSkillFelid] = useState(objectSkills.length);
+
+  const [backUpLanguage] = useState(CVInfo?.languages ?? []);
+  const [objectLanguage, setObjectLanguage] = useState(CVInfo?.languages ?? []);
+  const [DeletedLanguageField, setDeletedLanguageField] = useState([]);
+  const [lengthOfLanguageFelid] = useState(objectLanguage.length);
+
+  const [objectCertificates, setObjectCertificates] = useState(
+    CVInfo?.certifications ?? [],
+  );
+  const [DeletedCertificateField, setDeletedCertificateField] = useState([]);
+  const [lengthOfCertificateFelid] = useState(objectCertificates.length);
 
   const [numberTab, setNumberTab] = useState(0);
   let TabComponent = null;
@@ -48,7 +62,6 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages }) {
           setSummary={setSummary}
           title={title}
           setTitle={setTitle}
-          MessageError={MessageError}
         />
       );
       break;
@@ -79,6 +92,8 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages }) {
           setObjectSkills={setObjectSkills}
           CVID={CVInfo.CVID}
           AllSkills={AllSkills}
+          categoryIdSkills={categoryIdSkills}
+          setCategoryIdSkills={setCategoryIdSkills}
         />
       );
       break;
@@ -89,18 +104,35 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages }) {
           setObjectLanguage={setObjectLanguage}
           CVID={CVInfo.CVID}
           GetLanguages={GetLanguages}
+          DeletedLanguageField={DeletedLanguageField}
+          setDeletedLanguageField={setDeletedLanguageField}
         />
       );
       break;
     case 5:
-      TabComponent = <CertificatesTab />;
+      TabComponent = (
+        <CertificatesTab
+          objectCertificates={objectCertificates}
+          setObjectCertificates={setObjectCertificates}
+          DeletedCertificateField={DeletedCertificateField}
+          setDeletedCertificateField={setDeletedCertificateField}
+          CVID={CVInfo.CVID}
+        />
+      );
       break;
+    case 6:
+      TabComponent = "dd";
+
     default:
       TabComponent = <>no page</>;
   }
 
   const onPreview = () => {
-    console.log("Preview:");
+    setShowPreview(true);
+  };
+
+  const onClosePreview = () => {
+    setShowPreview(false);
   };
 
   const onExportPDF = () => {
@@ -110,9 +142,16 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages }) {
   const onSaveCV = async () => {
     setLoading(true);
     if (title === "") {
-      setMessageError("هذا الحقل ضروري");
+      toast.error("حقل العنوان الوظيفي ضروري");
     } else {
-      setMessageError("");
+      if (CVInfo.CVID === undefined) {
+        await UpdateCv("CreateProfCv", {
+          id: CVInfo.CVID,
+          Title: title,
+          Summary: summary,
+        });
+      }
+
       await UpdateCv("EditProfCv", {
         id: CVInfo.CVID,
         Title: title,
@@ -125,9 +164,21 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages }) {
         objectEducation: objectEducation,
       });
 
+      await UpdateCv("AddEducation", {
+        id: CVInfo.CVID,
+        Length: lengthOfEducationFelid,
+        objectEducation: objectEducation,
+      });
+
       await UpdateCv("DeleteEducation", {
         id: CVInfo.CVID,
         DeletedField: DeletedField,
+      });
+
+      await UpdateCv("AddExperience", {
+        id: CVInfo.CVID,
+        Length: lengthOfExperienceFelid,
+        objectexperience: objectexperience,
       });
 
       await UpdateCv("EditExperience", {
@@ -136,17 +187,91 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages }) {
         objectexperience: objectexperience,
       });
 
+      await UpdateCv("AddSkill", {
+        id: CVInfo.CVID,
+        Length: lengthOfSkillFelid,
+        objectSkills: objectSkills,
+        oldObjectSkil: backUpSkills,
+      });
+
       await UpdateCv("DeleteExperience", {
         id: CVInfo.CVID,
         DeletedField: DeletedExperienceField,
       });
-    }
 
+      await UpdateCv("EditLanguage", {
+        id: CVInfo.CVID,
+        Length: lengthOfLanguageFelid,
+        objectLanguage: objectLanguage,
+        oldObjectLanguage: backUpLanguage,
+      });
+
+      await UpdateCv("AddLanguage", {
+        id: CVInfo.CVID,
+        Length: lengthOfLanguageFelid,
+        objectLanguage: objectLanguage,
+      });
+
+      await UpdateCv("DeleteLanguage", {
+        id: CVInfo.CVID,
+        DeletedField: DeletedLanguageField,
+      });
+
+      await UpdateCv("EditCertificate", {
+        id: CVInfo.CVID,
+        Length: lengthOfCertificateFelid,
+        objectCertificates: objectCertificates,
+      });
+
+      await UpdateCv("AddCertificate", {
+        id: CVInfo.CVID,
+        Length: lengthOfCertificateFelid,
+        objectCertificates: objectCertificates,
+      });
+
+      await UpdateCv("DeleteCertificate", {
+        id: CVInfo.CVID,
+        DeletedField: DeletedCertificateField,
+      });
+    }
+    toast.success("تم تحديث بيانات السيرة الذاتية");
     setLoading(false);
   };
+  useEffect(() => {
+    if (showPreview) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [showPreview]);
 
   return (
     <>
+      {showPreview && (
+        <div className="fixed inset-0  z-50 bg-black/60 print:hidden">
+          <button
+            type="button"
+            onClick={onClosePreview}
+            className="fixed top-4 left-1/2 z-100 -translate-x-1/2 rounded-xl bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow hover:bg-slate-100"
+          >
+            إغلاق المعاينة
+          </button>
+
+          <div className="h-screen overflow-y-auto overflow-x-hidden pt-20">
+            <div className="mx-auto w-full max-w-[230mm] px-4 md:px-6">
+              <ResumePage />
+            </div>
+          </div>
+        </div>
+      )}
+
       <CvTab setNumberTab={setNumberTab} />
       <div>{TabComponent}</div>
       <div
