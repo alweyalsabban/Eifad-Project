@@ -23,13 +23,12 @@ export default function ExperienceTab({
     updatedExperience[index] = {
       ...updatedExperience[index],
       IsCurrent: checked,
-      EndDate: checked ? "حالياً" : "",
+      EndDate: checked ? null : "",
     };
     setexperience(updatedExperience);
   };
-
   const formatMonthValue = (date) => {
-    if (!date || date === "حالياً") return "";
+    if (!date) return "";
     const d = new Date(date);
     if (isNaN(d.getTime())) return "";
     return d.toISOString().slice(0, 7);

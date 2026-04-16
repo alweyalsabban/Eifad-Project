@@ -1,38 +1,124 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import { useRouter } from "next/navigation";
 import CvTab from "../components/CvTab";
 import dynamic from "next/dynamic";
 import { UpdateCv } from "../../callFunctionsForJobseeker";
 import { toast } from "react-toastify";
 import ResumePage from "./CVPDF";
-const PersonalSummaryTab = dynamic(
-  () => import("../components/PersonalSummaryTab"),
-);
-
+import { tabsCv } from "../CVData";
 import {
   DocumentTextIcon,
   ArrowDownTrayIcon,
   BookmarkIcon,
 } from "@heroicons/react/24/outline";
 
+const PersonalSummaryTab = dynamic(
+  () => import("../components/PersonalSummaryTab"),
+);
 const EducationTab = dynamic(() => import("../components/EducationTab"));
 const ExperienceTab = dynamic(() => import("../components/ExperienceTab"));
 const SkillsTab = dynamic(() => import("../components/SkillsTab"));
 const LanguagesTab = dynamic(() => import("../components/LanguagesTab"));
 const CertificatesTab = dynamic(() => import("../components/CertificatesTab"));
+const CustomSectionsTab = dynamic(
+  () => import("../components/CustomSectionsTab"),
+);
 
-function CVcomponents({ CVInfo, AllSkills, GetLanguages, CategoryIdSkills }) {
+const createClientId = () => {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+
+  return `section-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+};
+
+const getSectionId = (section) =>
+  section?.CustomSectionID ??
+  section?.SectionID ??
+  section?.sectionId ??
+  section?.id ??
+  null;
+
+const normalizeSectionItems = (section) => {
+  const contentData = section?.content_data ?? section?.ContentData ?? null;
+
+  if (Array.isArray(contentData)) {
+    const cleanArray = contentData.filter(
+      (item) => typeof item === "string" && item.trim() !== "",
+    );
+
+    return cleanArray.length ? cleanArray : [""];
+  }
+
+  if (contentData && typeof contentData === "object") {
+    const contentValues = Object.values(contentData).filter(
+      (item) => typeof item === "string" && item.trim() !== "",
+    );
+
+    if (contentValues.length) {
+      return contentValues;
+    }
+  }
+
+  const description = section?.Description ?? section?.description ?? "";
+  if (typeof description === "string" && description.trim() !== "") {
+    const splitDescription = description
+      .split(/\n{2,}/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    return splitDescription.length ? splitDescription : [description];
+  }
+
+  return [""];
+};
+
+const normalizeCustomSections = (sections = []) =>
+  sections.map((section, index) => ({
+    ...section,
+    clientId: createClientId(),
+    SectionName:
+      section?.SectionType ??
+      section?.Title ??
+      section?.section_name ??
+      `قسم إضافي ${index + 1}`,
+    Items: normalizeSectionItems(section),
+  }));
+
+function CVcomponents({
+  CVInfo,
+  AllSkills,
+  GetLanguages,
+  CategoryIdSkills,
+  Profile,
+}) {
+  const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [summary, setSummary] = useState(CVInfo?.PersonalSummary ?? "");
   const [title, setTitle] = useState(CVInfo?.Title ?? "");
+  const [currentCvId, setCurrentCvId] = useState(
+    CVInfo?.CVID ?? CVInfo?.id ?? null,
+  );
   const [objectEducation, setObjectEducation] = useState(
     CVInfo?.education ?? [],
   );
   const [DeletedField, setDeletedField] = useState([]);
   const [lengthOfEducationFelid] = useState(objectEducation.length);
 
-  const [objectexperience, setexperience] = useState(CVInfo?.experiences ?? []);
+  const [objectexperience, setexperience] = useState(
+    (CVInfo?.experiences ?? []).map((item) => {
+      const endDate = item?.EndDate ?? item?.end_date ?? null;
+
+      return {
+        ...item,
+        EndDate: endDate,
+        IsCurrent: item?.IsCurrent ?? item?.is_current ?? endDate === null,
+      };
+    }),
+  );
   const [DeletedExperienceField, setDeletedExperienceField] = useState([]);
   const [lengthOfExperienceFelid] = useState(objectexperience.length);
 
@@ -52,7 +138,108 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages, CategoryIdSkills }) {
   const [DeletedCertificateField, setDeletedCertificateField] = useState([]);
   const [lengthOfCertificateFelid] = useState(objectCertificates.length);
 
+  const initialCustomSections = useMemo(
+    () =>
+      normalizeCustomSections(
+        CVInfo?.custom_sections ?? CVInfo?.customSections ?? [],
+      ),
+    [CVInfo],
+  );
+  const [customSections, setCustomSections] = useState(initialCustomSections);
+  const [deletedCustomSections, setDeletedCustomSections] = useState([]);
+  const [savedCustomSectionsCount, setSavedCustomSectionsCount] = useState(
+    initialCustomSections.length,
+  );
+  const printRef = useRef(null);
   const [numberTab, setNumberTab] = useState(0);
+
+  const tabs = useMemo(
+    () => [
+      ...tabsCv.map((tab, index) => ({
+        label: tab,
+        sectionKey: `default-${index}`,
+        isCustom: false,
+      })),
+      ...customSections.map((section) => ({
+        label: section.SectionName,
+        sectionKey: section.clientId,
+        isCustom: true,
+      })),
+    ],
+    [customSections],
+  );
+
+  const selectedCustomSection =
+    numberTab >= tabsCv.length
+      ? customSections[numberTab - tabsCv.length]
+      : null;
+
+  const updateCustomSection = (clientId, updates) => {
+    setCustomSections((prev) =>
+      prev.map((section) =>
+        section.clientId === clientId
+          ? {
+              ...section,
+              ...updates,
+            }
+          : section,
+      ),
+    );
+  };
+
+  const onCreateCustomSection = (sectionName) => {
+    const cleanName = sectionName.trim();
+    if (!cleanName) return;
+
+    const newSection = {
+      clientId: createClientId(),
+      SectionName: cleanName,
+      SectionType: cleanName,
+      Title: cleanName,
+      Description: "",
+      Items: [""],
+    };
+
+    setCustomSections((prev) => {
+      const updatedSections = [...prev, newSection];
+      setNumberTab(tabsCv.length + updatedSections.length - 1);
+      return updatedSections;
+    });
+  };
+
+  const onRenameCustomSection = (clientId, newName) => {
+    const cleanName = newName.trim();
+    if (!cleanName) return;
+
+    updateCustomSection(clientId, {
+      SectionName: cleanName,
+      SectionType: cleanName,
+      Title: cleanName,
+    });
+  };
+
+  const onDeleteCustomSection = (clientId) => {
+    const sectionToDelete = customSections.find(
+      (section) => section.clientId === clientId,
+    );
+
+    if (sectionToDelete && getSectionId(sectionToDelete)) {
+      setDeletedCustomSections((prev) => [...prev, sectionToDelete]);
+    }
+
+    const updatedSections = customSections.filter(
+      (section) => section.clientId !== clientId,
+    );
+    setCustomSections(updatedSections);
+    setNumberTab((prev) => {
+      if (updatedSections.length === 0 && prev >= tabsCv.length) {
+        return 0;
+      }
+
+      return Math.min(prev, tabsCv.length + updatedSections.length - 1);
+    });
+  };
+
   let TabComponent = null;
   switch (numberTab) {
     case 0:
@@ -90,7 +277,7 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages, CategoryIdSkills }) {
         <SkillsTab
           objectSkills={objectSkills}
           setObjectSkills={setObjectSkills}
-          CVID={CVInfo.CVID}
+          CVID={currentCvId}
           AllSkills={AllSkills}
           categoryIdSkills={categoryIdSkills}
           setCategoryIdSkills={setCategoryIdSkills}
@@ -102,7 +289,7 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages, CategoryIdSkills }) {
         <LanguagesTab
           objectLanguage={objectLanguage}
           setObjectLanguage={setObjectLanguage}
-          CVID={CVInfo.CVID}
+          CVID={currentCvId}
           GetLanguages={GetLanguages}
           DeletedLanguageField={DeletedLanguageField}
           setDeletedLanguageField={setDeletedLanguageField}
@@ -116,16 +303,24 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages, CategoryIdSkills }) {
           setObjectCertificates={setObjectCertificates}
           DeletedCertificateField={DeletedCertificateField}
           setDeletedCertificateField={setDeletedCertificateField}
-          CVID={CVInfo.CVID}
+          CVID={currentCvId}
         />
       );
       break;
-    case 6:
-      TabComponent = "dd";
-
     default:
-      TabComponent = <>no page</>;
+      TabComponent = (
+        <CustomSectionsTab
+          section={selectedCustomSection}
+          onUpdateSection={updateCustomSection}
+          onDeleteSection={onDeleteCustomSection}
+        />
+      );
   }
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: "CV",
+  });
 
   const onPreview = () => {
     setShowPreview(true);
@@ -136,107 +331,186 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages, CategoryIdSkills }) {
   };
 
   const onExportPDF = () => {
-    console.log("Export PDF:");
+    handlePrint();
   };
 
   const onSaveCV = async () => {
     setLoading(true);
-    if (title === "") {
+
+    if (title.trim() === "") {
       toast.error("حقل العنوان الوظيفي ضروري");
-    } else {
-      if (CVInfo.CVID === undefined) {
-        await UpdateCv("CreateProfCv", {
-          id: CVInfo.CVID,
+      setLoading(false);
+      return;
+    }
+
+    try {
+      let cvId = currentCvId;
+
+      if (!cvId) {
+        const createCvResponse = await UpdateCv("CreateProfCv", {
           Title: title,
           Summary: summary,
         });
+
+        if (!createCvResponse?.isSusses) {
+          toast.error(
+            createCvResponse?.dataResponse?.message ||
+              "تعذر إنشاء السيرة الذاتية",
+          );
+          setLoading(false);
+          return;
+        }
+
+        cvId =
+          createCvResponse?.dataResponse?.data?.CVID ??
+          createCvResponse?.dataResponse?.data?.id ??
+          createCvResponse?.dataResponse?.data?.cv_id ??
+          null;
+
+        if (!cvId) {
+          toast.error(
+            "تم إنشاء السيرة الذاتية لكن تعذر قراءة المعرّف الخاص بها",
+          );
+          setLoading(false);
+          return;
+        }
+
+        setCurrentCvId(cvId);
       }
 
       await UpdateCv("EditProfCv", {
-        id: CVInfo.CVID,
+        id: cvId,
         Title: title,
         Summary: summary,
       });
 
       await UpdateCv("EditEducation", {
-        id: CVInfo.CVID,
+        id: cvId,
         Length: lengthOfEducationFelid,
         objectEducation: objectEducation,
       });
 
       await UpdateCv("AddEducation", {
-        id: CVInfo.CVID,
+        id: cvId,
         Length: lengthOfEducationFelid,
         objectEducation: objectEducation,
       });
 
       await UpdateCv("DeleteEducation", {
-        id: CVInfo.CVID,
+        id: cvId,
         DeletedField: DeletedField,
       });
 
       await UpdateCv("AddExperience", {
-        id: CVInfo.CVID,
+        id: cvId,
         Length: lengthOfExperienceFelid,
         objectexperience: objectexperience,
       });
 
       await UpdateCv("EditExperience", {
-        id: CVInfo.CVID,
+        id: cvId,
         Length: lengthOfExperienceFelid,
         objectexperience: objectexperience,
       });
 
       await UpdateCv("AddSkill", {
-        id: CVInfo.CVID,
+        id: cvId,
         Length: lengthOfSkillFelid,
         objectSkills: objectSkills,
         oldObjectSkil: backUpSkills,
       });
 
       await UpdateCv("DeleteExperience", {
-        id: CVInfo.CVID,
+        id: cvId,
         DeletedField: DeletedExperienceField,
       });
 
       await UpdateCv("EditLanguage", {
-        id: CVInfo.CVID,
+        id: cvId,
         Length: lengthOfLanguageFelid,
         objectLanguage: objectLanguage,
         oldObjectLanguage: backUpLanguage,
       });
 
       await UpdateCv("AddLanguage", {
-        id: CVInfo.CVID,
+        id: cvId,
         Length: lengthOfLanguageFelid,
         objectLanguage: objectLanguage,
       });
 
       await UpdateCv("DeleteLanguage", {
-        id: CVInfo.CVID,
+        id: cvId,
         DeletedField: DeletedLanguageField,
       });
 
       await UpdateCv("EditCertificate", {
-        id: CVInfo.CVID,
+        id: cvId,
         Length: lengthOfCertificateFelid,
         objectCertificates: objectCertificates,
       });
 
       await UpdateCv("AddCertificate", {
-        id: CVInfo.CVID,
+        id: cvId,
         Length: lengthOfCertificateFelid,
         objectCertificates: objectCertificates,
       });
 
       await UpdateCv("DeleteCertificate", {
-        id: CVInfo.CVID,
+        id: cvId,
         DeletedField: DeletedCertificateField,
       });
+
+      await UpdateCv("EditCustomSection", {
+        id: cvId,
+        Length: savedCustomSectionsCount,
+        objectCustomSections: customSections,
+      });
+
+      const createdCustomSections = await UpdateCv("AddCustomSection", {
+        id: cvId,
+        Length: savedCustomSectionsCount,
+        objectCustomSections: customSections,
+      });
+
+      if (
+        Array.isArray(createdCustomSections) &&
+        createdCustomSections.length > 0
+      ) {
+        const newSections = customSections.slice(savedCustomSectionsCount);
+
+        setCustomSections((prev) =>
+          prev.map((section) => {
+            const newSectionIndex = newSections.findIndex(
+              (newSection) => newSection.clientId === section.clientId,
+            );
+
+            if (newSectionIndex === -1) return section;
+
+            return {
+              ...section,
+              ...(createdCustomSections[newSectionIndex] ?? {}),
+            };
+          }),
+        );
+      }
+
+      await UpdateCv("DeleteCustomSection", {
+        id: cvId,
+        DeletedField: deletedCustomSections,
+      });
+
+      setSavedCustomSectionsCount(customSections.length);
+      setDeletedCustomSections([]);
+      toast.success("تم تحديث بيانات السيرة الذاتية");
+    } catch (error) {
+      toast.error("حدث خطأ أثناء حفظ السيرة الذاتية");
+      console.error(error);
+    } finally {
+      setLoading(false);
+      router.refresh();
     }
-    toast.success("تم تحديث بيانات السيرة الذاتية");
-    setLoading(false);
   };
+
   useEffect(() => {
     if (showPreview) {
       document.body.style.overflow = "hidden";
@@ -266,13 +540,19 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages, CategoryIdSkills }) {
 
           <div className="h-screen overflow-y-auto overflow-x-hidden pt-20">
             <div className="mx-auto w-full max-w-[230mm] px-4 md:px-6">
-              <ResumePage />
+              <ResumePage CVInfo={CVInfo} Profile={Profile} />
             </div>
           </div>
         </div>
       )}
 
-      <CvTab setNumberTab={setNumberTab} />
+      <CvTab
+        tabs={tabs}
+        activeIndex={numberTab}
+        setNumberTab={setNumberTab}
+        onCreateCustomSection={onCreateCustomSection}
+        onRenameCustomSection={onRenameCustomSection}
+      />
       <div>{TabComponent}</div>
       <div
         className="grid grid-cols-1 sm:grid-cols-[auto_20%_20%] 
@@ -336,6 +616,9 @@ function CVcomponents({ CVInfo, AllSkills, GetLanguages, CategoryIdSkills }) {
             <h1>معاينة</h1>
           </div>
         </button>
+      </div>
+      <div style={{ position: "absolute", left: "-9999px", top: 0 }}>
+        <ResumePage ref={printRef} CVInfo={CVInfo} Profile={Profile} />
       </div>
     </>
   );

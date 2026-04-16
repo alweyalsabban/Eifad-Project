@@ -1,6 +1,32 @@
 import { ApiFetchServer } from "../../lib/ApiFetchServer";
 import { toast } from "react-toastify";
+const getEducationId = (item) =>
+  item?.EducationID ?? item?.education_id ?? item?.id ?? null;
 
+const getExperienceId = (item) =>
+  item?.ExperienceID ?? item?.experience_id ?? item?.id ?? null;
+const getSectionId = (section) =>
+  section?.CustomSectionID ??
+  section?.SectionID ??
+  section?.sectionId ??
+  section?.id ??
+  null;
+
+const buildCustomSectionPayload = (section) => {
+  const cleanItems = (section?.Items ?? [])
+    .map((item) => item?.trim())
+    .filter(Boolean);
+
+  return {
+    SectionType: section?.SectionName,
+    Title: section?.SectionName,
+    Description: cleanItems.join("\n\n"),
+    content_data: cleanItems.reduce((accumulator, item, index) => {
+      accumulator[`item_${index + 1}`] = item;
+      return accumulator;
+    }, {}),
+  };
+};
 export async function Profile(NameFunction, dataProfile) {
   if (NameFunction === "EditProfile") {
     //name, phone, personalPhoto, location,profile_summary,
@@ -35,18 +61,24 @@ export async function UpdateCv(NameFunction, dataCv) {
     }
 
     if (NameFunction === "EditEducation") {
-      if (!dataCv.objectEducation.length === 0) {
+      if (dataCv.objectEducation.length !== 0) {
         for (let i = 0; i < dataCv.Length; i++) {
+          const item = dataCv?.objectEducation?.[i];
+          const educationId = getEducationId(item);
+
+          if (!item || !educationId) continue;
+
           const res = await ApiFetchServer(
-            `/cvs/${dataCv.id}/education/${dataCv?.objectEducation[i]?.EducationID}`,
+            `/cvs/${dataCv.id}/education/${educationId}`,
             "PUT",
             {
-              institution: dataCv?.objectEducation[i]?.Institution,
-              degree_name: dataCv?.objectEducation[i]?.DegreeName,
-              major: dataCv?.objectEducation[i]?.Major,
-              graduation_year: dataCv?.objectEducation[i]?.GraduationYear,
+              institution: item?.Institution ?? "",
+              degree_name: item?.DegreeName ?? "",
+              major: item?.Major ?? "",
+              graduation_year: item?.GraduationYear ?? "",
             },
           );
+
           if (!res.isSusses) {
             toast.error(`${res.dataResponse.message}`);
           }
@@ -75,8 +107,11 @@ export async function UpdateCv(NameFunction, dataCv) {
 
     if (NameFunction === "DeleteEducation") {
       for (let i = 0; i < dataCv.DeletedField.length; i++) {
+        const educationId = getEducationId(dataCv.DeletedField[i]);
+        if (!educationId) continue;
+
         await ApiFetchServer(
-          `/cvs/${dataCv.id}/education/${dataCv.DeletedField[i].EducationID}`,
+          `/cvs/${dataCv.id}/education/${educationId}`,
           "DELETE",
         );
       }
@@ -84,37 +119,45 @@ export async function UpdateCv(NameFunction, dataCv) {
 
     if (NameFunction === "AddExperience") {
       for (let i = dataCv.Length; i < dataCv.objectexperience.length; i++) {
+        const item = dataCv.objectexperience[i];
+
         const res = await ApiFetchServer(
           `/cvs/${dataCv.id}/experience`,
           "POST",
           {
-            job_title: dataCv.objectexperience[i].JobTitle,
-            company_name: dataCv.objectexperience[i].CompanyName,
-            start_date: dataCv.objectexperience[i].StartDate,
-            end_date: dataCv.objectexperience[i].EndDate,
-            responsibilities: dataCv.objectexperience[i].Responsibilities,
+            job_title: item?.JobTitle ?? "",
+            company_name: item?.CompanyName ?? "",
+            start_date: item?.StartDate || null,
+            end_date: item?.IsCurrent ? null : item?.EndDate || null,
+            responsibilities: item?.Responsibilities ?? "",
           },
         );
+
         if (!res.isSusses) {
           toast.error(`${res.dataResponse.message}`);
         }
       }
     }
-
     if (NameFunction === "EditExperience") {
-      if (!dataCv.objectexperience.length === 0) {
+      if (dataCv.objectexperience.length !== 0) {
         for (let i = 0; i < dataCv.Length; i++) {
+          const item = dataCv?.objectexperience?.[i];
+          const experienceId = getExperienceId(item);
+
+          if (!item || !experienceId) continue;
+
           const res = await ApiFetchServer(
-            `/cvs/${dataCv.id}/experience/${dataCv.objectexperience[i]?.ExperienceID}`,
+            `/cvs/${dataCv.id}/experience/${experienceId}`,
             "PUT",
             {
-              job_title: dataCv?.objectexperience[i]?.JobTitle,
-              company_name: dataCv?.objectexperience[i]?.CompanyName,
-              start_date: dataCv?.objectexperience[i]?.StartDate,
-              end_date: dataCv?.objectexperience[i]?.EndDate,
-              responsibilities: dataCv?.objectexperience[i]?.Responsibilities,
+              job_title: item?.JobTitle ?? "",
+              company_name: item?.CompanyName ?? "",
+              start_date: item?.StartDate || null,
+              end_date: item?.IsCurrent ? null : item?.EndDate || null,
+              responsibilities: item?.Responsibilities ?? "",
             },
           );
+
           if (!res.isSusses) {
             toast.error(`${res.dataResponse.message}`);
           }
@@ -124,8 +167,11 @@ export async function UpdateCv(NameFunction, dataCv) {
 
     if (NameFunction === "DeleteExperience") {
       for (let i = 0; i < dataCv.DeletedField.length; i++) {
+        const experienceId = getExperienceId(dataCv.DeletedField[i]);
+        if (!experienceId) continue;
+
         await ApiFetchServer(
-          `/cvs/${dataCv.id}/experience/${dataCv.DeletedField[i].ExperienceID}`,
+          `/cvs/${dataCv.id}/experience/${experienceId}`,
           "DELETE",
         );
       }
@@ -334,6 +380,59 @@ export async function UpdateCv(NameFunction, dataCv) {
       for (let i = 0; i < dataCv.DeletedField.length; i++) {
         await ApiFetchServer(
           `/cvs/${dataCv.id}/certifications/${dataCv.DeletedField[i].CertificationID}`,
+          "DELETE",
+        );
+      }
+    }
+
+    if (NameFunction === "EditCustomSection") {
+      for (let i = 0; i < dataCv.Length; i++) {
+        const currentSection = dataCv?.objectCustomSections?.[i];
+        const sectionId = getSectionId(currentSection);
+
+        if (!currentSection || !sectionId) continue;
+
+        const res = await ApiFetchServer(
+          `/cvs/${dataCv.id}/custom-sections/${sectionId}`,
+          "PUT",
+          buildCustomSectionPayload(currentSection),
+        );
+
+        if (!res.isSusses) {
+          toast.error(`${res.dataResponse.message}`);
+        }
+      }
+    }
+
+    if (NameFunction === "AddCustomSection") {
+      const createdSections = [];
+
+      for (let i = dataCv.Length; i < dataCv.objectCustomSections.length; i++) {
+        const currentSection = dataCv.objectCustomSections[i];
+        const res = await ApiFetchServer(
+          `/cvs/${dataCv.id}/custom-sections`,
+          "POST",
+          buildCustomSectionPayload(currentSection),
+        );
+
+        if (!res.isSusses) {
+          toast.error(`${res.dataResponse.message}`);
+          continue;
+        }
+
+        createdSections.push(res.dataResponse?.data ?? {});
+      }
+
+      return createdSections;
+    }
+
+    if (NameFunction === "DeleteCustomSection") {
+      for (let i = 0; i < dataCv.DeletedField.length; i++) {
+        const sectionId = getSectionId(dataCv.DeletedField[i]);
+        if (!sectionId) continue;
+
+        await ApiFetchServer(
+          `/cvs/${dataCv.id}/custom-sections/${sectionId}`,
           "DELETE",
         );
       }
