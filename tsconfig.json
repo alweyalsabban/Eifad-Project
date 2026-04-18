@@ -44,7 +44,8 @@
     "app/api/apiFetch",
     "app/dashBoard/(JobSeekerModel)/context/GatherDataFromAPIContext.js",
     "app/dashBoard/(JobSeekerModel)/CreateTitle.jsx",
-    "app/dashBoard/(JobSeekerModel)/cv/components/CVPDF.jsx"
+    "app/dashBoard/(JobSeekerModel)/cv/components/CVPDF.jsx",
+    "app/loading.js"
   ],
   "exclude": ["node_modules"]
 }
