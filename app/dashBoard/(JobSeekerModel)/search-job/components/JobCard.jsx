@@ -14,10 +14,11 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Loader from "./Loader ";
 
 export default function JobCard({
+  CVId,
   JobAdID,
-  match,
   title,
   company,
   location,
@@ -28,7 +29,6 @@ export default function JobCard({
   salaryFrom,
   salaryTo,
   currency,
-
   onQuickApply,
   logoPath,
 }) {
@@ -38,6 +38,7 @@ export default function JobCard({
 
   const isExpired = expiry < now;
   const [saved, setSaved] = useState(false);
+  const [match, setMatch] = useState(null);
 
   async function onToggleSave() {
     if (!saved) {
@@ -69,8 +70,17 @@ export default function JobCard({
         }
       });
     }
+    async function calMathc() {
+      const res = await JobApplication("CalMatchAiJob", {
+        jobId: JobAdID,
+        CvId: CVId,
+      });
+      setMatch(res.dataResponse.data);
+    }
+
     fetchData();
-  }, [JobAdID]);
+    calMathc();
+  }, [JobAdID, CVId]);
   return (
     <section className="w-full rounded-2xl border border-slate-200 bg-white p-6 mt-5">
       {/* Logo  */}
@@ -113,11 +123,17 @@ export default function JobCard({
               </button>
             </div>
 
-            <div className="inline-flex items-center gap-2 rounded-xl bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
+            <div className="inline-flex h-10 items-center gap-2 rounded-xl bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
               <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-white text-xs">
                 ◎
               </span>
-              {match}%
+              {match === null ? (
+                <div className="scale-50">
+                  <Loader />
+                </div>
+              ) : (
+                `${match?.match_score}%`
+              )}
             </div>
           </div>
         </div>

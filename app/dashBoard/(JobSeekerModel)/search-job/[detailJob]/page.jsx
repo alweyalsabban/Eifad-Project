@@ -14,14 +14,30 @@ function DeatilJob() {
   const path = useParams();
   const [JobDetials, setJobDetials] = useState(null);
   const [CVInfo, setCVInfo] = useState(null);
+  const [AIAnalayise, setAIAnalayise] = useState(null);
 
   useEffect(() => {
     async function fetchJobs() {
-      setJobDetials(await JobApplication("GetDeatilJob", path.detailJob));
-      setCVInfo(await JobApplication("GetCVInfo"));
+      const jobRes = await JobApplication("GetDeatilJob", path.detailJob);
+      const cvRes = await JobApplication("GetCVInfo");
+
+      setJobDetials(jobRes);
+      setCVInfo(cvRes);
+
+      return { jobRes, cvRes };
     }
-    fetchJobs();
-  }, [, path]);
+
+    fetchJobs().then(({ jobRes, cvRes }) => {
+      //if (!jobRes?.JobAdID || !cvRes?.CVID) return;
+
+      JobApplication("CalMatchAiJob", {
+        jobId: jobRes.JobAdID,
+        CvId: cvRes.CVID,
+      }).then((res) => {
+        setAIAnalayise(res.dataResponse.data);
+      });
+    });
+  }, [path]);
 
   return (
     <>
@@ -62,17 +78,13 @@ function DeatilJob() {
         description={JobDetials?.company?.Description}
         employees={JobDetials?.company?.EmployeeCount}
         city={JobDetials?.company.Address}
-        email="غير موجود"
-        phone="غير موجود"
+        email={JobDetials?.company?.user?.Email ?? "غير موجود"}
+        phone={JobDetials?.company?.user?.Phone ?? "غير موجود"}
       />
       <AiMatchCard
-        score={92}
-        reasons={[
-          "مهاراتك في React و Node.js تتطابق تماماً مع متطلبات الوظيفة",
-          "لديك خبرة تزيد عن 5 سنوات ذات صلة",
-          "موقعك يتطابق مع موقع الوظيفة (الرياض)",
-          "خبرتك في تقنيات السحابة تتوافق مع الاحتياجات",
-        ]}
+        score={AIAnalayise?.match_score}
+        gaps={AIAnalayise?.gaps}
+        reasons={AIAnalayise?.strengths}
       />
 
       <JobDescriptionCard

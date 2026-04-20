@@ -1,6 +1,3 @@
-"use client";
-
-import React from "react";
 import Image from "next/image";
 
 import Link from "next/link";
@@ -39,52 +36,7 @@ function Footer() {
                   </option>
                 </select>
               </div>
-
-              {/*  <div className="flex items-center gap-3">
-                <Link href="#" className="rounded-3xl">
-                  <FaFacebook />
-                </Link>
-              </div> */}
             </div>
-
-            {/*             <div className="flex flex-col items-center md:items-start gap-4">
-              <h1 className="font-bold">المنتجات</h1>
-              {Prodect.map((e) => (
-                <Link
-                  href={e.href}
-                  key={e.key}
-                  className="text-auxiliaryColorGray hover:text-auxiliaryColorWhite duration-300"
-                >
-                  {e.name}
-                </Link>
-              ))}
-            </div>
-
-            <div className="flex flex-col items-center md:items-start gap-4">
-              <h1 className="font-bold">الشركة</h1>
-              {Company.map((e) => (
-                <Link
-                  href={e.href}
-                  key={e.key}
-                  className="text-auxiliaryColorGray hover:text-auxiliaryColorWhite duration-300"
-                >
-                  {e.name}
-                </Link>
-              ))}
-            </div>
-
-            <div className="flex flex-col items-center md:items-start gap-4">
-              <h1 className="font-bold">قانوني</h1>
-              {Low.map((e) => (
-                <Link
-                  href={e.href}
-                  key={e.key}
-                  className="text-auxiliaryColorGray hover:text-auxiliaryColorWhite duration-300"
-                >
-                  {e.name}
-                </Link>
-              ))}
-            </div> */}
           </div>
 
           <div className="mt-10 text-auxiliaryColorWhite flex justify-center">

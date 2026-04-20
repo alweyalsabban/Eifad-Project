@@ -1,7 +1,6 @@
-"use client";
-
-import React from "react";
 import { CalendarDaysIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
+import { ApiFetchServer } from "../../../../lib/ApiFetchServer";
+import { toast } from "react-toastify";
 
 const STEPS = ["مقدّم", "مراجعة", "مقابلة", "قرار"];
 
@@ -11,6 +10,7 @@ function getStepIndex(step) {
 }
 
 export default function ApplicationCard({
+  applicationId,
   title,
   company,
   date, // "01-02-2024"
@@ -18,9 +18,17 @@ export default function ApplicationCard({
   statusVariant = "info", // "info" | "success"
   currentStep = "مراجعة",
   showWithdraw = false,
-  onWithdraw,
 }) {
   const activeIdx = getStepIndex(currentStep);
+  async function onWithdraw() {
+    const res = await ApiFetchServer(
+      `/applications/${applicationId}/withdraw`,
+      "POST",
+    );
+    if (res.isSusses) {
+      toast.success("تم سحب الطلب");
+    } else toast.error("هناك مشكلة في سحب الطلب");
+  }
 
   const badge =
     statusVariant === "success"

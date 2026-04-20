@@ -1,19 +1,26 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
-import { NamePageContex } from "../context/NamePageContext";
+
+import { useState, useEffect } from "react";
 import PageSearch from "./components/PageSearch";
 import CompanyCard from "./components/CompanyCard";
+import CreateTitle from "../CreateTitle";
+import { Companies } from "../callFunctionsForJobseeker";
 function SearchPages() {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
   const [active, setActive] = useState("search");
-  const [AllPageFollow, setAllPageFollow] = useState([]);
+  const [AllPageFollow, setAllPageFollow] = useState(null);
 
   useEffect(() => {
-    setnameOfSideBar("الصفحات");
-    setnumberOfSideBar(11);
-  }, [setnameOfSideBar, setnumberOfSideBar]);
+    async function Fetch() {
+      const res = await Companies("GetAllCompanies");
+      console.log(res);
+      setAllPageFollow(res);
+    }
+    Fetch();
+  }, []);
   return (
     <div className="mb-40">
+      <CreateTitle title="الصفحات" number={11} />
+
       <div className="w-[98%] m-auto rounded-2xl border border-gray-200 p-2 mt-5 ">
         <div className="flex gap-2">
           <button
@@ -41,8 +48,16 @@ function SearchPages() {
         </div>
       </div>
       {active === "search" && <PageSearch />}
-
-      <CompanyCard />
+      {AllPageFollow?.map((item, index) => {
+        return (
+          <CompanyCard
+            key={index}
+            name={item.CompanyName}
+            city={item.Address}
+            companyId={item.CompanyID}
+          />
+        );
+      })}
     </div>
   );
 }

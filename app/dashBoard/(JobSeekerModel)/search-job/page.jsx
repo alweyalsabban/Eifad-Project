@@ -22,12 +22,15 @@ function JobSearchPage() {
     sort: "",
     per_page: "",
   });
+  const [CvInfo, setCvInfo] = useState(null);
 
   useEffect(() => {
     async function fetchJobs() {
       try {
         setLoading(true);
         const data = await JobApplication("GetAllJob", params);
+        const cvInfo = await JobApplication("GetCVInfo");
+        setCvInfo(cvInfo);
         setAllJob(data);
         setLoading(false);
       } catch (error) {}
@@ -85,6 +88,7 @@ function JobSearchPage() {
             {allJob.map((item, index) => {
               return (
                 <JobCard
+                  CVId={CvInfo.CVID}
                   JobAdID={item.JobAdID}
                   key={index}
                   title={item?.Title}

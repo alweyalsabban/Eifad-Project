@@ -483,11 +483,31 @@ export async function JobApplication(NameFunction, JobData) {
     const res = await ApiFetchServer(`/favorites`);
     return res;
   }
+  if (NameFunction === "CalMatchAiJob") {
+    const res = await ApiFetchServer(
+      `/jobs/${JobData.jobId}/match-score?cv_id=${JobData.CvId}`,
+    );
+    return res;
+  }
+  if (NameFunction === "GetAllApplications") {
+    const res = await ApiFetchServer(`/applications`);
+    return res;
+  }
 }
 
 export async function Companies(NameFunction, CompaniesData) {
   if (NameFunction === "GetAllFollwPage") {
     const res = await ApiFetchServer("/companies/following");
+    return res.dataResponse.data;
+  }
+  if (NameFunction === "GetAllCompanies") {
+    const res = await ApiFetchServer("/companies");
+
+    return res.dataResponse.data;
+  }
+  if (NameFunction === "CompanyDeatils") {
+    const res = await ApiFetchServer(`/companies/${CompaniesData.id}`);
+
     return res.dataResponse.data;
   }
 }

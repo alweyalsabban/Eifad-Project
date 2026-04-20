@@ -47,7 +47,8 @@ export default function JobDetailsHeaderCard({
       JobID: JobAdID,
       CVID: CVID,
     });
-    if (!res.false) toast.error(res.dataResponse.message);
+    if (!res.isSusses) toast.error(res.dataResponse.message);
+    if (res.isSusses) toast.success("تم التقديم بنجاح");
   };
 
   const onFavoritJob = async () => {

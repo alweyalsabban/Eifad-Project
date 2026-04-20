@@ -1,8 +1,9 @@
 "use client";
 
 import { SparklesIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
+import Loader from "./Loader ";
 
-export default function AiMatchCard({ score = 92, reasons = [] }) {
+export default function AiMatchCard({ score = null, reasons = [], gaps = [] }) {
   const clamped = Math.max(0, Math.min(100, score));
 
   return (
@@ -19,7 +20,9 @@ export default function AiMatchCard({ score = 92, reasons = [] }) {
       {/* Score */}
       <div className="flex items-center justify-between">
         <span className="text-sm text-white/90">نسبة المطابقة</span>
-        <div className="text-3xl font-bold">{clamped}%</div>
+        <div className="text-3xl font-bold">
+          {score === null ? <Loader /> : `${clamped}%`}
+        </div>
       </div>
 
       {/* Progress bar */}
@@ -36,6 +39,18 @@ export default function AiMatchCard({ score = 92, reasons = [] }) {
 
         <ul className="space-y-2">
           {reasons.map((r, i) => (
+            <li key={i} className="flex items-center  gap-2 text-sm">
+              <CheckCircleIcon className="h-5 w-5" />
+              <span>{r}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="mt-6 text-right">
+        <h4 className="mb-3 font-semibold">الفجوة :</h4>
+
+        <ul className="space-y-2">
+          {gaps.map((r, i) => (
             <li key={i} className="flex items-center  gap-2 text-sm">
               <CheckCircleIcon className="h-5 w-5" />
               <span>{r}</span>
