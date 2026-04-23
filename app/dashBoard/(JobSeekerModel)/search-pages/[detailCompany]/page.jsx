@@ -29,8 +29,8 @@ function DetailCompany() {
         description={DeatilCompany?.Description}
         employees={DeatilCompany?.EmployeeCount}
         city={DeatilCompany?.Address}
-        email={DeatilCompany?.email ?? "لا يوجد"}
-        phone={DeatilCompany?.phone ?? "لا يوجد"}
+        email={DeatilCompany?.user?.Email ?? "لا يوجد"}
+        phone={DeatilCompany?.user?.Phone ?? "لا يوجد"}
       />
       <h1 className="font-bold text-2xl mt-15 mr-5">الوظائف المنشورة</h1>
       <div className="mt-10">
@@ -45,7 +45,7 @@ function DetailCompany() {
               location={DeatilCompany?.Address}
               workType={item?.WorkType}
               mode={item?.WorkplaceType}
-              postedAgo={item?.PostedAt}
+              postedAgo={item?.PostedAt.slice(0, 10)}
               ExpiryDate={item?.ExpiryDate}
               salaryFrom={item?.SalaryMin}
               salaryTo={item?.SalaryMax}

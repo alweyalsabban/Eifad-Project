@@ -77,6 +77,7 @@ function LogInPage() {
           body: JSON.stringify({
             token: response.dataResponse.data.token,
             role: response.dataResponse.data.role,
+            name: response.dataResponse.data.name,
           }),
         });
         route.replace("/dashBoard");

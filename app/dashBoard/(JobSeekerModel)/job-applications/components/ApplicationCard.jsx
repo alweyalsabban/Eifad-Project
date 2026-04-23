@@ -18,6 +18,7 @@ export default function ApplicationCard({
   statusVariant = "info", // "info" | "success"
   currentStep = "مراجعة",
   showWithdraw = false,
+  onWithdrawSuccess,
 }) {
   const activeIdx = getStepIndex(currentStep);
   async function onWithdraw() {
@@ -27,6 +28,7 @@ export default function ApplicationCard({
     );
     if (res.isSusses) {
       toast.success("تم سحب الطلب");
+      onWithdrawSuccess?.(applicationId);
     } else toast.error("هناك مشكلة في سحب الطلب");
   }
 
@@ -82,7 +84,7 @@ export default function ApplicationCard({
           <button
             type="button"
             onClick={onWithdraw}
-            className="text-sm text-red-500 hover:text-red-600"
+            className="text-sm text-red-500 hover:text-red-600 hover:cursor-pointer"
           >
             سحب الطلب
           </button>

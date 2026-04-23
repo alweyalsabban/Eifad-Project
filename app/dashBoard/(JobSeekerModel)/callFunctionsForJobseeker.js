@@ -37,6 +37,7 @@ export async function Profile(NameFunction, dataProfile) {
         personal_photo: dataProfile.personalPhoto,
         location: dataProfile.location,
         profile_summary: dataProfile.profile_summary,
+        personal_photo: dataProfile.personal_photo,
       });
     } catch (error) {
       throw new Error(`Error from Profile Function : ${error}`);
@@ -501,7 +502,9 @@ export async function Companies(NameFunction, CompaniesData) {
     return res.dataResponse.data;
   }
   if (NameFunction === "GetAllCompanies") {
-    const res = await ApiFetchServer("/companies");
+    const res = await ApiFetchServer(
+      `/companies?name=${CompaniesData.name}&location=${CompaniesData.location}&field=${CompaniesData.field}`,
+    );
 
     return res.dataResponse.data;
   }
@@ -509,5 +512,22 @@ export async function Companies(NameFunction, CompaniesData) {
     const res = await ApiFetchServer(`/companies/${CompaniesData.id}`);
 
     return res.dataResponse.data;
+  }
+
+  if (NameFunction === "FollowPage") {
+    const res = await ApiFetchServer(
+      `/companies/${CompaniesData.companyId}/follow`,
+      "POST",
+    );
+
+    return res;
+  }
+  if (NameFunction === "UnFollowPage") {
+    const res = await ApiFetchServer(
+      `/companies/${CompaniesData.companyId}/follow`,
+      "DELETE",
+    );
+
+    return res;
   }
 }

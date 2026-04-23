@@ -1,17 +1,11 @@
-"use client";
-import { useContext } from "react";
-import { NamePageContex } from "../context/NamePageContext";
-import { useEffect } from "react";
 import TaskProgressCard from "./components/TaskProgressCard";
 import SmartRecommendationsBanner from "../recommed-job/components/SmartRecommendationsBanner";
+import CreateTitle from "../CreateTitle";
 function RoadMap() {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
-  useEffect(() => {
-    setnameOfSideBar("خارطة الطريق المهنية");
-    setnumberOfSideBar(8);
-  }, [setnameOfSideBar, setnumberOfSideBar]);
   return (
     <>
+      <CreateTitle title="خارطة الطريق المهنية" number={8} />
+
       <div className="w-[98%] m-auto">
         <SmartRecommendationsBanner />
       </div>

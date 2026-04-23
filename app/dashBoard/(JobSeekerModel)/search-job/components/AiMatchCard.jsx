@@ -3,7 +3,12 @@
 import { SparklesIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import Loader from "./Loader ";
 
-export default function AiMatchCard({ score = null, reasons = [], gaps = [] }) {
+export default function AiMatchCard({
+  score = null,
+  reasons = [],
+  gaps = [],
+  explaine,
+}) {
   const clamped = Math.max(0, Math.min(100, score));
 
   return (
@@ -32,6 +37,7 @@ export default function AiMatchCard({ score = null, reasons = [], gaps = [] }) {
           style={{ width: `${clamped}%` }}
         />
       </div>
+      <h4 className="mt-4 text-sm">{explaine}</h4>
 
       {/* Reasons */}
       <div className="mt-6 text-right">
@@ -41,7 +47,7 @@ export default function AiMatchCard({ score = null, reasons = [], gaps = [] }) {
           {reasons.map((r, i) => (
             <li key={i} className="flex items-center  gap-2 text-sm">
               <CheckCircleIcon className="h-5 w-5" />
-              <span>{r}</span>
+              <span>{r.ar}</span>
             </li>
           ))}
         </ul>
@@ -53,7 +59,7 @@ export default function AiMatchCard({ score = null, reasons = [], gaps = [] }) {
           {gaps.map((r, i) => (
             <li key={i} className="flex items-center  gap-2 text-sm">
               <CheckCircleIcon className="h-5 w-5" />
-              <span>{r}</span>
+              <span>{r.ar}</span>
             </li>
           ))}
         </ul>

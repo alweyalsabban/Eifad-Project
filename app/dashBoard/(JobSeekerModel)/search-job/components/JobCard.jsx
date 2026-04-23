@@ -15,6 +15,8 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Loader from "./Loader ";
+import { LuTarget } from "react-icons/lu";
+import LoaderTwo from "../../components/LoaderTwo";
 
 export default function JobCard({
   CVId,
@@ -29,7 +31,7 @@ export default function JobCard({
   salaryFrom,
   salaryTo,
   currency,
-  onQuickApply,
+
   logoPath,
 }) {
   const router = useRouter();
@@ -39,6 +41,20 @@ export default function JobCard({
   const isExpired = expiry < now;
   const [saved, setSaved] = useState(false);
   const [match, setMatch] = useState(null);
+  const [isAnlaysis, setAnlaysis] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [isLoadingAutoApplay, setLoadingAuto] = useState(false);
+
+  const onAutoApply = async () => {
+    setLoadingAuto(true);
+    const res = await JobApplication("AutoAppleyJob", {
+      JobID: JobAdID,
+      CVID: CVId,
+    });
+    if (!res.isSusses) toast.error(res.dataResponse.message);
+    if (res.isSusses) toast.success("تم التقديم بنجاح");
+    setLoadingAuto(false);
+  };
 
   async function onToggleSave() {
     if (!saved) {
@@ -61,6 +77,15 @@ export default function JobCard({
       }
     }
   }
+
+  async function calMathc() {
+    const res = await JobApplication("CalMatchAiJob", {
+      jobId: JobAdID,
+      CvId: CVId,
+    });
+    setMatch(res.dataResponse.data);
+  }
+
   useEffect(() => {
     async function fetchData() {
       const res = await JobApplication("favorites");
@@ -70,16 +95,9 @@ export default function JobCard({
         }
       });
     }
-    async function calMathc() {
-      const res = await JobApplication("CalMatchAiJob", {
-        jobId: JobAdID,
-        CvId: CVId,
-      });
-      setMatch(res.dataResponse.data);
-    }
 
     fetchData();
-    calMathc();
+    /* calMathc(); */
   }, [JobAdID, CVId]);
   return (
     <section className="w-full rounded-2xl border border-slate-200 bg-white p-6 mt-5">
@@ -123,16 +141,29 @@ export default function JobCard({
               </button>
             </div>
 
-            <div className="inline-flex h-10 items-center gap-2 rounded-xl bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
-              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-white text-xs">
-                ◎
-              </span>
-              {match === null ? (
-                <div className="scale-50">
-                  <Loader />
+            <div
+              className={`inline-flex h-10 items-center gap-2 rounded-xl bg-green-100 px-4 
+              py-2 text-sm font-semibold text-green-700 ${isAnlaysis ? "hover:cursor-auto" : "hover:cursor-pointer hover:scale-105 duration-500"}`}
+              onClick={() => {
+                setAnlaysis(true);
+                calMathc();
+              }}
+            >
+              {isAnlaysis ? (
+                <div className="flex gap-2 items-center justify-center">
+                  <LuTarget />
+                  <div>
+                    {match === null ? (
+                      <div className="scale-50">
+                        <Loader />
+                      </div>
+                    ) : (
+                      `${match?.match_score}%`
+                    )}
+                  </div>
                 </div>
               ) : (
-                `${match?.match_score}%`
+                "احسب المطابقة"
               )}
             </div>
           </div>
@@ -199,18 +230,28 @@ export default function JobCard({
           className="h-12 flex flex-1 rounded-2xl bg-blue-600 text-white font-medium 
           hover:bg-blue-700 hover:cursor-pointer items-center justify-center "
         >
-          عرض التفاصيل
+          {isLoading ? (
+            <div className="m-auto">
+              <LoaderTwo />
+            </div>
+          ) : (
+            "عرضل التفاصيل"
+          )}
         </Link>
 
         {/* left small button */}
         <button
           type="button"
-          disabled={isExpired}
-          onClick={onQuickApply}
+          disabled={isExpired || isLoadingAutoApplay}
+          onClick={onAutoApply}
           className={`h-12 rounded-xl border  font-medium px-8
              ${isExpired ? "opacity-50 border-red-600 text-red-700 hover:cursor-not-allowed " : "border-green-500  text-green-600 hover:bg-green-50 hover:cursor-pointer"} `}
         >
-          تقديم سريع
+          {isLoadingAutoApplay ? (
+            <LoaderTwo colorLoading="fill-green-500" />
+          ) : (
+            "تقديم سريع"
+          )}
         </button>
       </div>
     </section>

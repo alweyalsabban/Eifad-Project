@@ -35,6 +35,7 @@ function DeatilJob() {
         CvId: cvRes.CVID,
       }).then((res) => {
         setAIAnalayise(res.dataResponse.data);
+        console.log(res.dataResponse.data);
       });
     });
   }, [path]);
@@ -85,6 +86,7 @@ function DeatilJob() {
         score={AIAnalayise?.match_score}
         gaps={AIAnalayise?.gaps}
         reasons={AIAnalayise?.strengths}
+        explaine={AIAnalayise?.explanation?.ar}
       />
 
       <JobDescriptionCard

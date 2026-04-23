@@ -14,9 +14,10 @@ export async function POST(req: Request) {
   try {
     const response = NextResponse.json({ success: true });
 
-    const { token, role } = await req.json();
+    const { token, role, name } = await req.json();
     setCookies(response, "token", token);
     setCookies(response, "role", role);
+    setCookies(response, "name", name);
 
     return response;
   } catch {

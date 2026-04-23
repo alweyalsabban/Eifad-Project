@@ -1,19 +1,13 @@
 "use client";
-import { NamePageContex } from "../context/NamePageContext";
-import { useEffect, useState, useContext } from "react";
+import { useState } from "react";
 import TopSkillsDemandCard from "./components/TopSkillsDemandCard";
 import SearchFieldBar from "./components/SearchFieldBar";
 import TrendingJobs from "./components/TrendingJobs";
 import { FiDownload } from "react-icons/fi";
-
+import CreateTitle from "../CreateTitle";
 function MarketTrend() {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
   const [field, setField] = useState("");
 
-  useEffect(() => {
-    setnameOfSideBar("إتجاهات السوق");
-    setnumberOfSideBar(9);
-  }, [setnameOfSideBar, setnumberOfSideBar]);
   const skills = [
     { name: "React", percent: 95 },
     { name: "Node.js", percent: 88 },
@@ -23,6 +17,8 @@ function MarketTrend() {
   ];
   return (
     <div className="mb-40">
+      <CreateTitle title="إتجاهات السوق" number={9} />
+
       <SearchFieldBar
         value={field}
         onChange={setField}

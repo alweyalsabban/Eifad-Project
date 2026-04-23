@@ -13,6 +13,9 @@ import Bio from "./Bio";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { PersentProfileContext } from "../../context/PersentProfileContext";
+import SetCookies from "../../../../lib/setNameCooies";
+import { uploadImage } from "../../../../lib/UploadImage";
+import LoaderTwo from "../../components/LoaderTwo";
 
 export default function BasicInfoCard({ dataProfile, anathorData }) {
   const { numberOfPersent, setnumberOfPersent } = useContext(
@@ -28,11 +31,17 @@ export default function BasicInfoCard({ dataProfile, anathorData }) {
 
   const router = useRouter();
   const [backUpData, setbackUpData] = useState(formData);
+  const [image, setImage] = useState(dataProfile?.PersonalPhoto ?? null);
+  const [loadingImage, setLoadingImage] = useState(false);
 
   const [number] = useState([0, 0, 0, 0, 0]);
   const [isLoading, setLoading] = useState(false);
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
+    setLoadingImage(true);
     const file = e.target.files?.[0];
+    const url = await uploadImage(file);
+    setImage(url);
+    setLoadingImage(false);
     if (!file) return;
 
     const okType = ["image/jpeg", "image/png"].includes(file.type);
@@ -55,10 +64,12 @@ export default function BasicInfoCard({ dataProfile, anathorData }) {
       phone: formData.phone,
       location: formData.location,
       profile_summary: formData.bio,
+      personal_photo: image,
     });
+    SetCookies(formData.fullName);
     calPersent();
     setbackUpData(formData);
-    router.replace("/dashBoard");
+    //router.replace("/dashBoard");
     setLoading(false);
   };
 
@@ -87,9 +98,14 @@ export default function BasicInfoCard({ dataProfile, anathorData }) {
         <div className="mt-4 flex flex-col gap-4 border-b border-slate-200 pb-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <div className="h-18 w-18 overflow-hidden rounded-full border border-slate-300 bg-secondGray">
-              {dataProfile.PersonalPhoto && (
+              {loadingImage && (
+                <div className="flex items-center justify-center mt-5">
+                  <LoaderTwo colorLoading="fill-gray-400" />
+                </div>
+              )}
+              {image && (
                 <Image
-                  src={dataProfile.PersonalPhoto || ""}
+                  src={image}
                   width={74}
                   height={74}
                   alt="صورة الملف الشخصي"

@@ -1,17 +1,11 @@
 "use client";
-import { useContext, useState, useEffect } from "react";
-import { NamePageContex } from "../context/NamePageContext";
+import { useState } from "react";
 import SettingsCard from "./components/SettingsCard";
 import { FiUser, FiLock, FiBell } from "react-icons/fi";
 
 import SettingsPanel from "./components/SettingsPanel";
-
+import CreateTitle from "../CreateTitle";
 function Setting() {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
-  useEffect(() => {
-    setnameOfSideBar("الإعدادات");
-    setnumberOfSideBar(13);
-  }, [setnameOfSideBar, setnumberOfSideBar]);
   const [notify, setNotify] = useState({
     jobs: true,
     updates: false,
@@ -22,6 +16,8 @@ function Setting() {
 
   return (
     <div className="mb-10">
+      <CreateTitle title="الإعدادات" number={13} />
+
       <SettingsCard
         title="إعدادات الحساب"
         icon={<FiUser className="text-blue-600" size={18} />}

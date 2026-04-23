@@ -10,7 +10,7 @@ async function ProfilePage() {
   const anathorDataForProfile = await ApiFetchServer("/auth/me");
   return (
     <section
-      className="grid grid-cols-1 md:grid-cols-[30%_70%] m-auto w-[98%] justify-between mt-5 gap-2"
+      className="grid grid-cols-1 md:grid-cols-[30%_70%] m-auto w-[98%] justify-between mt-5 gap-2 mb-40"
       dir="ltr"
     >
       <CreateTitle title="الملف الشخصي" number={2} />

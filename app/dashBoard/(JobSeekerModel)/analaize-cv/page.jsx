@@ -1,19 +1,14 @@
-"use client";
-import { useContext, useEffect } from "react";
-import { NamePageContex } from "../context/NamePageContext";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import AiScoreCard from "./components/AiScoreCard";
 import InsightListCard from "./components/InsightListCard";
 import SkillGapCard from "./components/SkillGapCard";
+import CreateTitle from "../CreateTitle";
 
 function AnalaizeCv() {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
-  useEffect(() => {
-    setnameOfSideBar("تحليل السيرة الذاتية");
-    setnumberOfSideBar(4);
-  }, [setnameOfSideBar, setnumberOfSideBar]);
   return (
     <>
+      <CreateTitle title="تحليل السيرة الذاتية" number={4} />
+
       <AiScoreCard score={82} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <InsightListCard

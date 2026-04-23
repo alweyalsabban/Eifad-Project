@@ -1,6 +1,7 @@
 "use client";
 import { toast } from "react-toastify";
 import { FaHeart } from "react-icons/fa";
+import LoaderTwo from "../../components/LoaderTwo";
 
 import {
   HeartIcon,
@@ -31,6 +32,8 @@ export default function JobDetailsHeaderCard({
   isExpired,
 }) {
   const [isFavoritJob, setFavoritJob] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [loadingForAutoApplay, setLoadingAuto] = useState(false);
   useEffect(() => {
     async function fetchData() {
       const res = await JobApplication("favorites");
@@ -39,16 +42,21 @@ export default function JobDetailsHeaderCard({
           setFavoritJob(true);
         }
       });
+      if (CVID > 0) {
+        setLoading(false);
+      }
     }
     fetchData();
-  }, [JobAdID]);
+  }, [JobAdID, isExpired]);
   const onAutoApply = async () => {
+    setLoadingAuto(true);
     const res = await JobApplication("AutoAppleyJob", {
       JobID: JobAdID,
       CVID: CVID,
     });
     if (!res.isSusses) toast.error(res.dataResponse.message);
     if (res.isSusses) toast.success("تم التقديم بنجاح");
+    setLoadingAuto(false);
   };
 
   const onFavoritJob = async () => {
@@ -175,23 +183,31 @@ export default function JobDetailsHeaderCard({
         <button
           type="button"
           onClick={onApplyNow}
-          disabled={isExpired}
+          disabled={isExpired || isLoading}
           className={`h-12 w-full rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 
-            ${isExpired ? "opacity-50 cursor-not-allowed" : "hover:cursor-pointer"}`}
+            ${isExpired || isLoading ? "opacity-50 cursor-not-allowed" : "hover:cursor-pointer"}`}
         >
           تقديم الآن
         </button>
 
         {/* Auto Apply */}
         <button
-          disabled={isExpired}
+          disabled={isExpired || isLoading || loadingForAutoApplay}
           type="button"
           onClick={onAutoApply}
           className={`h-12 w-full rounded-xl bg-green-600 text-white font-medium hover:bg-green-700 inline-flex 
-          items-center justify-center gap-2   ${isExpired ? "opacity-50 cursor-not-allowed" : "hover:cursor-pointer"}`}
+          items-center justify-center gap-2   ${isExpired || isLoading || loadingForAutoApplay ? "opacity-50 cursor-not-allowed" : "hover:cursor-pointer"}`}
         >
-          <SparklesIcon className="h-5 w-5" />
-          تقديم تلقائي
+          {loadingForAutoApplay ? (
+            <div>
+              <LoaderTwo colorLoading="fill-green-400" />
+            </div>
+          ) : (
+            <div className="flex gap-2 items-center">
+              <SparklesIcon className="h-5 w-5" />
+              <h1> تقديم تلقائي</h1>{" "}
+            </div>
+          )}
         </button>
       </div>
     </section>

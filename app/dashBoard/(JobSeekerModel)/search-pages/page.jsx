@@ -5,18 +5,29 @@ import PageSearch from "./components/PageSearch";
 import CompanyCard from "./components/CompanyCard";
 import CreateTitle from "../CreateTitle";
 import { Companies } from "../callFunctionsForJobseeker";
+import LoaderTwo from "../components/LoaderTwo";
 function SearchPages() {
   const [active, setActive] = useState("search");
-  const [AllPageFollow, setAllPageFollow] = useState(null);
+  const [AllConmpnies, setAllConmpnies] = useState(null);
+  const [AllFollowPage, setAllFollowPage] = useState(null);
+  const [isLoading, setLoading] = useState(true);
+  const [params, setParams] = useState({
+    name: "",
+    location: "",
+    field: "",
+  });
 
   useEffect(() => {
     async function Fetch() {
-      const res = await Companies("GetAllCompanies");
-      console.log(res);
-      setAllPageFollow(res);
+      setLoading(true);
+      const res = await Companies("GetAllCompanies", params);
+      const resFollowPage = await Companies("GetAllFollwPage");
+      setAllFollowPage(resFollowPage);
+      setAllConmpnies(res);
+      setLoading(false);
     }
     Fetch();
-  }, []);
+  }, [params]);
   return (
     <div className="mb-40">
       <CreateTitle title="الصفحات" number={11} />
@@ -47,17 +58,47 @@ function SearchPages() {
           </button>
         </div>
       </div>
-      {active === "search" && <PageSearch />}
-      {AllPageFollow?.map((item, index) => {
-        return (
-          <CompanyCard
-            key={index}
-            name={item.CompanyName}
-            city={item.Address}
-            companyId={item.CompanyID}
-          />
-        );
-      })}
+      {active === "search" && (
+        <PageSearch params={params} setParams={setParams} />
+      )}
+      {isLoading ? (
+        <div className="items-center justify-center flex mt-30">
+          <LoaderTwo />
+        </div>
+      ) : active === "search" ? (
+        AllConmpnies?.map((item, index) => {
+          return (
+            <CompanyCard
+              key={index}
+              name={item?.CompanyName}
+              city={item?.Address}
+              companyId={item?.CompanyID}
+              AllFollowPage={AllFollowPage}
+              setAllFollowPage={setAllFollowPage}
+              AllConmpnies={AllConmpnies}
+            />
+          );
+        })
+      ) : AllFollowPage.length > 0 ? (
+        AllFollowPage?.map((item, index) => {
+          return (
+            <CompanyCard
+              key={index}
+              name={item?.company?.CompanyName}
+              city={item?.company?.Address}
+              companyId={item?.CompanyID}
+              AllFollowPage={AllFollowPage}
+              setAllFollowPage={setAllFollowPage}
+              AllConmpnies={AllConmpnies}
+            />
+          );
+        })
+      ) : (
+        <h1 className="flex items-center justify-center mt-10">
+          {" "}
+          لا توجد صفحات تمت متابعتها
+        </h1>
+      )}
     </div>
   );
 }

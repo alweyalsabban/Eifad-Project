@@ -1,21 +1,22 @@
-"use client";
 import Image from "next/image";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { GoBell } from "react-icons/go";
 import { GrLanguage } from "react-icons/gr";
 import { FiSearch } from "react-icons/fi";
-import { useState, useEffect } from "react";
 import { personInformation } from "../data";
+import { ApiFetchServer } from "../../lib/ApiFetchServer";
+async function Header() {
+  const cookieStore = await cookies();
+  const role = cookieStore.get("role")?.value;
+  const name = cookieStore.get("name")?.value;
+  async function getData() {
+    const res = await ApiFetchServer("/profile");
 
-function Header() {
-  const [name, setName] = useState("");
-  const [role, setRole] = useState("");
+    return res.dataResponse.data.PersonalPhoto;
+  }
+  const URL = await getData();
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setName(localStorage.getItem("name") || personInformation.name);
-    setRole(localStorage.getItem("role") || personInformation.role);
-  }, []);
   return (
     <div
       className="bg-auxiliaryColorWhite border border-secondGray w-[80%] py-1 px-5 
@@ -24,7 +25,17 @@ function Header() {
     >
       <div className="flex justify-center items-center gap-4">
         <div className="border w-15 h-15 rounded-full flex items-center justify-center">
-          <div className="bg-auxiliaryColorGray w-13 h-13 rounded-full"></div>
+          {URL === null ? (
+            <div className="bg-auxiliaryColorGray w-13 h-13 rounded-full"></div>
+          ) : (
+            <Image
+              src={URL}
+              width={100}
+              height={100}
+              alt="صورة الملف الشخصي"
+              className=" w-15 h-15 object-cover rounded-full "
+            />
+          )}
         </div>
         <div>
           <h1 className="font-bold text-[18px]">
@@ -43,16 +54,16 @@ function Header() {
         <div className="flex gap-4 text-[#C6C8CC]">
           <GoBell
             size={20}
-            onClick={() => {
+            /*       onClick={() => {
               // To show Notif
-            }}
+            }} */
             className="hover:cursor-pointer"
           />
           <GrLanguage
             size={20}
-            onClick={() => {
+            /*      onClick={() => {
               // To change language
-            }}
+            }} */
             className="hover:cursor-pointer"
           />
         </div>
@@ -61,7 +72,13 @@ function Header() {
         <input
           type="text"
           className=" w-full h-full rounded-full outline-none p-6"
-          placeholder="ابحث عن الوظيفة ... "
+          placeholder={`${
+            role === "JobSeeker"
+              ? "إبحث عن وظيفة ..."
+              : role === "Employer"
+                ? "إبحث عن موظف ..."
+                : "إبحث عن مستخدم ...."
+          }`}
         />
         <div
           className="p-2 bg-primaryColorBlue text-auxiliaryColorWhite rounded-full 
