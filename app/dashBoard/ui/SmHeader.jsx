@@ -83,7 +83,7 @@ async function SmHeader() {
           <GrLanguage className="hover:cursor-pointer" size={20} />
         </div>
 
-        <div className="w-full lg:w-[520px]">
+        <div className="w-full lg:w-130">
           <div className="flex items-center gap-3 h-12 bg-[#FAFAFA] rounded-full border border-transparent">
             <input
               type="text"
