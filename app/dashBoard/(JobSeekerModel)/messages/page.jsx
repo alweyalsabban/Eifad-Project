@@ -1,7 +1,8 @@
+"use client";
 import dynamic from "next/dynamic";
 import ThreadsList from "./components/ThreadsList";
 import CreateTitle from "../CreateTitle";
-
+import { useState } from "react";
 const ChatWindow = dynamic(() => import("./components/ChatWindow"));
 
 function Messages() {

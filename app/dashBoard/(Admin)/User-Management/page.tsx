@@ -4,7 +4,8 @@ import { useMemo, useState } from "react";
 import UsersFiltersBar from "./components/UsersFiltersBar";
 import UsersTable from "./components/UsersTable";
 import TitlePage from "../controll/components/TitlePage";
-
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 const usersData = [
   {
     id: 1,
@@ -48,6 +49,14 @@ export default function UsersPage() {
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("");
   const [status, setStatus] = useState("");
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const q = searchParams.get("q") || "";
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSearch(q);
+  }, [searchParams]);
 
   const filteredUsers = useMemo(() => {
     return usersData.filter((user) => {

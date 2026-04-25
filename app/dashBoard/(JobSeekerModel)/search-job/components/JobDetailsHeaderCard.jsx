@@ -2,7 +2,7 @@
 import { toast } from "react-toastify";
 import { FaHeart } from "react-icons/fa";
 import LoaderTwo from "../../components/LoaderTwo";
-
+import Image from "next/image";
 import {
   HeartIcon,
   ShareIcon,
@@ -82,23 +82,24 @@ export default function JobDetailsHeaderCard({
     <section className="w-full rounded-2xl border border-slate-200 bg-white p-6 mt-5">
       {/* Top row */}
       <div className="">
-        <div className="grid grid-cols-[10%_70%_25%] items-center">
-          <div className="space-x-5 text-slate-500">
-            <button
-              type="button"
-              onClick={onFavoritJob}
-              className="hover:text-red-500 hover:cursor-pointer scale-120"
-              aria-label="حفظ"
-              title="حفظ"
-            >
-              {isFavoritJob ? (
-                <FaHeart className={`h-6 w-6 text-red-500`} />
-              ) : (
-                <HeartIcon className={`h-6 w-6 text-red-500`} />
-              )}
-            </button>
+        <div className="flex justify-between">
+          <div className="flex gap-4 items-center">
+            <div className="space-x-5 text-slate-500">
+              <button
+                type="button"
+                onClick={onFavoritJob}
+                className="hover:text-red-500 hover:cursor-pointer scale-120"
+                aria-label="حفظ"
+                title="حفظ"
+              >
+                {isFavoritJob ? (
+                  <FaHeart className={`h-6 w-6 text-red-500`} />
+                ) : (
+                  <HeartIcon className={`h-6 w-6 text-red-500`} />
+                )}
+              </button>
 
-            {/*       <button
+              {/*       <button
               type="button"
               onClick={onShare}
               className="hover:text-slate-700"
@@ -107,11 +108,12 @@ export default function JobDetailsHeaderCard({
             >
               <ShareIcon className="h-6 w-6" />
             </button> */}
-          </div>
+            </div>
 
-          <div>
-            <h1 className="text-2xl font-semibold text-slate-900">{title}</h1>
-            <p className="mt-1 text-sm text-slate-600">{company}</p>
+            <div>
+              <h1 className="text-2xl font-semibold text-slate-900">{title}</h1>
+              <p className="mt-1 text-sm text-slate-600">{company}</p>
+            </div>
           </div>
 
           <div className="grid sm:grid-cols-2 grid-cols-1 items-center gap-2">
@@ -121,9 +123,6 @@ export default function JobDetailsHeaderCard({
                   مغلق
                 </h1>
               )}
-            </div>
-            <div className="rounded-xl bg-blue-600 text-white text-lg font-bold px-5 py-3 w-fit">
-              G
             </div>
           </div>
         </div>

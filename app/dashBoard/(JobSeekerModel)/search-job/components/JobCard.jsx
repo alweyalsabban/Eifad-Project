@@ -105,12 +105,20 @@ export default function JobCard({
       <div className="">
         <div className=" w-full flex justify-between items-center">
           <div className="flex gap-2">
-            <div
-              className="flex h-12 w-12 items-center justify-center rounded-xl
-         bg-blue-600 text-white font-bold"
-            >
-              G
-            </div>
+            {logoPath?.length > 40 ? (
+              <div className=" h-12 w-12 rounded-xl border p-1 border-gray-500">
+                <Image
+                  src={logoPath}
+                  width={300}
+                  height={200}
+                  alt="LogoImage"
+                />
+              </div>
+            ) : (
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-lg font-bold text-white">
+                G
+              </div>
+            )}
             <div>
               <h3 className="text-xl font-semibold text-slate-900">{title}</h3>
 

@@ -3,6 +3,7 @@
 import React from "react";
 import { MapPinIcon, BuildingOffice2Icon } from "@heroicons/react/24/outline";
 import { FiMail, FiPhone } from "react-icons/fi";
+import Image from "next/image";
 
 export default function CompanyAboutCard({
   title,
@@ -13,7 +14,9 @@ export default function CompanyAboutCard({
   city,
   email,
   phone,
+  UrlImage,
 }) {
+  console.log(UrlImage);
   return (
     <section className="w-full rounded-2xl border border-slate-200 bg-white p-6 mt-5">
       {/* Top row */}
@@ -23,9 +26,20 @@ export default function CompanyAboutCard({
 
           <div className="mt-2 flex gap-3 items-center">
             {/* Logo */}
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white text-lg font-bold">
-              G
-            </div>
+            {UrlImage?.length > 40 ? (
+              <div className=" h-12 w-12 rounded-xl border p-1 border-gray-500">
+                <Image
+                  src={UrlImage}
+                  width={300}
+                  height={200}
+                  alt="LogoImage"
+                />
+              </div>
+            ) : (
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-lg font-bold text-white">
+                G
+              </div>
+            )}
 
             <div className="text-right">
               <div className="text-sm font-semibold text-slate-900">

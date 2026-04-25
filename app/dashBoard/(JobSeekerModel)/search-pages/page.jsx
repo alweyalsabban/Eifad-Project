@@ -76,6 +76,7 @@ function SearchPages() {
               AllFollowPage={AllFollowPage}
               setAllFollowPage={setAllFollowPage}
               AllConmpnies={AllConmpnies}
+              UrlImage={item.LogoPath}
             />
           );
         })
@@ -90,6 +91,7 @@ function SearchPages() {
               AllFollowPage={AllFollowPage}
               setAllFollowPage={setAllFollowPage}
               AllConmpnies={AllConmpnies}
+              UrlImage={item.LogoPath}
             />
           );
         })

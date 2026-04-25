@@ -444,12 +444,56 @@ export async function UpdateCv(NameFunction, dataCv) {
 }
 
 export async function JobApplication(NameFunction, JobData) {
-  if (NameFunction === "GetAllJob") {
+  /*  if (NameFunction === "GetAllJob") {
     const res = await ApiFetchServer(
       `/jobs?search=${JobData.search}&location=${JobData.location}&work_type=${JobData.work_type}&workplace_type=${JobData.workplace_type}
       &salary_min=${JobData.salary_min}&salary_max=${JobData.salary_max}&company_id=${JobData.company_id}&skill_ids=${JobData.skill_ids}
       &industry=${JobData.industry}&sort=${JobData.sort}&per_page=${JobData.per_page}`,
     );
+    return res.dataResponse.data;
+  } */
+  if (NameFunction === "GetAllJob") {
+    const workTypeMap = {
+      full_time: "Full-time",
+      part_time: "Part-time",
+      contract: "Contract",
+      internship: "Internship",
+    };
+
+    const workplaceTypeMap = {
+      onsite: "On-site",
+      remote: "Remote",
+      hybrid: "Hybrid",
+    };
+
+    const query = new URLSearchParams();
+
+    if (JobData.search) query.set("search", JobData.search);
+    if (JobData.location) query.set("location", JobData.location);
+
+    if (JobData.work_type) {
+      query.set(
+        "work_type",
+        workTypeMap[JobData.work_type] ?? JobData.work_type,
+      );
+    }
+
+    if (JobData.workplace_type) {
+      query.set(
+        "workplace_type",
+        workplaceTypeMap[JobData.workplace_type] ?? JobData.workplace_type,
+      );
+    }
+
+    if (JobData.salary_min) query.set("salary_min", JobData.salary_min);
+    if (JobData.salary_max) query.set("salary_max", JobData.salary_max);
+    if (JobData.company_id) query.set("company_id", JobData.company_id);
+    if (JobData.skill_ids) query.set("skill_ids", JobData.skill_ids);
+    if (JobData.industry) query.set("industry", JobData.industry);
+    if (JobData.sort) query.set("sort", JobData.sort);
+    if (JobData.per_page) query.set("per_page", JobData.per_page);
+
+    const res = await ApiFetchServer(`/jobs?${query.toString()}`);
     return res.dataResponse.data;
   }
 

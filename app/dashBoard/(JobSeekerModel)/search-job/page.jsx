@@ -6,7 +6,7 @@ import CreateTitle from "../CreateTitle";
 import { useEffect, useState } from "react";
 import { JobApplication } from "../callFunctionsForJobseeker";
 import LoaderTwo from "../components/LoaderTwo";
-
+import { useSearchParams } from "next/navigation";
 function JobSearchPage() {
   const [allJob, setAllJob] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -24,22 +24,36 @@ function JobSearchPage() {
     per_page: "",
   });
   const [CvInfo, setCvInfo] = useState(null);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const q = searchParams.get("q") || "";
+
+    setParams((prev) => {
+      if (prev.search === q) return prev;
+      return { ...prev, search: q };
+    });
+  }, [searchParams]);
 
   useEffect(() => {
     async function fetchJobs() {
       try {
         setLoading(true);
+
         const data = await JobApplication("GetAllJob", params);
         const cvInfo = await JobApplication("GetCVInfo");
+
         setCvInfo(cvInfo);
-        setAllJob(data);
+        setAllJob(data ?? []);
+      } catch (error) {
+        console.error(error);
+      } finally {
         setLoading(false);
-      } catch (error) {}
+      }
     }
 
     fetchJobs();
   }, [params]);
-
   return (
     <>
       <CreateTitle title="البحث عن وظائف" number={5} />

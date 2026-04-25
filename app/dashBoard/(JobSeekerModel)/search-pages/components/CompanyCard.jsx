@@ -5,14 +5,16 @@ import { Companies } from "../../callFunctionsForJobseeker";
 import { useEffect, useState } from "react";
 import LoaderTwo from "../../components/LoaderTwo";
 import { toast } from "react-toastify";
+import Image from "next/image";
 export default function CompanyCard({
   name,
   city,
   companyId,
-  logoText = "G",
+
   AllFollowPage,
   setAllFollowPage,
   AllConmpnies,
+  UrlImage,
 }) {
   const [page, setPage] = useState(null);
   useEffect(() => {
@@ -54,9 +56,15 @@ export default function CompanyCard({
     <div className="w-full rounded-2xl border border-gray-200 bg-white px-6 py-5 mt-5">
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-lg font-bold text-white">
-            {logoText}
-          </div>
+          {UrlImage.length > 40 ? (
+            <div className=" h-12 w-12 rounded-xl border p-1 border-blue-950">
+              <Image src={UrlImage} width={300} height={200} alt="LogoImage" />
+            </div>
+          ) : (
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-lg font-bold text-white">
+              G
+            </div>
+          )}
 
           <div className="flex flex-col">
             <span className="text-lg font-semibold text-gray-900">{name}</span>

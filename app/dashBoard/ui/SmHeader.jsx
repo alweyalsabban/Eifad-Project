@@ -6,7 +6,7 @@ import { FiSearch } from "react-icons/fi";
 import { cookies } from "next/headers";
 import { personInformation } from "../data";
 import { ApiFetchServer } from "../../lib/ApiFetchServer";
-
+import HeaderSearch from "./HeaderSearch";
 async function SmHeader() {
   const cookieStore = await cookies();
   const role = cookieStore.get("role")?.value;
@@ -95,26 +95,7 @@ async function SmHeader() {
         </div>
 
         <div className="w-full lg:w-130">
-          <div className="flex items-center gap-3 h-12 bg-[#FAFAFA] rounded-full border border-transparent">
-            <input
-              type="text"
-              className="w-full h-full rounded-full outline-none px-6 bg-transparent text-sm"
-              placeholder={`${
-                role === "JobSeeker"
-                  ? "إبحث عن وظيفة ..."
-                  : role === "Employer"
-                    ? "إبحث عن موظف ..."
-                    : "إبحث عن مستخدم ...."
-              }`}
-            />
-            <button
-              className="p-2 bg-primaryColorBlue text-auxiliaryColorWhite rounded-full
-                         flex items-center justify-center hover:cursor-pointer ml-3"
-              aria-label="search"
-            >
-              <FiSearch size={20} className="rotate-100" />
-            </button>
-          </div>
+          <HeaderSearch role={role} />
         </div>
       </div>
     </header>

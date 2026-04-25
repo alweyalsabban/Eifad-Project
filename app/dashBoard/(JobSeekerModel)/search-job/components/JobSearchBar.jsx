@@ -196,8 +196,8 @@ export default function JobSearchBar({ params, setParams }) {
                   <option value="">اختر نوع العمل</option>
                   <option value="full_time">كلي</option>
                   <option value="part_time">جزئي</option>
-                  <option value="contract">Contract</option>
-                  <option value="internship">Internship</option>
+                  <option value="contract">عقد</option>
+                  <option value="internship">التدريب الداخلي</option>
                 </select>
               </div>
             </div>

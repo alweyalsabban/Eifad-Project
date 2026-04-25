@@ -20,7 +20,7 @@ function DeatilJob() {
     async function fetchJobs() {
       const jobRes = await JobApplication("GetDeatilJob", path.detailJob);
       const cvRes = await JobApplication("GetCVInfo");
-
+      console.log(jobRes);
       setJobDetials(jobRes);
       setCVInfo(cvRes);
 
@@ -75,6 +75,7 @@ function DeatilJob() {
       />
       <CompanyAboutCard
         companyName={JobDetials?.company?.CompanyName}
+        UrlImage={JobDetials?.company?.LogoPath}
         category={JobDetials?.company?.FieldOfWork}
         description={JobDetials?.company?.Description}
         employees={JobDetials?.company?.EmployeeCount}

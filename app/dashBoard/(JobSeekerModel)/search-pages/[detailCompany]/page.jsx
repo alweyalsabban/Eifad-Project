@@ -14,6 +14,7 @@ function DetailCompany() {
     async function Fetch() {
       const res = await Companies("CompanyDeatils", { id: path.detailCompany });
       setDeatilCompany(res);
+      console.log(res);
       setAllJobForCompany(res.job_ads);
       console.log(res);
     }
@@ -31,6 +32,7 @@ function DetailCompany() {
         city={DeatilCompany?.Address}
         email={DeatilCompany?.user?.Email ?? "لا يوجد"}
         phone={DeatilCompany?.user?.Phone ?? "لا يوجد"}
+        UrlImage={DeatilCompany?.LogoPath}
       />
       <h1 className="font-bold text-2xl mt-15 mr-5">الوظائف المنشورة</h1>
       <div className="mt-10">
