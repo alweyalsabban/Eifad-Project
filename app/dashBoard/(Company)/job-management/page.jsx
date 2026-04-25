@@ -4,8 +4,8 @@ import { NamePageContex } from "../../(JobSeekerModel)/context/NamePageContext";
 import JobsToolbar from "./components/JobsToolbar";
 import JobsTabs from "./components/JobsTabs";
 import JobListingCard from "./components/JobListingCard";
-
 import dynamic from "next/dynamic";
+import { Profile } from "../callFunctionsForCompany";
 
 const JobForm = dynamic(() => import("./components/JobForm"));
 const tabs = [
@@ -18,9 +18,16 @@ const tabs = [
 function JobManagement() {
   const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
   const [isPostJob, setPostJob] = useState(false);
+  const [AllJobPost, setAllJobPost] = useState([]);
   useEffect(() => {
+    async function FetchData() {
+      setAllJobPost(await Profile("GetAllJobPosted"));
+    }
     setnameOfSideBar("إدارة الوظائف");
     setnumberOfSideBar(3);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    FetchData();
+    console.log(AllJobPost);
   }, [setnameOfSideBar, setnumberOfSideBar]);
   return (
     <div className="mb-40">
@@ -39,20 +46,25 @@ function JobManagement() {
         <JobsTabs setPostJob={setPostJob} tabs={tabs} />
       </section>
       <div className="w-[98%] mx-auto gap-2 grid grid-cols-1 md:grid-cols-2 ">
-        <JobListingCard
-          title="مصمم واجهات المستخدم"
-          location="جدة"
-          jobType="دوام كامل"
-          status="مفتوح"
-          applicants={35}
-          views={521}
-          salary="18,000 $"
-          publishedAt="2024-01-28"
-          expiresAt="2024-02-28"
-          onViewApplicants={() => console.log("عرض المتقدمين")}
-          onCloseJob={() => console.log("إغلاق")}
-          onMenuClick={() => console.log("القائمة")}
-        />
+        {AllJobPost?.map((item, index) => {
+          return (
+            <JobListingCard
+              key={index}
+              title={item?.Title}
+              location={item?.Location}
+              jobType={item?.WorkType}
+              status={item?.Status}
+              applicants={item?.applications_count}
+              views={"لا يوجد"}
+              salary={`${item?.SalaryMin} - ${item?.SalaryMax} ${item?.Currency}`}
+              publishedAt={item?.PostedAt?.slice(0, 10)}
+              expiresAt={item?.ExpiryDate?.slice(0, 10)}
+              onViewApplicants={() => console.log("عرض المتقدمين")}
+              onCloseJob={() => console.log("إغلاق")}
+              onMenuClick={() => console.log("القائمة")}
+            />
+          );
+        })}
       </div>
     </div>
   );

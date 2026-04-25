@@ -10,15 +10,15 @@ import { HiOutlineBriefcase } from "react-icons/hi2";
 import Link from "next/link";
 
 export default function JobListingCard({
-  title = "مصمم واجهات المستخدم",
-  location = "جدة",
-  jobType = "دوام كامل",
-  status = "مفتوح",
-  applicants = 35,
-  views = 521,
-  salary = "18,000 $",
-  publishedAt = "2024-01-28",
-  expiresAt = "2024-02-28",
+  title,
+  location,
+  jobType,
+  status,
+  applicants,
+  views,
+  salary,
+  publishedAt,
+  expiresAt,
   setPostJob,
   onCloseJob,
   onMenuClick,
@@ -28,10 +28,8 @@ export default function JobListingCard({
       className="w-full mt-5 max-w-2xl rounded-2xl border 
     border-slate-200 bg-white p-5 "
     >
-      {/* Top */}
-      <div className="flex items-start justify-between gap-4">
-        {/* Right section */}
-        <div className="flex items-start gap-4">
+      <div className="flex items-center justify-between  gap-4">
+        <div className="flex gap-3">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-sm">
             <HiOutlineBriefcase className="text-[28px]" />
           </div>
@@ -41,13 +39,11 @@ export default function JobListingCard({
               {title}
             </h3>
 
-            <div className="mt-2 flex flex-wrap items-center justify-end gap-3 text-slate-500">
+            <div className="mt-2 flex flex-wrap items-center  gap-3 text-slate-500">
               <div className="flex items-center gap-1 text-[15px]">
                 <span>{location}</span>
                 <FiMapPin className="text-[15px]" />
               </div>
-
-              <span className="text-slate-300">•</span>
 
               <div className="flex items-center gap-1 text-[15px]">
                 <span>{jobType}</span>
@@ -57,20 +53,9 @@ export default function JobListingCard({
           </div>
         </div>
 
-        {/* Left section */}
-        <div className="flex items-start gap-3">
-          <span className="rounded-full bg-emerald-100 px-4 py-1.5 text-[14px] font-bold text-emerald-700">
-            {status}
-          </span>
-
-          <button
-            type="button"
-            onClick={onMenuClick}
-            className="rounded-full p-1 text-slate-500 transition hover:bg-slate-100"
-          >
-            <FiMoreVertical className="text-[18px]" />
-          </button>
-        </div>
+        <span className="rounded-full bg-emerald-100 px-4 py-1.5 text-[14px] font-bold text-emerald-700">
+          {status}
+        </span>
       </div>
 
       {/* Stats */}
@@ -92,7 +77,7 @@ export default function JobListingCard({
         </div>
 
         <div className="flex flex-col items-center justify-center">
-          <div className="text-[18px] font-extrabold text-emerald-600">
+          <div className="text-[18px] text-center font-extrabold text-emerald-600">
             {salary}
           </div>
           <span className="mt-1 text-[14px] text-slate-500">راتب</span>

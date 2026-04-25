@@ -13,8 +13,19 @@ async function SmHeader() {
   const name = cookieStore.get("name")?.value;
 
   async function getData() {
-    const res = await ApiFetchServer("/profile");
-    return res.dataResponse.data.PersonalPhoto;
+    if (role === "JobSeeker") {
+      const res = await ApiFetchServer("/profile");
+      return res.dataResponse.data.PersonalPhoto;
+    }
+    if (role === "Employer") {
+      const res = await ApiFetchServer("/auth/me");
+
+      return res.dataResponse.data.company_profile.LogoPath;
+    }
+    if (role === "Admin") {
+      const res = await ApiFetchServer("/profile");
+      return res.dataResponse.data.PersonalPhoto;
+    }
   }
 
   const URL = await getData();

@@ -4,7 +4,8 @@ import { FaPlus } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { FiMapPin, FiDollarSign } from "react-icons/fi";
 
-export const InfoMainCard = [
+console.log("===============================");
+export const InfoMainCard = (data) => [
   {
     id: 1,
     icons: (
@@ -13,8 +14,8 @@ export const InfoMainCard = [
         className="bg-primaryBlue text-auxiliaryColorWhite p-2 rounded-xl"
       />
     ),
-    number: "8",
-    name: "الإعلانات النشطة",
+    number: data.total_jobs_posted,
+    name: "إجمالي الوظائف المنشورة",
   },
   {
     id: 2,
@@ -24,8 +25,8 @@ export const InfoMainCard = [
         className="bg-green-500 text-auxiliaryColorWhite p-2 rounded-xl"
       />
     ),
-    number: "127",
-    name: "إجمالي المتقدمين",
+    number: data.total_applications_received,
+    name: "إجمالي الطلبات المستلمة",
   },
   {
     id: 3,
@@ -35,10 +36,10 @@ export const InfoMainCard = [
         className="bg-purple-600 text-auxiliaryColorWhite p-2 rounded-xl"
       />
     ),
-    number: "18",
-    name: "المرشحين المختارين",
+    number: data.profile_views,
+    name: "مشاهدات الملف الشخصي",
   },
-  {
+  /*   {
     id: 4,
     icons: (
       <BiMessageDetail
@@ -48,7 +49,7 @@ export const InfoMainCard = [
     ),
     number: "12",
     name: "الرسائل الجديدة",
-  },
+  }, */
 ];
 
 export const InfoCardActionCompany = [
