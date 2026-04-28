@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Profile } from "../../callFunctionsForCompany";
+import { toast } from "react-toastify";
 
 const emptyForm = {
   title: "",
@@ -311,6 +312,9 @@ export default function JobForm({
         mode === "edit"
           ? await Profile("UpdateJob", { id: getId(job), payload })
           : await Profile("CreateJob", payload);
+
+      toast.error(saved.message);
+      //console.log(saved);
 
       const id = getId(saved) ?? getId(job);
 

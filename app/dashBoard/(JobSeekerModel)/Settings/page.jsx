@@ -5,12 +5,20 @@ import { FiUser, FiLock, FiBell } from "react-icons/fi";
 
 import SettingsPanel from "./components/SettingsPanel";
 import CreateTitle from "../CreateTitle";
+import { Profile } from "../callFunctionsForJobseeker";
 function Setting() {
   const [notify, setNotify] = useState({
     jobs: true,
     updates: false,
     messages: false,
   });
+  /*   useState(() => {
+    async function fetchData() {
+      const res = await Profile("MainInfoUser");
+      console.log(res);
+    }
+    fetchData();
+  }, []); */
 
   const [lang, setLang] = useState("ar");
 

@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 
 import { FiX, FiMail, FiPhone, FiMapPin, FiDownload } from "react-icons/fi";
 
@@ -132,3 +132,4 @@ export default function CandidateProfileModal({ application, onClose }) {
     </div>
   );
 }
+ */

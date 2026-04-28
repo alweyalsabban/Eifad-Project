@@ -43,6 +43,10 @@ export async function Profile(NameFunction, dataProfile) {
       throw new Error(`Error from Profile Function : ${error}`);
     }
   }
+  if (NameFunction === "MainInfoUser") {
+    const res = await ApiFetchServer("/auth/me");
+    return res.dataResponse.data;
+  }
 }
 
 export async function UpdateCv(NameFunction, dataCv) {
@@ -538,6 +542,11 @@ export async function JobApplication(NameFunction, JobData) {
     const res = await ApiFetchServer(`/applications`);
     return res;
   }
+
+  if (NameFunction === "GetAllSuggestJob") {
+    const res = await ApiFetchServer(`/jobs/suggested`);
+    return res;
+  }
 }
 
 export async function Companies(NameFunction, CompaniesData) {
@@ -573,5 +582,22 @@ export async function Companies(NameFunction, CompaniesData) {
     );
 
     return res;
+  }
+}
+
+export async function RoadMapFuncation(NameFunction, JobData) {
+  if (NameFunction === "GetPreRoadMap") {
+    const res = await ApiFetchServer("/career-roadmap");
+    return res.dataResponse.data;
+  }
+  if (NameFunction === "CreateNewRoadMap") {
+    const res = await ApiFetchServer("/career-roadmap", "POST", {
+      target_role: JobData.title,
+      cv_id: JobData.idCV,
+    });
+    console.log(JobData.title);
+    console.log(JobData.idCV);
+    console.log(res);
+    return res.dataResponse.data;
   }
 }

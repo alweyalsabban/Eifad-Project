@@ -17,6 +17,7 @@ function getSkills(employee) {
 export default function EmployeeProfilePage() {
   const params = useParams();
   const employeeId = params?.employeeId;
+  console.log(params.employeeId);
 
   const [employee, setEmployee] = useState(null);
   const [loading, setLoading] = useState(true);

@@ -16,7 +16,7 @@ function buildQuery({ search, location, page }) {
   params.set("per_page", "10");
 
   // غيّر هذا الرابط عندما تضيف API الحقيقي
-  return `/employer/job-seekers?${params.toString()}`;
+  return `/job-seekers?${params.toString()}`;
 }
 
 function SearchEmployee() {
@@ -127,15 +127,7 @@ function SearchEmployee() {
         </div>
       ) : (
         employees.map((employee, index) => (
-          <CandidateSimpleCard
-            key={
-              employee?.id ??
-              employee?.JobSeekerID ??
-              employee?.user_id ??
-              index
-            }
-            employee={employee}
-          />
+          <CandidateSimpleCard key={index} employee={employee} />
         ))
       )}
 

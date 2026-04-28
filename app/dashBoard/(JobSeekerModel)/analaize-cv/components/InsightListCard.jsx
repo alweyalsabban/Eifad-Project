@@ -29,12 +29,14 @@ export default function InsightListCard({
 
       {/* List */}
       <div className="mt-5 space-y-3">
-        {items.map((text, idx) => (
+        {items.map((text, id) => (
           <div
-            key={`${text}-${idx}`}
+            key={id}
             className={`flex items-center justify-between rounded-2xl px-4 py-4 hover:scale-105 duration-300 ${styles.itemBg}`}
           >
-            <p className="text-sm text-slate-800">{text}</p>
+            <p className="text-sm text-slate-800 w-[90%] leading-relaxed text-justify">
+              {text.ar.slice(2)}
+            </p>
             <Icon className={`h-6 w-6 ${styles.itemIcon}`} aria-hidden="true" />
           </div>
         ))}

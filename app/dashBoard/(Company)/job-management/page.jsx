@@ -138,7 +138,7 @@ function JobManagement() {
             </h2>
 
             <p className="mt-3 text-center leading-7 text-slate-500">
-              هل أنت متأكد من حذف وظيفة{" "}
+              هل أنت متأكد من حذف وظيفة
               <span className="font-bold text-slate-800">
                 {deleteModal?.Title ?? deleteModal?.title}
               </span>

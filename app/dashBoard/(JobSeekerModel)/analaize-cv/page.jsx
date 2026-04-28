@@ -3,41 +3,30 @@ import AiScoreCard from "./components/AiScoreCard";
 import InsightListCard from "./components/InsightListCard";
 import SkillGapCard from "./components/SkillGapCard";
 import CreateTitle from "../CreateTitle";
+import { ApiFetchServer } from "../../../lib/ApiFetchServer";
 
-function AnalaizeCv() {
+async function AnalaizeCv() {
+  const res = await ApiFetchServer("/cvs/6/analyze", "POST");
+  const data = await res.dataResponse.data;
+  console.log(data);
   return (
     <>
       <CreateTitle title="تحليل السيرة الذاتية" number={4} />
 
-      <AiScoreCard score={82} />
+      <AiScoreCard score={data.scores.overall} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <InsightListCard
           title="نقاط القوة"
           variant="success"
-          items={[
-            "مهارات تقنية قوية في React و Node.js",
-            "خبرة تزيد عن 5 سنوات ذات صلة",
-            "ملخص مهني واضح وموجز",
-            "تاريخ عمل منظم بشكل جيد",
-          ]}
+          items={data.strengths}
         />
         <InsightListCard
           title="نقاط التحسين"
           variant="warning"
-          items={[
-            "قسم الشهادات مفقود",
-            "لا توجد روابط للمشاريع",
-            "قسم المهارات يحتاج المزيد من التفاصيل",
-          ]}
+          items={data.weaknesses}
         />
       </div>
-      <SkillGapCard
-        items={[
-          { label: "Cloud Architecture", current: 60, target: 90 },
-          { label: "Leadership", current: 40, target: 80 },
-          { label: "System Design", current: 70, target: 95 },
-        ]}
-      />
+      <SkillGapCard items={data.gaps} />
 
       <button
         className="flex w-full items-center justify-center gap-3 rounded-2xl bg-blue-600 py-4 text-white text-sm 

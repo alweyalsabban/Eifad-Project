@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   FiEye,
   FiPhone,
@@ -10,6 +11,7 @@ import {
   FiClipboard,
   FiAward,
 } from "react-icons/fi";
+import { ApiFetchServer } from "../../../../lib/ApiFetchServer";
 
 function getCandidate(application) {
   return (
@@ -60,12 +62,8 @@ export default function CandidateCard({
   application,
   onViewProfile,
   onAccept,
-  onReject,
-  onReview,
-  onShortlist,
-  onInterview,
-  onOffer,
 }) {
+  console.log(application.job_seeker.PersonalPhoto);
   const candidate = getCandidate(application || {});
   const status = getStatus(application);
   const name = getCandidateName(application);
@@ -101,6 +99,17 @@ export default function CandidateCard({
     application?.CVPath ??
     application?.cv;
 
+  async function onReject() {
+    const res = await ApiFetchServer(
+      `/employer/applications/${application.JobAdID}/status`,
+      "PUT",
+      {
+        status: "Rejected",
+      },
+    );
+    console.log(res);
+  }
+
   return (
     <div
       dir="rtl"
@@ -109,7 +118,13 @@ export default function CandidateCard({
       <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-start">
         <div className="flex items-start gap-4">
           <div className="w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center text-white text-xl shrink-0">
-            👤
+            <Image
+              alt="photo profile"
+              src={application.job_seeker.PersonalPhoto}
+              width={300}
+              height={300}
+              className=" rounded-full w-14 h-14 object-cover"
+            />
           </div>
 
           <div>
@@ -163,23 +178,12 @@ export default function CandidateCard({
             className="bg-blue-600 text-white px-5 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700"
           >
             <FiEye />
-            عرض الملف
+            عرض السيرة الذاتية
           </button>
-
-          {cvUrl && (
-            <a
-              href={cvUrl}
-              target="_blank"
-              className="border border-gray-300 px-4 py-2 rounded-lg flex items-center gap-2 text-slate-600 hover:bg-slate-50"
-            >
-              <FiDownload />
-              تحميل CV
-            </a>
-          )}
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          {status !== "Reviewed" && (
+          {/*           {status !== "Reviewed" && (
             <button
               type="button"
               onClick={onReview}
@@ -211,8 +215,8 @@ export default function CandidateCard({
               <FiCalendar />
             </button>
           )}
-
-          {status !== "Offered" && (
+ */}
+          {/*        {status !== "Offered" && (
             <button
               type="button"
               onClick={onOffer}
@@ -221,7 +225,7 @@ export default function CandidateCard({
             >
               <FiAward />
             </button>
-          )}
+          )} */}
 
           {status !== "Hired" && (
             <button
@@ -238,7 +242,7 @@ export default function CandidateCard({
             <button
               type="button"
               onClick={onReject}
-              className="border border-red-300 text-red-500 px-3 py-2 rounded-lg hover:bg-red-50"
+              className="border border-red-300 text-red-500 px-3 py-2 rounded-lg hover:bg-red-50 hover:cursor-pointer"
               title="رفض"
             >
               <FiX />

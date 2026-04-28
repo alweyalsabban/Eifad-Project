@@ -89,28 +89,28 @@ function Candidates() {
 
   const tabs = [
     { id: "all", label: "الكل", count: applications.length },
-    {
+    /*     {
       id: "new",
       label: "جديد",
       count: applications.filter((a) => getAppStatus(a) === "Pending").length,
-    },
-    {
+    }, */
+    /*     {
       id: "review",
       label: "مراجع",
       count: applications.filter((a) => getAppStatus(a) === "Reviewed").length,
-    },
+    }, */
     {
       id: "candidate",
       label: "مرشح بـ (AI)",
       count: applications.filter((a) => getAppStatus(a) === "Shortlisted")
         .length,
     },
-    {
+    /* {
       id: "selected",
       label: "مختار",
       count: applications.filter((a) => getAppStatus(a) === "Shortlisted")
         .length,
-    },
+    }, */
     {
       id: "unacceptable",
       label: "مرفوض",

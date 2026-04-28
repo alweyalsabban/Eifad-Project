@@ -62,7 +62,7 @@ export default function JobListingCard({
           </div>
         </div>
 
-        <div>
+        <div className="flex gap-3 items-center justify-center">
           <button
             type="button"
             onClick={() => onDeleteJob(job)}
@@ -81,7 +81,7 @@ export default function JobListingCard({
         </div>
       </div>
 
-      <div className="mt-7 grid grid-cols-3 gap-4">
+      <div className="mt-7 grid grid-cols-2 gap-4 ">
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center gap-1 text-[18px] font-extrabold text-blue-600">
             <span>{applicants}</span>
@@ -90,13 +90,13 @@ export default function JobListingCard({
           <span className="mt-1 text-[14px] text-slate-500">متقدم</span>
         </div>
 
-        <div className="flex flex-col items-center justify-center">
+        {/*     <div className="flex flex-col items-center justify-center">
           <div className="flex items-center gap-1 text-[18px] font-extrabold text-orange-500">
             <span>{job?.views_count ?? "لا يوجد"}</span>
             <FiEye />
           </div>
           <span className="mt-1 text-[14px] text-slate-500">مشاهدة</span>
-        </div>
+        </div> */}
 
         <div className="flex flex-col items-center justify-center">
           <div className="text-[18px] text-center font-extrabold text-emerald-600">
@@ -118,7 +118,7 @@ export default function JobListingCard({
         <div className="flex items-center gap-1">
           <FiCalendar />
           <span>
-            ينتهي:{" "}
+            ينتهي:
             {(job?.ExpiryDate ?? job?.expiry_date ?? "").slice(0, 10) || "-"}
           </span>
         </div>
