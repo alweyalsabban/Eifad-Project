@@ -96,6 +96,7 @@ function CVcomponents({
 }) {
   const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
+
   const [isLoading, setLoading] = useState(false);
   const [summary, setSummary] = useState(CVInfo?.PersonalSummary ?? "");
   const [title, setTitle] = useState(CVInfo?.Title ?? "");

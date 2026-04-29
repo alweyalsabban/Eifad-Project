@@ -6,6 +6,7 @@ export default function SettingsCard({
   icon,
   iconBg = "bg-blue-100",
   label,
+  value,
 }) {
   return (
     <div className="w-[98%] m-auto rounded-2xl border border-gray-200 p-6 bg-white mt-5">
@@ -25,6 +26,8 @@ export default function SettingsCard({
         <input
           type="email"
           className="w-full rounded-xl border border-gray-200 p-3 outline-none"
+          value={value || ""}
+          readOnly
         />
       </div>
     </div>

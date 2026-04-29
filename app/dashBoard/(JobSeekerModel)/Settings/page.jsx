@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SettingsCard from "./components/SettingsCard";
 import { FiUser, FiLock, FiBell } from "react-icons/fi";
 
@@ -12,15 +12,17 @@ function Setting() {
     updates: false,
     messages: false,
   });
-  /*   useState(() => {
-    async function fetchData() {
-      const res = await Profile("MainInfoUser");
-      console.log(res);
-    }
-    fetchData();
-  }, []); */
 
   const [lang, setLang] = useState("ar");
+  const [email, setEmail] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await Profile("MainInfoUser");
+      setEmail(res.email);
+    }
+    fetchData();
+  }, []);
 
   return (
     <div className="mb-10">
@@ -30,14 +32,16 @@ function Setting() {
         title="إعدادات الحساب"
         icon={<FiUser className="text-blue-600" size={18} />}
         label="البريد الإلكتروني"
+        value={email}
       />
 
-      <SettingsCard
+      {/*       <SettingsCard
         title="الأمان"
         icon={<FiLock className="text-red-500" size={18} />}
         iconBg="bg-red-100"
         label={"تغيير كلمة المرور"}
-      />
+        value={"*******************"}
+      /> */}
 
       <SettingsPanel
         title="الإشعارات"

@@ -16,11 +16,16 @@ export default function CompanyCard({
   AllConmpnies,
   UrlImage,
 }) {
+  console.log(UrlImage);
   const [page, setPage] = useState(null);
+
   useEffect(() => {
-    const isFollow = AllFollowPage.some((item) => item.CompanyID === companyId);
+    const isFollow = AllFollowPage?.some(
+      (item) => item.CompanyID === companyId,
+    );
+
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setPage(isFollow);
+    setPage(Boolean(isFollow));
   }, [AllFollowPage, companyId]);
 
   const [loading, setLoadign] = useState(false);
@@ -39,10 +44,17 @@ export default function CompanyCard({
       }
     } else {
       const res = await Companies("FollowPage", { companyId });
-      const newFollow = AllConmpnies.find(
+      const newFollowCompany = AllConmpnies.find(
         (item) => item.CompanyID === companyId,
       );
-      setAllFollowPage([...AllFollowPage, newFollow]);
+
+      setAllFollowPage([
+        ...AllFollowPage,
+        {
+          CompanyID: companyId,
+          company: newFollowCompany,
+        },
+      ]);
       if (res.isSusses) {
         setPage(true);
         toast.success("تم المتابعة");
@@ -56,7 +68,7 @@ export default function CompanyCard({
     <div className="w-full rounded-2xl border border-gray-200 bg-white px-6 py-5 mt-5">
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-4">
-          {UrlImage.length > 40 ? (
+          {UrlImage?.length > 40 ? (
             <div className=" h-12 w-12 rounded-xl border p-1 border-blue-950">
               <Image src={UrlImage} width={300} height={200} alt="LogoImage" />
             </div>

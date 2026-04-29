@@ -110,11 +110,11 @@
 import Image from "next/image";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { GoBell } from "react-icons/go";
-import { GrLanguage } from "react-icons/gr";
+
 import { personInformation } from "../data";
 import { ApiFetchServer } from "../../lib/ApiFetchServer";
 import HeaderSearch from "./HeaderSearch";
+import AlertLanguageBtn from "./AlertLanguageBtn";
 
 async function Header() {
   const cookieStore = await cookies();
@@ -192,10 +192,7 @@ async function Header() {
           </h1>
         </div>
 
-        <div className="flex gap-4 text-[#C6C8CC]">
-          <GoBell size={20} className="hover:cursor-pointer" />
-          <GrLanguage size={20} className="hover:cursor-pointer" />
-        </div>
+        <AlertLanguageBtn />
       </div>
 
       <HeaderSearch role={role} />

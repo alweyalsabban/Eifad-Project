@@ -601,3 +601,18 @@ export async function RoadMapFuncation(NameFunction, JobData) {
     return res.dataResponse.data;
   }
 }
+
+export async function MarketTrendFunction(NameFunction, JobData) {
+  if (NameFunction === "GetAllSectionMajor") {
+    const res = await ApiFetchServer("/market-trends/filters");
+    return res.dataResponse.industries;
+  }
+
+  if (NameFunction === "GetInfoForMaeket") {
+    const res = await ApiFetchServer(
+      `/market-trends?industry_id=${JobData.id}`,
+    );
+
+    return res.dataResponse;
+  }
+}

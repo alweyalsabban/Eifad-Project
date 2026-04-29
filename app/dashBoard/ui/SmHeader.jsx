@@ -94,7 +94,7 @@ async function SmHeader() {
           <GrLanguage className="hover:cursor-pointer" size={20} />
         </div>
 
-        <div className="w-full lg:w-130">
+        <div className="w-full flex flex-wrap lg:w-130">
           <HeaderSearch role={role} />
         </div>
       </div>
