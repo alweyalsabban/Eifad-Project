@@ -46,7 +46,6 @@ function JobSearchPage() {
         setCvInfo(cvInfo);
         setAllJob(data ?? []);
       } catch (error) {
-        console.error(error);
       } finally {
         setLoading(false);
       }

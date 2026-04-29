@@ -14,17 +14,13 @@ import {
   BookmarkIcon,
 } from "@heroicons/react/24/outline";
 
-const PersonalSummaryTab = dynamic(
-  () => import("../components/PersonalSummaryTab"),
-);
-const EducationTab = dynamic(() => import("../components/EducationTab"));
-const ExperienceTab = dynamic(() => import("../components/ExperienceTab"));
-const SkillsTab = dynamic(() => import("../components/SkillsTab"));
-const LanguagesTab = dynamic(() => import("../components/LanguagesTab"));
-const CertificatesTab = dynamic(() => import("../components/CertificatesTab"));
-const CustomSectionsTab = dynamic(
-  () => import("../components/CustomSectionsTab"),
-);
+import PersonalSummaryTab from "../components/PersonalSummaryTab";
+import EducationTab from "../components/EducationTab";
+import ExperienceTab from "../components/ExperienceTab";
+import SkillsTab from "../components/SkillsTab";
+import LanguagesTab from "../components/LanguagesTab";
+import CertificatesTab from "../components/CertificatesTab";
+import CustomSectionsTab from "../components/CustomSectionsTab";
 
 const createClientId = () => {
   if (typeof crypto !== "undefined" && crypto.randomUUID) {
