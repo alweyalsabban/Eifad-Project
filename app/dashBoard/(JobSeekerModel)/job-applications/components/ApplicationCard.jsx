@@ -2,7 +2,7 @@ import { CalendarDaysIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import { ApiFetchServer } from "../../../../lib/ApiFetchServer";
 import { toast } from "react-toastify";
 
-const STEPS = ["مقدّم", "مراجعة", "مقابلة", "قرار"];
+const STEPS = ["مقدّم", "مقبول"];
 
 function getStepIndex(step) {
   const idx = STEPS.indexOf(step);
@@ -55,26 +55,30 @@ export default function ApplicationCard({
           className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium ${badge}`}
         >
           <Icon className="h-5 w-5" />
-          <span>{statusLabel}</span>
+          <span>{statusLabel === "Pending" ? "مقدّم" : "مقبول"}</span>
         </div>
       </div>
 
       {/* Steps bar */}
       <div className="mt-6">
-        <div className="grid grid-cols-4 gap-4">
-          {STEPS.map((step, idx) => {
-            const active = idx <= activeIdx;
-            return (
-              <div key={step} className="flex flex-col items-center gap-2">
-                <div
-                  className={`h-2 w-full rounded-full ${
-                    active ? "bg-blue-600" : "bg-slate-200"
-                  }`}
-                />
-                <span className="text-xs text-slate-600">{step}</span>
-              </div>
-            );
-          })}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col items-center gap-2">
+            <div className={`h-2 w-full rounded-full  bg-blue-600`} />
+            <span className="text-xs text-slate-600">
+              {statusLabel === "Pending" ? "مقدّم" : "مقبول"}
+            </span>
+          </div>
+
+          <div className="flex flex-col items-center gap-2">
+            <div
+              className={`h-2 w-full rounded-full ${
+                statusLabel !== "Pending" ? "bg-blue-600" : "bg-slate-200"
+              }`}
+            />
+            <span className="text-xs text-slate-600">
+              {statusLabel !== "Pending" ? "مقدّم" : "مقبول"}
+            </span>
+          </div>
         </div>
       </div>
 
