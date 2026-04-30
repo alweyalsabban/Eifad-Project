@@ -169,16 +169,16 @@ async function Header() {
       dir="rtl"
     >
       <div className="flex justify-center items-center gap-4">
-        <div className="border w-15 h-15 rounded-full flex items-center justify-center">
+        <div className="border w-15 h-15 rounded-full overflow-hidden relative shrink-0 ">
           {!URL ? (
-            <div className="bg-auxiliaryColorGray w-13 h-13 rounded-full"></div>
+            <div className="bg-auxiliaryColorGray w-full h-full rounded-full" />
           ) : (
             <Image
               src={URL}
-              width={100}
-              height={100}
               alt="صورة الملف الشخصي"
-              className="w-15 h-15 object-cover rounded-full"
+              fill
+              sizes="60px"
+              className="object-cover p-0.5 rounded-full"
             />
           )}
         </div>
@@ -187,7 +187,7 @@ async function Header() {
           <h1 className="font-bold text-[18px]">
             {personInformation.name || name}
           </h1>
-          <h1 className="font-light text-[14px]">
+          <h1 className="font-light   xl:text-[14px] text-[13px]">
             {personInformation.role || roleText}
           </h1>
         </div>
