@@ -18,9 +18,7 @@ export default function SkillsTab({
   ];
 
   const CATEGORIES = categoryIdSkills;
-  useEffect(() => {
-    console.log(objectSkills);
-  }, [objectSkills, AllSkills]);
+  useEffect(() => {}, [objectSkills, AllSkills]);
 
   const handleSkillNameChange = (index, value) => {
     const found = AllSkills.find((item) => value === item.SkillName);

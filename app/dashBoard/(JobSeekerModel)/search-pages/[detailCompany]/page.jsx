@@ -14,9 +14,7 @@ function DetailCompany() {
     async function Fetch() {
       const res = await Companies("CompanyDeatils", { id: path.detailCompany });
       setDeatilCompany(res);
-      console.log(res);
       setAllJobForCompany(res.job_ads);
-      console.log(res);
     }
     Fetch();
   }, [path.detailCompany]);

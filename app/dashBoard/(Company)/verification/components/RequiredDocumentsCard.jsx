@@ -2,6 +2,8 @@
 
 import { FiCheckCircle, FiAlertTriangle } from "react-icons/fi";
 import { HiOutlineDocumentText } from "react-icons/hi2";
+import { Employer } from "../../callFunctionsForCompany";
+import { toast } from "react-toastify";
 
 function getStatusText(status, uploaded) {
   if (!uploaded) return "لم يتم رفع الملف";
@@ -15,13 +17,14 @@ export default function RequiredDocumentsCard({
   documents = [],
   onUpload,
 }) {
-  function viewFile(doc) {
-    if (!doc.fileUrl && !doc.url && !doc.file_url) {
-      alert("الملف غير موجود");
-      return;
+  async function viewFile(doc) {
+    const res = await Employer("GetFirts", { NumberDoc: doc.id });
+    if (res.isSusses) {
+      const url = window.URL.createObjectURL(res.dataResponse);
+      window.open(url);
+    } else {
+      toast.error("لا يوجد ملف مرفوع");
     }
-
-    window.open(doc.fileUrl ?? doc.url ?? doc.file_url, "_blank");
   }
 
   return (
@@ -61,12 +64,12 @@ export default function RequiredDocumentsCard({
               </div>
 
               <div className="flex items-center gap-3">
-                {uploaded ? (
+                {/*  {uploaded ? (
                   <FiCheckCircle className="text-[20px] text-emerald-500" />
                 ) : (
                   <FiAlertTriangle className="text-[20px] text-yellow-500" />
                 )}
-
+ */}
                 <label className="h-9 cursor-pointer rounded-xl border border-blue-300 bg-white px-4 leading-9 text-[13px] font-medium text-blue-600 hover:bg-blue-50">
                   رفع الملف
                   <input

@@ -93,7 +93,6 @@ export default function OTPVerificationPage() {
           body: JSON.stringify({ email, token: enteredOtp }),
         },
       );
-      console.log("first");
       if (!res.isSusses)
         throw new Error(res.dataResponse?.message || "الرمز غير صحيح");
 
@@ -116,7 +115,6 @@ export default function OTPVerificationPage() {
       localStorage.setItem("user_email", email); // اختياري
       localStorage.setItem("token", token); // اختياري
       SetCookies(res.dataResponse.token);
-      console.log(res.dataResponse.token);
       localStorage.removeItem("pending_email");
 
       setToast({

@@ -9,6 +9,7 @@ import { jobs } from "../companyData";
 import CandidateCard from "./components/CandidateCard";
 import CreateTitle from "../../(JobSeekerModel)/CreateTitle";
 import { ApiFetchServer } from "../../../lib/ApiFetchServer";
+import Link from "next/link";
 
 async function CompanyPage() {
   async function FetchData() {
@@ -18,7 +19,7 @@ async function CompanyPage() {
   const data = await FetchData();
   return (
     <div className="mb-40">
-      <CreateTitle title="لوحة التحكم" number={1} />
+      <CreateTitle title="الواجهة الرئيسية" number={1} />
 
       <div
         className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3  
@@ -36,18 +37,18 @@ async function CompanyPage() {
         })}
       </div>
 
-      <RecommedAI
-        title={"توصيات الذكاء الاصطناعي "}
-        description={`لديك 12 مرشح ذو مطابقة عالية (90%+) للوظائف المفتوحة`}
-        textBtn={"عرض المرشحين"}
-      />
+      <hr className="mt-5 text-auxiliaryColorGray w-[98%]" />
 
-      <div className="grid grid-cols-1  md:grid-cols-3  gap-2 mt-5 justify-between mr-3 flex-wrap w-full">
+      <div className="grid grid-cols-1  md:grid-cols-2  gap-2 mt-5 justify-between mr-3 flex-wrap w-[98%]">
         {InfoCardActionCompany.map((i) => {
-          return <ActionCard key={i.id} icons={i.icons} name={i.name} />;
+          return (
+            <Link key={i.id} href={i.hr}>
+              <ActionCard icons={i.icons} name={i.name} />
+            </Link>
+          );
         })}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full mx-auto ">
+      {/*  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full mx-auto ">
         <ActiveJobsSection title={"الوظائف النشطة"}>
           {jobs.map((job) => (
             <JobCard
@@ -63,7 +64,7 @@ async function CompanyPage() {
         <ActiveJobsSection title={"أحدث المتقدمين"}>
           <CandidateCard />
         </ActiveJobsSection>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -16,7 +16,6 @@ export default function CompanyAboutCard({
   phone,
   UrlImage,
 }) {
-  console.log(UrlImage);
   return (
     <section className="w-full rounded-2xl border border-slate-200 bg-white p-6 mt-5">
       {/* Top row */}

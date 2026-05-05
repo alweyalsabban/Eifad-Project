@@ -53,12 +53,12 @@ export const InfoCardMain = (data) => [
 ];
 
 export const InfoCardAction = [
-  {
+  /*   {
     id: 1,
     icons: <LuUpload size={45} className="text-primaryBlue p-2 rounded-xl" />,
     name: "رفع السيرة الذاتية",
     link: "/dashBoard/cv",
-  },
+  }, */
   {
     id: 2,
     icons: <MdSearch size={45} className=" text-[#00C950] p-2 rounded-xl" />,

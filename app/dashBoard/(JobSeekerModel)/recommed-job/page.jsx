@@ -15,7 +15,6 @@ function RecommedJob() {
         setLoading(true);
         const data = await JobApplication("GetAllSuggestJob");
         setRecommendJob(data.dataResponse.data);
-        console.log(data.dataResponse.data);
         const cvInfo = await JobApplication("GetCVInfo");
         setCvInfo(cvInfo);
         setLoading(false);

@@ -4,7 +4,6 @@ import { FaPlus } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { FiMapPin, FiDollarSign } from "react-icons/fi";
 
-console.log("===============================");
 export const InfoMainCard = (data) => [
   {
     id: 1,
@@ -53,20 +52,23 @@ export const InfoMainCard = (data) => [
 ];
 
 export const InfoCardActionCompany = [
-  {
+  /* {
     id: 1,
     icons: <FaPlus size={45} className="text-primaryBlue p-2 rounded-xl" />,
     name: "رفع السيرة الذاتية",
-  },
+  }, */
   {
     id: 2,
     icons: <FaSearch size={45} className="text-green-500 p-2 rounded-xl" />,
-    name: "البحث عن مرشحين",
+    name: "إدارة المرشحين",
+
+    hr: "/dashBoard/candidates",
   },
   {
     id: 3,
     icons: <FiUsers size={45} className="text-purple-500 p-2 rounded-xl" />,
-    name: "عرض الطلبات",
+    name: "البحث عن موظفين",
+    hr: "/dashBoard/search-employee",
   },
 ];
 

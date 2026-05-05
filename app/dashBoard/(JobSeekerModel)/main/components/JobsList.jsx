@@ -2,7 +2,7 @@ import React from "react";
 
 function JobsList({ status, title, company, timeAgo }) {
   return (
-    <div className="bg-slate-50 rounded-xl p-4 space-y-2 mainAnimation">
+    <div className="bg-slate-50 rounded-xl p-4 space-y-2 mainAnimation my-2">
       <div className="flex justify-between items-start">
         {status}
 

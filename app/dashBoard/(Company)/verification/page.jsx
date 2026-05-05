@@ -6,22 +6,23 @@ import ActivityTimelineCard from "./components/ActivityTimelineCard";
 import { useContext, useEffect, useState } from "react";
 import { NamePageContex } from "../../(JobSeekerModel)/context/NamePageContext";
 import { Profile } from "../callFunctionsForCompany";
+import { toast } from "react-toastify";
 
 const defaultDocuments = [
   {
-    id: "commercial_record",
+    id: 0,
     name: "السجل التجاري",
     fileUrl: "",
     status: "pending",
   },
   {
-    id: "tax_certificate",
+    id: 1,
     name: "شهادة الضريبة",
     fileUrl: "",
     status: "pending",
   },
   {
-    id: "company_license",
+    id: 2,
     name: "رخصة الشركة",
     fileUrl: "",
     status: "pending",
@@ -67,20 +68,16 @@ export default function Verification() {
 
   async function uploadDocument(type, file) {
     if (!file) return;
-
     if (file.type !== "application/pdf") {
-      alert("ارفع ملف PDF فقط");
+      toast.error("ارفع ملف PDF فقط");
       return;
     }
-
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append(`document_${type}`, file);
 
     try {
-      await Profile("UploadVerificationDocument", {
-        type,
-        formData,
-      });
+      const res = await Profile("UploadVerificationDocument", { formData });
+      toast.success("تم الرفع");
 
       setDocuments((prev) =>
         prev.map((doc) =>
@@ -104,17 +101,16 @@ export default function Verification() {
         ...prev,
       ]);
     } catch {
-      alert("حدث خطأ أثناء رفع الملف");
+      toast.error("حدث خطأ أثناء رفع الملف");
     }
   }
 
   return (
     <section className="mx-auto w-[98%] space-y-5 mb-40">
       <VerificationAlert isVerified={isVerified} />
-
       <RequiredDocumentsCard documents={documents} onUpload={uploadDocument} />
-
-      <ActivityTimelineCard activities={activities} />
+      {/*       <ActivityTimelineCard activities={activities} />
+       */}
     </section>
   );
 }

@@ -83,10 +83,7 @@ export default function LanguagesTab({
     setObjectLanguage(updated);
   };
 
-  useEffect(() => {
-    console.log("objectLanguage:", objectLanguage);
-    console.log("GetLanguages:", GetLanguages);
-  }, [objectLanguage, GetLanguages]);
+  useEffect(() => {}, [objectLanguage, GetLanguages]);
 
   return (
     <section className="mt-5 w-full rounded-2xl border border-secondGray bg-auxiliaryColorWhite p-6">

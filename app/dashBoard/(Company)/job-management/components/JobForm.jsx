@@ -314,7 +314,6 @@ export default function JobForm({
           : await Profile("CreateJob", payload);
 
       toast.error(saved.message);
-      //console.log(saved);
 
       const id = getId(saved) ?? getId(job);
 

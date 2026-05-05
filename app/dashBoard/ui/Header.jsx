@@ -192,7 +192,7 @@ async function Header() {
           </h1>
         </div>
 
-        <AlertLanguageBtn />
+        {/* <AlertLanguageBtn /> */}
       </div>
 
       <HeaderSearch role={role} />

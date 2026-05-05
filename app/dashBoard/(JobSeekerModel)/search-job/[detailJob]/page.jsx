@@ -20,7 +20,6 @@ function DeatilJob() {
     async function fetchJobs() {
       const jobRes = await JobApplication("GetDeatilJob", path.detailJob);
       const cvRes = await JobApplication("GetCVInfo");
-      console.log(jobRes);
       setJobDetials(jobRes);
       setCVInfo(cvRes);
 
@@ -35,7 +34,6 @@ function DeatilJob() {
         CvId: cvRes.CVID,
       }).then((res) => {
         setAIAnalayise(res.dataResponse.data);
-        console.log(res.dataResponse.data);
       });
     });
   }, [path]);

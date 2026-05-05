@@ -31,7 +31,6 @@ function Page() {
         },
         body: JSON.stringify({ email: email }),
       });
-      console.log(response);
 
       if (!response.isSusses) {
         setEmailError(true);

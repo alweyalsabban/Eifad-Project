@@ -15,16 +15,16 @@ async function SmHeader() {
   async function getData() {
     if (role === "JobSeeker") {
       const res = await ApiFetchServer("/profile");
-      return res.dataResponse.data.PersonalPhoto;
+      return res?.dataResponse?.data?.PersonalPhoto;
     }
     if (role === "Employer") {
       const res = await ApiFetchServer("/auth/me");
 
-      return res.dataResponse.data.company_profile.LogoPath;
+      return res?.dataResponse?.data?.company_profile?.LogoPath;
     }
     if (role === "Admin") {
       const res = await ApiFetchServer("/profile");
-      return res.dataResponse.data.PersonalPhoto;
+      return res?.dataResponse?.data?.PersonalPhoto;
     }
   }
 
@@ -78,10 +78,10 @@ async function SmHeader() {
               </p>
             </div>
 
-            <div className="hidden sm:flex gap-4 text-[#C6C8CC] mr-2">
+            {/*  <div className="hidden sm:flex gap-4 text-[#C6C8CC] mr-2">
               <GoBell className="hover:cursor-pointer" size={20} />
               <GrLanguage className="hover:cursor-pointer" size={20} />
-            </div>
+            </div> */}
           </div>
 
           <Link href="/dashBoard/main" className="shrink-0">
@@ -89,10 +89,10 @@ async function SmHeader() {
           </Link>
         </div>
 
-        <div className="flex sm:hidden gap-4 text-[#C6C8CC]">
+        {/*     <div className="flex sm:hidden gap-4 text-[#C6C8CC]">
           <GoBell className="hover:cursor-pointer" size={20} />
           <GrLanguage className="hover:cursor-pointer" size={20} />
-        </div>
+        </div> */}
 
         <div className="w-full flex flex-wrap lg:w-130">
           <HeaderSearch role={role} />

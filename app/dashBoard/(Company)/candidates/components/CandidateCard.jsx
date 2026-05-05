@@ -1,59 +1,16 @@
 import Image from "next/image";
-import {
-  FiEye,
-  FiPhone,
-  FiMail,
-  FiDownload,
-  FiCheck,
-  FiX,
-  FiStar,
-  FiCalendar,
-  FiClipboard,
-  FiAward,
-} from "react-icons/fi";
+import { FiEye, FiPhone, FiMail, FiCheck, FiX } from "react-icons/fi";
 import { ApiFetchServer } from "../../../../lib/ApiFetchServer";
-
-function getCandidate(application) {
-  return (
-    application?.job_seeker ??
-    application?.JobSeeker ??
-    application?.candidate ??
-    application?.user ??
-    application
-  );
-}
-
-function getCandidateName(application) {
-  const c = getCandidate(application);
-  return (
-    c?.FullName ??
-    c?.full_name ??
-    application?.JobSeekerName ??
-    application?.job_seeker_name ??
-    "مرشح بدون اسم"
-  );
-}
-
-function getStatus(application) {
-  return application?.Status ?? application?.status ?? "Pending";
-}
+import { toast } from "react-toastify";
 
 const statusLabel = {
   Pending: "جديد",
-  Reviewed: "تمت المراجعة",
-  Shortlisted: "مختصر",
-  Interviewing: "مقابلة",
-  Offered: "عرض",
   Hired: "مقبول",
   Rejected: "مرفوض",
 };
 
 const statusClass = {
   Pending: "bg-blue-100 text-blue-700",
-  Reviewed: "bg-slate-100 text-slate-700",
-  Shortlisted: "bg-purple-100 text-purple-700",
-  Interviewing: "bg-orange-100 text-orange-700",
-  Offered: "bg-amber-100 text-amber-700",
   Hired: "bg-green-100 text-green-700",
   Rejected: "bg-red-100 text-red-700",
 };
@@ -61,53 +18,27 @@ const statusClass = {
 export default function CandidateCard({
   application,
   onViewProfile,
-  onAccept,
+  setApplications,
 }) {
-  console.log(application.job_seeker.PersonalPhoto);
-  const candidate = getCandidate(application || {});
-  const status = getStatus(application);
-  const name = getCandidateName(application);
-
-  const email =
-    candidate?.Email ?? candidate?.email ?? application?.JobSeekerEmail ?? "-";
-
-  const phone =
-    candidate?.Phone ?? candidate?.phone ?? application?.JobSeekerPhone ?? "-";
-
-  const location =
-    candidate?.Location ??
-    candidate?.location ??
-    application?.JobSeekerAddress ??
-    "-";
-
-  const summary =
-    candidate?.ProfileSummary ??
-    candidate?.profile_summary ??
-    application?.AboutMe ??
-    application?.notes ??
-    "لا يوجد ملخص.";
-
-  const aiScore =
-    application?.ai_match_score ??
-    application?.match_score ??
-    application?.AI_MatchScore;
-
-  const cvUrl =
-    application?.cv_url ??
-    application?.CVUrl ??
-    application?.cv_path ??
-    application?.CVPath ??
-    application?.cv;
-
-  async function onReject() {
+  async function Action(isAccespit) {
     const res = await ApiFetchServer(
-      `/employer/applications/${application.JobAdID}/status`,
+      `/employer/applications/${application.ApplicationID}/status`,
       "PUT",
       {
-        status: "Rejected",
+        status: isAccespit ? "Hired" : "Rejected",
       },
     );
-    console.log(res);
+
+    const res2 = await ApiFetchServer(
+      `/employer/jobs/${application.JobAdID}/applications`,
+    );
+
+    setApplications(res2.dataResponse.data);
+    if (isAccespit) {
+      toast.success("تم قبول الموظف");
+    } else {
+      toast.success("تم رفض الموظف");
+    }
   }
 
   return (
@@ -118,48 +49,57 @@ export default function CandidateCard({
       <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-start">
         <div className="flex items-start gap-4">
           <div className="w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center text-white text-xl shrink-0">
-            <Image
-              alt="photo profile"
-              src={application.job_seeker.PersonalPhoto}
-              width={300}
-              height={300}
-              className=" rounded-full w-14 h-14 object-cover"
-            />
+            {application.job_seeker.PersonalPhoto.length > 40 ? (
+              <Image
+                alt="photo profile"
+                src={application.job_seeker.PersonalPhoto}
+                width={300}
+                height={300}
+                className=" rounded-full w-14 h-14 object-cover"
+              />
+            ) : (
+              <div></div>
+            )}
           </div>
 
           <div>
-            <h3 className="font-bold text-lg text-slate-900">{name}</h3>
-            <p className="text-gray-500 text-sm mt-1">{summary}</p>
+            <h3 className="font-bold text-lg text-slate-900">
+              {application?.job_seeker?.user?.FullName ?? "بدون اسم"}
+            </h3>
+            <p className="text-gray-500 text-sm mt-1">
+              {application?.job_seeker?.ProfileSummary ?? "بدون اسم"}
+            </p>
 
             <div className="mt-3 flex flex-wrap gap-4 text-gray-500 text-sm">
               <div className="flex items-center gap-1">
                 <FiPhone />
-                {phone}
+                {application?.JobSeekerPhone ?? "لا يوجد"}
               </div>
 
               <div className="flex items-center gap-1">
                 <FiMail />
-                {email}
+                {application?.job_seeker?.user?.Email ?? "لا يوجد بريد"}
               </div>
 
-              <div>{location}</div>
+              <div>{application?.job_seeker?.Location ?? "لا يوجد عنوان"}</div>
             </div>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          {aiScore !== undefined && aiScore !== null && (
-            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-lg text-sm font-semibold">
-              AI {aiScore}%
-            </span>
-          )}
+          {application.MatchScore !== undefined &&
+            application.MatchScore !== null && (
+              <span className="bg-green-100 text-green-700 px-3 py-1 rounded-lg text-sm font-semibold">
+                {application.MatchScore}%
+              </span>
+            )}
 
           <span
             className={`text-xs px-3 py-1 rounded-full font-semibold ${
-              statusClass[status] ?? "bg-slate-100 text-slate-600"
+              statusClass[application?.Status] ?? "bg-slate-100 text-slate-600"
             }`}
           >
-            {statusLabel[status] ?? status}
+            {statusLabel[application?.Status] ?? application?.Status}
           </span>
         </div>
       </div>
@@ -183,55 +123,11 @@ export default function CandidateCard({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          {/*           {status !== "Reviewed" && (
-            <button
-              type="button"
-              onClick={onReview}
-              className="border border-slate-300 text-slate-600 px-3 py-2 rounded-lg hover:bg-slate-50"
-              title="تمت المراجعة"
-            >
-              <FiClipboard />
-            </button>
-          )}
-
-          {status !== "Shortlisted" && (
-            <button
-              type="button"
-              onClick={onShortlist}
-              className="border border-purple-300 text-purple-600 px-3 py-2 rounded-lg hover:bg-purple-50"
-              title="اختصار"
-            >
-              <FiStar />
-            </button>
-          )}
-
-          {status !== "Interviewing" && (
-            <button
-              type="button"
-              onClick={onInterview}
-              className="border border-orange-300 text-orange-600 px-3 py-2 rounded-lg hover:bg-orange-50"
-              title="مقابلة"
-            >
-              <FiCalendar />
-            </button>
-          )}
- */}
-          {/*        {status !== "Offered" && (
-            <button
-              type="button"
-              onClick={onOffer}
-              className="border border-amber-300 text-amber-600 px-3 py-2 rounded-lg hover:bg-amber-50"
-              title="عرض"
-            >
-              <FiAward />
-            </button>
-          )} */}
-
           {status !== "Hired" && (
             <button
               type="button"
-              onClick={onAccept}
-              className="border border-green-300 text-green-600 px-3 py-2 rounded-lg hover:bg-green-50"
+              onClick={() => Action(true)}
+              className="border border-green-300 text-green-600 px-3 py-2 rounded-lg hover:bg-green-50 hover:cursor-pointer"
               title="قبول"
             >
               <FiCheck />
@@ -241,7 +137,7 @@ export default function CandidateCard({
           {status !== "Rejected" && (
             <button
               type="button"
-              onClick={onReject}
+              onClick={() => Action(false)}
               className="border border-red-300 text-red-500 px-3 py-2 rounded-lg hover:bg-red-50 hover:cursor-pointer"
               title="رفض"
             >

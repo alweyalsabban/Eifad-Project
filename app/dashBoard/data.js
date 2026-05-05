@@ -141,7 +141,7 @@ export const JobseekerSideBar = (number) => [
     ),
     href: "/dashBoard/search-pages",
   },
-  {
+  /*   {
     id: 12,
     name: "الرسائل",
     icon: (
@@ -151,13 +151,13 @@ export const JobseekerSideBar = (number) => [
       />
     ),
     href: "/dashBoard/messages",
-  },
+  }, */
 ];
 
 export const CompanySideBar = (number) => [
   {
     id: 1,
-    name: "لوحة التحكم",
+    name: "الواجهة الرئيسية",
     icon: (
       <RiHome3Line
         size={20}
@@ -210,7 +210,7 @@ export const CompanySideBar = (number) => [
     ),
     href: "/dashBoard/search-employee",
   },
-  {
+  /*  {
     id: 6,
     name: "الرسائل",
     icon: (
@@ -220,7 +220,7 @@ export const CompanySideBar = (number) => [
       />
     ),
     href: "/dashBoard/message",
-  },
+  }, */
   {
     id: 7,
     name: "حالة التحقق",
@@ -326,7 +326,7 @@ export const AdminSideBar = (number) => [
 ];
 
 export const TwoIcon = (number) => [
-  {
+  /* {
     id: 13,
     name: "الإعادات",
     icon: (
@@ -336,7 +336,7 @@ export const TwoIcon = (number) => [
       />
     ),
     href: "/dashBoard/Settings",
-  },
+  }, */
   {
     id: 14,
     name: "الخروج",

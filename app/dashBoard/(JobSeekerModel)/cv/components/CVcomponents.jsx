@@ -501,7 +501,6 @@ function CVcomponents({
       toast.success("تم تحديث بيانات السيرة الذاتية");
     } catch (error) {
       toast.error("حدث خطأ أثناء حفظ السيرة الذاتية");
-      console.error(error);
     } finally {
       setLoading(false);
       router.refresh();

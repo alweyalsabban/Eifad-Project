@@ -5,76 +5,13 @@ import { useParams } from "next/navigation";
 import { Profile } from "../../callFunctionsForCompany";
 import { FiMail, FiPhone, FiMapPin, FiBriefcase } from "react-icons/fi";
 
-function getSkills(employee) {
-  const skills = employee?.skills ?? employee?.Skills ?? [];
-  if (!Array.isArray(skills)) return [];
-
-  return skills.map(
-    (skill) => skill?.skill_name ?? skill?.SkillName ?? skill?.name ?? skill,
-  );
-}
-
 export default function EmployeeProfilePage() {
+  const [Employee, setEmployee] = useState([]);
+
   const params = useParams();
   const employeeId = params?.employeeId;
-  console.log(params.employeeId);
 
-  const [employee, setEmployee] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!employeeId) return;
-
-    Profile("GetEmployeeProfile", employeeId)
-      .then((data) => setEmployee(data))
-      .finally(() => setLoading(false));
-  }, [employeeId]);
-
-  if (loading) {
-    return (
-      <div className="mt-10 text-center text-slate-500">
-        جاري تحميل الملف الشخصي...
-      </div>
-    );
-  }
-
-  if (!employee) {
-    return (
-      <div className="mt-10 text-center text-slate-500">
-        لم يتم العثور على بيانات الموظف.
-      </div>
-    );
-  }
-
-  const name =
-    employee?.FullName ??
-    employee?.full_name ??
-    employee?.name ??
-    "موظف بدون اسم";
-
-  const title =
-    employee?.JobTitle ??
-    employee?.job_title ??
-    employee?.title ??
-    "باحث عن عمل";
-
-  const email = employee?.Email ?? employee?.email ?? "-";
-  const phone = employee?.Phone ?? employee?.phone ?? "-";
-  const location = employee?.Location ?? employee?.location ?? "-";
-  const summary =
-    employee?.ProfileSummary ??
-    employee?.profile_summary ??
-    employee?.summary ??
-    "لا يوجد ملخص.";
-
-  const experience =
-    employee?.experience ??
-    employee?.Experience ??
-    employee?.years_of_experience ??
-    "-";
-
-  const skills = getSkills(employee);
-
+  useEffect(() => {}, [employeeId]);
   return (
     <div dir="rtl" className="w-[98%] mx-auto mb-40">
       <div className="mt-5 rounded-3xl border border-slate-200 bg-white p-8">

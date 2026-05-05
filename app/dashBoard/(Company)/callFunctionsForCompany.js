@@ -1,4 +1,6 @@
 import { ApiFetchServer } from "../../lib/ApiFetchServer";
+import { ApiPdf } from "../../lib/ApiPdf";
+import { ApiPostPdf } from "../../lib/ApiPostPdf";
 
 function unwrap(res) {
   const data = res?.dataResponse?.data ?? res?.dataResponse ?? null;
@@ -63,6 +65,11 @@ export async function Profile(NameFunction, dataProfile) {
         await ApiFetchServer(`/employer/job-seekers/${dataProfile}`),
       );
     }
+
+    if (NameFunction === "ProfileDetil") {
+      return unwrap(await ApiFetchServer(`/users/${dataProfile}/profile`));
+    }
+
     if (NameFunction === "GetMe") {
       const res = await ApiFetchServer("/auth/me");
       return res.dataResponse?.data ?? res.dataResponse;
@@ -74,11 +81,9 @@ export async function Profile(NameFunction, dataProfile) {
     }
 
     if (NameFunction === "UploadVerificationDocument") {
-      const res = await ApiFetchServer(
-        `/employer/verification-documents/${dataProfile.type}`,
-        "POST",
+      const res = await ApiPostPdf(
+        `/employer/verify/documents`,
         dataProfile.formData,
-        true,
       );
       return res.dataResponse?.data ?? res.dataResponse;
     }
@@ -91,5 +96,28 @@ export async function Profile(NameFunction, dataProfile) {
     return null;
   } catch (error) {
     throw new Error(`Error from Profile Function : ${error}`);
+  }
+}
+
+export async function Employer(NameFunction, dataProfile) {
+  if (NameFunction === "MakeCandidateForJob") {
+    return unwrap(
+      await ApiFetchServer(
+        `/employer/jobs/${dataProfile.jobId}/ai-rank`,
+        "POST",
+      ),
+    );
+  }
+
+  if (NameFunction === "GetAllAiAplications") {
+    return unwrap(
+      await ApiFetchServer(
+        `/employer/jobs/${dataProfile.idJob}/applications?status=ai_filtered`,
+      ),
+    );
+  }
+
+  if (NameFunction === "GetFirts") {
+    return await ApiPdf(`/employer/verify/documents/${dataProfile.NumberDoc}`);
   }
 }

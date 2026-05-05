@@ -52,7 +52,6 @@ export default function JobDetailsModal({
     if (!form) return;
 
     onSave(form);
-    console.log("Job updated:", form);
     onClose();
   }
 

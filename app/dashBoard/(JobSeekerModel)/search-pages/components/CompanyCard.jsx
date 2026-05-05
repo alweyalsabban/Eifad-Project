@@ -16,7 +16,6 @@ export default function CompanyCard({
   AllConmpnies,
   UrlImage,
 }) {
-  console.log(UrlImage);
   const [page, setPage] = useState(null);
 
   useEffect(() => {

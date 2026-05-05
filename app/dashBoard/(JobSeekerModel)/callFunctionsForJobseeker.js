@@ -595,9 +595,7 @@ export async function RoadMapFuncation(NameFunction, JobData) {
       target_role: JobData.title,
       cv_id: JobData.idCV,
     });
-    console.log(JobData.title);
-    console.log(JobData.idCV);
-    console.log(res);
+
     return res.dataResponse.data;
   }
 }

@@ -72,7 +72,6 @@ function SearchEmployee() {
 
       setHasMore(currentPage < lastPage || list.length === 10);
     } catch (error) {
-      console.error(error);
       setHasMore(false);
     } finally {
       setLoading(false);

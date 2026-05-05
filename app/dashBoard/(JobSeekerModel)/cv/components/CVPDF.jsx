@@ -4,19 +4,19 @@ import { forwardRef } from "react";
 
 const ResumePage = forwardRef(function ResumePage({ CVInfo, Profile }, ref) {
   const personal = {
-    name: Profile.FullName,
-    title: CVInfo.Title,
-    phone: Profile.Phone,
-    email: Profile.Email,
-    location: Profile.Location,
-    summary: CVInfo.PersonalSummary,
+    name: Profile?.FullName,
+    title: CVInfo?.Title,
+    phone: Profile?.Phone,
+    email: Profile?.Email,
+    location: Profile?.Location,
+    summary: CVInfo?.PersonalSummary,
   };
 
-  const experience = CVInfo.experiences ?? [];
-  const education = CVInfo.education ?? [];
-  const languages = CVInfo.languages ?? [];
-  const skills = CVInfo.skills ?? [];
-  const certifications = CVInfo.certifications ?? [];
+  const experience = CVInfo?.experiences ?? [];
+  const education = CVInfo?.education ?? [];
+  const languages = CVInfo?.languages ?? [];
+  const skills = CVInfo?.skills ?? [];
+  const certifications = CVInfo?.certifications ?? [];
 
   return (
     <div className="w-full p-10" dir="rtl" ref={ref}>
@@ -130,25 +130,26 @@ const ResumePage = forwardRef(function ResumePage({ CVInfo, Profile }, ref) {
                 ))}
               </div>
             </section>
+            {certifications.length > 0 && (
+              <section className="mb-8 border-b border-neutral-200 pb-6">
+                <h2 className="mb-5 text-xl font-bold">الدورات و الشهادات</h2>
+                <div className="space-y-5">
+                  {certifications.map((certi) => (
+                    <article key={certi.CertificationID}>
+                      <h3 className="text-base font-bold">
+                        {certi.CertificateName}
+                      </h3>
+                      <p className="mt-2 text-sm leading-7 text-neutral-700">
+                        {certi.IssuingOrganization}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
 
-            <section className="mb-8 border-b border-neutral-200 pb-6">
-              <h2 className="mb-5 text-xl font-bold">الدورات و الشهادات</h2>
-              <div className="space-y-5">
-                {certifications.map((certi) => (
-                  <article key={certi.CertificationID}>
-                    <h3 className="text-base font-bold">
-                      {certi.CertificateName}
-                    </h3>
-                    <p className="mt-2 text-sm leading-7 text-neutral-700">
-                      {certi.IssuingOrganization}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            </section>
-
-            {CVInfo.custom_sections?.length > 0 &&
-              CVInfo.custom_sections.map((item) => (
+            {CVInfo?.custom_sections?.length > 0 &&
+              CVInfo?.custom_sections?.map((item) => (
                 <section
                   className="mb-8 border-b border-neutral-200 pb-6"
                   key={item.CustomSectionID}
