@@ -1,5 +1,6 @@
 import { ApiFetchServer } from "../../lib/ApiFetchServer";
 import { toast } from "react-toastify";
+import { ApiForm } from "../../lib/ApiForm";
 const getEducationId = (item) =>
   item?.EducationID ?? item?.education_id ?? item?.id ?? null;
 
@@ -517,6 +518,11 @@ export async function JobApplication(NameFunction, JobData) {
       cv_id: JobData.CVID,
       notes: "",
     });
+    return res;
+  }
+
+  if (NameFunction === "ManualAppleyJob") {
+    const res = await ApiForm("/applications", "POST", JobData);
     return res;
   }
 

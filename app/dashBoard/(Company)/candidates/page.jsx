@@ -103,27 +103,12 @@ function Candidates() {
 
   const tabs = [
     { id: "all", label: "الكل", count: applications.length },
-    /*     {
-      id: "new",
-      label: "جديد",
-      count: applications.filter((a) => getAppStatus(a) === "Pending").length,
-    }, */
-    /*     {
-      id: "review",
-      label: "مراجع",
-      count: applications.filter((a) => getAppStatus(a) === "Reviewed").length,
-    }, */
     {
       id: "candidate",
       label: "مرشح بـ (AI)",
       count: applicationAI.length,
     },
-    /* {
-      id: "selected",
-      label: "مختار",
-      count: applications.filter((a) => getAppStatus(a) === "Shortlisted")
-        .length,
-    }, */
+
     {
       id: "unacceptable",
       label: "مرفوض",
@@ -135,6 +120,24 @@ function Candidates() {
       count: applications.filter((a) => getAppStatus(a) === "Hired").length,
     },
   ];
+
+  function handleOnView(application) {
+    setCVInfo(application?.cv);
+    setProfile({
+      FullName:
+        application?.JobSeekerName !== null
+          ? application?.JobSeekerName
+          : application?.job_seeker?.user?.FullName,
+      Phone: application?.JobSeekerPhone,
+      Email:
+        application?.JobSeekerEmail !== null
+          ? application?.JobSeekerEmail
+          : application?.job_seeker?.user?.Email,
+      Location: application?.job_seeker?.Location,
+    });
+    console.log(application);
+    setShowPreview(true);
+  }
 
   return (
     <div className="w-[98%] mx-auto mb-40">
@@ -180,13 +183,6 @@ function Candidates() {
         </button>
       </div>
       <CandidateTab tabs={tabs} active={active} setActive={setActive} />
-      {/*   {
-        active === "candidate" && (
-          <button className="rounded-xl bg-green-500 px-8 py-3 text-white font-semibold hover:bg-green-600 transition mt-5 hover:cursor-pointer">
-            قبول الكل
-          </button>
-        )
-      } */}
       {!jobId ? (
         <div className="mt-6 text-center text-slate-500">
           اختر وظيفة لعرض المتقدمين.
@@ -206,14 +202,7 @@ function Candidates() {
               status={active === "Accepted" ? "accepted" : "pending"}
               setApplications={setApplications}
               onViewProfile={() => {
-                setCVInfo(application?.cv_details);
-                setProfile({
-                  FullName: application?.job_seeker?.user?.FullName,
-                  Phone: application?.JobSeekerPhone,
-                  Email: application?.job_seeker?.user?.Email,
-                  Location: application?.job_seeker?.Location,
-                });
-                setShowPreview(true);
+                handleOnView(application);
               }}
             />
           );
