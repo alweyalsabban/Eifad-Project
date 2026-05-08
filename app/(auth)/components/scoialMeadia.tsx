@@ -5,8 +5,8 @@ import { ApiFetchServer } from "@/app/lib/ApiFetchServer";
 
 function ScoialMeadia() {
   const onGoogle = async () => {
-    //window.open("/api/auth/login/google", "popup", "width=500,height=600");
     const res = await ApiFetchServer("/auth/login/google");
+    //window.open("/api/auth/login/google", "popup", "width=500,height=600");
     window.location.href = res.dataResponse.url;
   };
   const onlinkedin = async () => {
