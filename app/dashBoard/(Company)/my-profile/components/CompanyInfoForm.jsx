@@ -29,6 +29,7 @@ export default function CompanyInfoForm({ infoProfile, mainData }) {
   });
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [loadingImg, setLoadingImg] = useState(false);
   useEffect(() => {
     let filled = 0;
 
@@ -44,19 +45,22 @@ export default function CompanyInfoForm({ infoProfile, mainData }) {
 
   async function handleSubmit() {
     setLoading(true);
-    await Profile("EditProfile", ProfileData);
+    const res = await Profile("EditProfile", ProfileData);
+    console.log("===============");
+    console.log(res);
     setNameCooies(ProfileData.full_name);
     setLoading(false);
   }
   async function handleUpload(e) {
     const file = e.target.files?.[0];
     if (!file) return;
-
+    setLoadingImg(true);
     const url = await uploadImage(file);
     setProfileData((prev) => ({
       ...prev,
       logo_path: url,
     }));
+    setLoadingImg(false);
   }
 
   return (
@@ -89,13 +93,23 @@ export default function CompanyInfoForm({ infoProfile, mainData }) {
         {/* Logo Upload */}
         <div className="mb-5 flex items-center gap-3">
           {ProfileData?.logo_path?.length > 20 ? (
-            <Image
-              src={ProfileData.logo_path}
-              width={400}
-              height={400}
-              alt="صورة الملف الشخصي"
-              className="h-14 w-14 items-center justify-center object-cover rounded-xl"
-            />
+            loadingImg ? (
+              <div>
+                <LoaderTwo />
+              </div>
+            ) : (
+              <Image
+                src={ProfileData.logo_path}
+                width={400}
+                height={400}
+                alt="صورة الملف الشخصي"
+                className="h-14 w-14 items-center justify-center object-cover rounded-xl"
+              />
+            )
+          ) : loadingImg ? (
+            <div>
+              <LoaderTwo />
+            </div>
           ) : (
             <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-600 text-[28px] font-bold text-white shadow-sm">
               G
@@ -115,7 +129,7 @@ export default function CompanyInfoForm({ infoProfile, mainData }) {
               className=" inline-flex items-center gap-2 rounded-full border border-slate-200
              bg-white px-4 py-2 text-[12px] font-medium text-slate-600 hover:bg-slate-50 hover:cursor-pointer"
             >
-              إختر ملف الشركة
+              إختر شعار الشركة
             </label>
 
             <p className="mt-2 text-[10px] text-slate-400">PNG, JPG &lt; 2MB</p>

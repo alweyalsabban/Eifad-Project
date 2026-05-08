@@ -10,6 +10,10 @@ function unwrap(res) {
 
 export async function Profile(NameFunction, dataProfile) {
   try {
+    if (NameFunction === "EditProfile") {
+      console.log(dataProfile);
+      return unwrap(await ApiFetchServer("/profile", "PUT", dataProfile));
+    }
     if (NameFunction === "GetAllJobPosted")
       return unwrap(await ApiFetchServer("/employer/jobs"));
     if (NameFunction === "GetSkills")
