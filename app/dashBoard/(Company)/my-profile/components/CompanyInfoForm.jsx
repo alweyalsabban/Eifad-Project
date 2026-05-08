@@ -45,9 +45,7 @@ export default function CompanyInfoForm({ infoProfile, mainData }) {
 
   async function handleSubmit() {
     setLoading(true);
-    const res = await Profile("EditProfile", ProfileData);
-    console.log("===============");
-    console.log(res);
+    await Profile("EditProfile", ProfileData);
     setNameCooies(ProfileData.full_name);
     setLoading(false);
   }
