@@ -110,14 +110,28 @@ export default function SkillsTab({
 
           return (
             <div className="space-y-4" key={index}>
-              <div className="grid grid-cols-[1fr_140px_140px_28px] items-center gap-3">
-                <input
-                  value={currentValue}
-                  list={datalistId}
-                  onChange={(e) => handleSkillNameChange(index, e.target.value)}
-                  placeholder="أضف مهارة"
-                  className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_140px_140px_28px] items-center gap-3">
+                <div className="flex gap-2 justify-center items-center">
+                  <input
+                    value={currentValue}
+                    list={datalistId}
+                    onChange={(e) =>
+                      handleSkillNameChange(index, e.target.value)
+                    }
+                    placeholder="أضف مهارة"
+                    className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 
+                    text-right outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeRow(index)}
+                    className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600 md:hidden hover:cursor-pointer"
+                    aria-label="حذف"
+                    title="حذف"
+                  >
+                    <TrashIcon className="h-5 w-5" />
+                  </button>
+                </div>
 
                 <datalist id={datalistId}>
                   {filteredSkills.map((skill, i) => (
@@ -151,11 +165,11 @@ export default function SkillsTab({
                     </option>
                   ))}
                 </select>
-
+                <div className="mt-5 md:hidden block "></div>
                 <button
                   type="button"
                   onClick={() => removeRow(index)}
-                  className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600"
+                  className="md:flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600 hidden hover:cursor-pointer"
                   aria-label="حذف"
                   title="حذف"
                 >

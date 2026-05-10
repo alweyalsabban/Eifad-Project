@@ -44,12 +44,12 @@ async function MainDashBorad() {
       <div className="mt-5 block w-[95%] m-auto gap-4 justify-between md:flex mb-40">
         <QuckliyAction
           name={"الوظائف الموصى بها"}
-          Data={RecommendJob.dataResponse.data}
+          Data={RecommendJob?.dataResponse?.data}
           href={"/dashBoard/recommed-job"}
         />
         <QuckliyAction
           name={"الطلبات الأخيرة"}
-          Data={JobApplay.dataResponse.data}
+          Data={JobApplay?.dataResponse?.data}
           isApplication={true}
           href={"/dashBoard/job-applications"}
         />

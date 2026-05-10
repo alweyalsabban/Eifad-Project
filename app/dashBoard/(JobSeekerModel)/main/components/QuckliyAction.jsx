@@ -33,10 +33,10 @@ export default function QuckliyAction({
             key={r?.JobAdID}
           >
             <JobsList
-              status={r?.Status === "Pending" ? "مقدّم" : "مقبول"}
+              status={r?.Status}
               title={isApplication ? r?.job_ad?.Title : r?.Title}
               company={r?.job_ad?.company?.CompanyName}
-              timeAgo={r?.job_ad?.ExpiryDate.slice(0, 10)}
+              timeAgo={r?.ExpiryDate?.slice(0, 10)}
             />
           </Link>
         ))}

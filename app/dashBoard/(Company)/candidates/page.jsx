@@ -135,7 +135,6 @@ function Candidates() {
           : application?.job_seeker?.user?.Email,
       Location: application?.job_seeker?.Location,
     });
-    console.log(application);
     setShowPreview(true);
   }
 

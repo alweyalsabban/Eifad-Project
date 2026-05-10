@@ -5,6 +5,7 @@ import SmartRecommendationsBanner from "./components/SmartRecommendationsBanner"
 import CreateTitle from "../CreateTitle";
 import LoaderTwo from "../components/LoaderTwo";
 import { JobApplication } from "../callFunctionsForJobseeker";
+import NoCvMessage from "../components/NoCvMessage";
 function RecommedJob() {
   const [isLoading, setLoading] = useState(true);
   const [allRecommendJob, setRecommendJob] = useState(null);
@@ -26,53 +27,61 @@ function RecommedJob() {
   return (
     <>
       <CreateTitle title="الوظائف الموصى بها" number={6} />
+      {CvInfo === undefined ? (
+        <NoCvMessage
+          Message={
+            "لا يوجد لديك سيرة ذاتية ، يرجى إنشاءها أولا لنتمكن من ترشح لك وظائف."
+          }
+        />
+      ) : (
+        //<SmartRecommendationsBanner />
 
-      {/*  <SmartRecommendationsBanner /> */}
-      <div className="mb-40">
-        {isLoading ? (
-          <div className="flex justify-center items-center mt-10">
-            <LoaderTwo />
-          </div>
-        ) : (
-          <>
-            <div className="mb-40">
-              {allRecommendJob?.map((item, index) => {
-                return (
-                  <JobCard
-                    CVId={CvInfo.CVID}
-                    JobAdID={item.JobAdID}
-                    key={index}
-                    title={item?.Title}
-                    company={item?.company?.CompanyName ?? ""}
-                    location={item?.Location ?? ""}
-                    workType={item?.WorkType ?? ""}
-                    mode={item?.WorkplaceType ?? ""}
-                    postedAgo={new Date(
-                      item?.PostedAt ?? "",
-                    ).toLocaleDateString("ar-EG", {
-                      weekday: "long",
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                    ExpiryDate={item?.ExpiryDate}
-                    salaryFrom={item?.SalaryMin ?? ""}
-                    salaryTo={item?.SalaryMax ?? ""}
-                    currency={item?.Currency ?? ""}
-                    logoPath={item?.company?.LogoPath}
-                  />
-                );
-              })}
+        <div className="mb-40">
+          {isLoading ? (
+            <div className="flex justify-center items-center mt-10">
+              <LoaderTwo />
             </div>
-          </>
-        )}
+          ) : (
+            <>
+              <div className="mb-40">
+                {allRecommendJob?.map((item, index) => {
+                  return (
+                    <JobCard
+                      CVId={CvInfo?.CVID}
+                      JobAdID={item?.JobAdID}
+                      key={index}
+                      title={item?.Title}
+                      company={item?.company?.CompanyName ?? ""}
+                      location={item?.Location ?? ""}
+                      workType={item?.WorkType ?? ""}
+                      mode={item?.WorkplaceType ?? ""}
+                      postedAgo={new Date(
+                        item?.PostedAt ?? "",
+                      ).toLocaleDateString("ar-EG", {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                      ExpiryDate={item?.ExpiryDate}
+                      salaryFrom={item?.SalaryMin ?? ""}
+                      salaryTo={item?.SalaryMax ?? ""}
+                      currency={item?.Currency ?? ""}
+                      logoPath={item?.company?.LogoPath}
+                    />
+                  );
+                })}
+              </div>
+            </>
+          )}
 
-        {allRecommendJob?.length === 0 && (
-          <div className="flex justify-center items-center mt-10 ">
-            لا يوجد وظائف مرشحه لك .{" "}
-          </div>
-        )}
-      </div>
+          {allRecommendJob?.length === 0 && (
+            <div className="flex justify-center items-center mt-10 ">
+              لا يوجد وظائف مرشحه لك .{" "}
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 }

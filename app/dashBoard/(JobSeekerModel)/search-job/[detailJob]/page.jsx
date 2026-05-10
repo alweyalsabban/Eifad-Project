@@ -8,6 +8,7 @@ import JobRequirementsCard from "../components/JobRequirementsCard";
 import { JobApplication } from "../../callFunctionsForJobseeker";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import NoCvMessage from "../../components/NoCvMessage";
 import CreateTitle from "../../CreateTitle";
 
 function DeatilJob() {
@@ -30,16 +31,19 @@ function DeatilJob() {
       //if (!jobRes?.JobAdID || !cvRes?.CVID) return;
 
       JobApplication("CalMatchAiJob", {
-        jobId: jobRes.JobAdID,
-        CvId: cvRes.CVID,
+        jobId: jobRes?.JobAdID,
+        CvId: cvRes?.CVID,
       }).then((res) => {
-        setAIAnalayise(res.dataResponse.data);
+        setAIAnalayise(res?.dataResponse?.data);
       });
     });
   }, [path]);
 
   return (
     <>
+      {CVInfo === undefined && (
+        <NoCvMessage Message={"لا يوجد لديك سيرة ذاتية ، يرجى إنشائها"} />
+      )}
       <CreateTitle title="تفاصيل الوظيفة" number={5} />
 
       <JobDetailsHeaderCard

@@ -10,7 +10,6 @@ export default function AiMatchCard({
   explaine,
 }) {
   const clamped = Math.max(0, Math.min(100, score));
-
   return (
     <section className="w-full rounded-2xl bg-linear-to-r from-green-500 to-emerald-600 p-6 text-white mt-5">
       {/* Header */}
@@ -26,7 +25,15 @@ export default function AiMatchCard({
       <div className="flex items-center justify-between">
         <span className="text-sm text-white/90">نسبة المطابقة</span>
         <div className="text-3xl font-bold">
-          {score === null ? <Loader /> : `${clamped}%`}
+          {score === null ? (
+            reasons.length === 0 ? (
+              0
+            ) : (
+              <Loader />
+            )
+          ) : (
+            `${clamped}%`
+          )}
         </div>
       </div>
 

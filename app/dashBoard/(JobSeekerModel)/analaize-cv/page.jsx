@@ -5,32 +5,36 @@ import SkillGapCard from "./components/SkillGapCard";
 import CreateTitle from "../CreateTitle";
 import { ApiFetchServer } from "../../../lib/ApiFetchServer";
 import CvAnalysisPdfReport from "./components/DownloadCvAnalysisPdf";
-
+import NoCvMessage from "../components/NoCvMessage";
 async function AnalaizeCv() {
   const cvInfo = await ApiFetchServer("/cvs");
   const res = await ApiFetchServer(
-    `/cvs/${cvInfo.dataResponse.data[0].CVID}/analyze`,
+    `/cvs/${cvInfo?.dataResponse.data[0]?.CVID}/analyze`,
     "POST",
   );
-  const data = await res.dataResponse.data;
+  const data = await res?.dataResponse.data;
   return (
     <>
+      {!res.isSusses && (
+        <NoCvMessage
+          Message={"لا يوجد لديك سيرة ذاتية ، يرجى إنشاءها أولا ."}
+        />
+      )}
       <CreateTitle title="تحليل السيرة الذاتية" number={4} />
-
-      <AiScoreCard score={data.scores.overall} />
+      <AiScoreCard score={data?.scores.overall} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <InsightListCard
           title="نقاط القوة"
           variant="success"
-          items={data.strengths}
+          items={data?.strengths}
         />
         <InsightListCard
           title="نقاط التحسين"
           variant="warning"
-          items={data.weaknesses}
+          items={data?.weaknesses}
         />
       </div>
-      <SkillGapCard items={data.gaps} />
+      <SkillGapCard items={data?.gaps} />
       <CvAnalysisPdfReport data={data} />
       {/*   <button
         className="flex w-full items-center justify-center gap-3 rounded-2xl bg-blue-600 py-4 text-white text-sm 

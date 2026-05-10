@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { JobApplication } from "../callFunctionsForJobseeker";
 import LoaderTwo from "../components/LoaderTwo";
 import { useSearchParams } from "next/navigation";
+import NoCvMessage from "../components/NoCvMessage";
+
 function JobSearchPage() {
   const [allJob, setAllJob] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -56,7 +58,13 @@ function JobSearchPage() {
   return (
     <>
       <CreateTitle title="البحث عن وظائف" number={5} />
-
+      {CvInfo === undefined && (
+        <NoCvMessage
+          Message={
+            "لا يوجد لديك سيرة ذاتية ، يرجى إنشاءها أولا لكي تتمكن من حساب درجة المطابقة ."
+          }
+        />
+      )}
       <JobSearchBar params={params} setParams={setParams} />
       <div className="flex justify-between items-center mt-5">
         <h1 className="w-[95%] m-auto mt-5 font-bold ">
@@ -87,8 +95,8 @@ function JobSearchPage() {
             {allJob.map((item, index) => {
               return (
                 <JobCard
-                  CVId={CvInfo.CVID}
-                  JobAdID={item.JobAdID}
+                  CVId={CvInfo?.CVID}
+                  JobAdID={item?.JobAdID}
                   key={index}
                   title={item?.Title}
                   company={item?.company?.CompanyName ?? ""}

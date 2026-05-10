@@ -12,7 +12,6 @@ function ScoialMeadia() {
   const onlinkedin = async () => {
     //window.open("/api/auth/login/linkedin", "popup", "width=500,height=600");
     const res = await ApiFetchServer("/auth/login/linkedin");
-    console.log(res);
     window.location.href = res.dataResponse.url;
   };
 

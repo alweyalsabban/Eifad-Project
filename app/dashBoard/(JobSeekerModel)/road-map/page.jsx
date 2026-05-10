@@ -5,6 +5,7 @@ import { RoadMapFuncation } from "../callFunctionsForJobseeker";
 import { JobApplication } from "../callFunctionsForJobseeker";
 import LoaderTwo from "../components/LoaderTwo";
 import { useEffect, useState } from "react";
+import NoCvMessage from "../components/NoCvMessage";
 function RoadMap() {
   const [loading, setLoading] = useState(false);
   const [isFillTarget, setTarget] = useState(false);
@@ -17,7 +18,7 @@ function RoadMap() {
       setLoading(true);
       const res = await RoadMapFuncation("GetPreRoadMap");
       const resCVInfo = await JobApplication("GetCVInfo");
-      setCvId(resCVInfo.CVID);
+      setCvId(resCVInfo?.CVID);
       setRoadMap(res);
       setLoading(false);
     }
@@ -42,6 +43,7 @@ function RoadMap() {
       setisTargetTrue(true);
     }
   }
+
   return (
     <>
       {isFillTarget && (
@@ -109,64 +111,85 @@ function RoadMap() {
         </div>
       )}
       <CreateTitle title="خارطة الطريق المهنية" number={8} />
-      <button
-        className="bg-primaryBlue px-4 py-2 rounded-2xl text-auxiliaryColorWhite hover:cursor-pointer 
+      {cvId === undefined ? (
+        <NoCvMessage
+          Message={"لا يوجد لديك سيرة ذاتية ، يجب أن تنشأها أولا ."}
+        />
+      ) : (
+        <>
+          <button
+            className="bg-primaryBlue px-4 py-2 rounded-2xl text-auxiliaryColorWhite hover:cursor-pointer 
       hover:scale-110 duration-500 mt-10"
-        onClick={() => {
-          setTarget(true);
-        }}
-      >
-        {RoadMap !== null ? "أنشئ خريطة جديدة" : "إنشاء سيرة ذاتية"}
-      </button>
-      <div className="w-[90%] mx-auto my-6">
-        <div className="bg-white border border-slate-200 rounded-3xl shadow-sm p-5 md:p-6">
-          <h2 className="text-lg font-bold text-slate-800 mb-4">
-            معلومات الخطة
-          </h2>
+            onClick={() => {
+              setTarget(true);
+            }}
+          >
+            أنشئ خريطة جديدة
+          </button>
 
-          <div className="space-y-4">
-            <div className="flex gap-3 items-center bg-slate-50 rounded-2xl px-4 py-3">
-              <span className="text-slate-500 text-sm">موقعك الحالي</span>
-              <span className="font-semibold text-slate-800">
-                {RoadMap?.current_level}
-              </span>
-            </div>
+          {RoadMap !== undefined ? (
+            <>
+              <div className="w-[90%] mx-auto my-6">
+                <div className="bg-white border border-slate-200 rounded-3xl shadow-sm p-5 md:p-6">
+                  <h2 className="text-lg font-bold text-slate-800 mb-4">
+                    معلومات الخطة
+                  </h2>
 
-            <div className="flex gap-3 items-center bg-slate-50 rounded-2xl px-4 py-3">
-              <span className="text-slate-500 text-sm">هدفك</span>
-              <span className="font-semibold text-primaryBlue">
-                {RoadMap?.target_level}
-              </span>
-            </div>
+                  <div className="space-y-4">
+                    <div className="flex gap-3 items-center bg-slate-50 rounded-2xl px-4 py-3">
+                      <span className="text-slate-500 text-sm">
+                        موقعك الحالي
+                      </span>
+                      <span className="font-semibold text-slate-800">
+                        {RoadMap?.current_level}
+                      </span>
+                    </div>
 
-            <div className="flex gap-3 items-center bg-slate-50 rounded-2xl px-4 py-3">
-              <span className="text-slate-500 text-sm">مدة الخطة</span>
-              <span className="font-semibold text-slate-800">
-                {RoadMap?.total_estimated_time}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="mb-40">
-        <h1 className="text-xl font-bold mt-3">الخطوات التفصيلية للخريطة :</h1>
-        {loading ? (
-          <div className="flex justify-center items-center mt-10">
-            <LoaderTwo />
-          </div>
-        ) : (
-          RoadMap?.milestones?.map((item, index) => {
-            return (
-              <TaskProgressCard
-                key={index}
-                title={item.title}
-                duration={item.duration}
-                index={index + 1}
-              />
-            );
-          })
-        )}
-      </div>
+                    <div className="flex gap-3 items-center bg-slate-50 rounded-2xl px-4 py-3">
+                      <span className="text-slate-500 text-sm">هدفك</span>
+                      <span className="font-semibold text-primaryBlue">
+                        {RoadMap?.target_level}
+                      </span>
+                    </div>
+
+                    <div className="flex gap-3 items-center bg-slate-50 rounded-2xl px-4 py-3">
+                      <span className="text-slate-500 text-sm">مدة الخطة</span>
+                      <span className="font-semibold text-slate-800">
+                        {RoadMap?.total_estimated_time}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mb-40">
+                <h1 className="text-xl font-bold mt-3">
+                  الخطوات التفصيلية للخريطة :
+                </h1>
+                {loading ? (
+                  <div className="flex justify-center items-center mt-10">
+                    <LoaderTwo />
+                  </div>
+                ) : (
+                  RoadMap?.milestones?.map((item, index) => {
+                    return (
+                      <TaskProgressCard
+                        key={index}
+                        title={item.title}
+                        duration={item.duration}
+                        index={index + 1}
+                      />
+                    );
+                  })
+                )}
+              </div>
+            </>
+          ) : (
+            <h1 className="m-auto flex justify-center items-center mt-10">
+              لا يوجد لديك خريطة سابقة ، أنشء خريطة الآن{" "}
+            </h1>
+          )}
+        </>
+      )}
     </>
   );
 }
