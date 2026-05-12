@@ -56,11 +56,11 @@ async function SmHeader() {
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
             <div className="border w-12 h-12 rounded-full flex items-center justify-center shrink-0">
-              {URL === null ? (
+              {URL === null || URL === undefined ? (
                 <div className="bg-auxiliaryColorGray w-10 h-10 rounded-full" />
               ) : (
                 <Image
-                  src={URL}
+                  src={URL ?? null}
                   width={100}
                   height={100}
                   alt="صورة الملف الشخصي"

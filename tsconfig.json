@@ -45,7 +45,12 @@
     "app/dashBoard/(JobSeekerModel)/context/GatherDataFromAPIContext.js",
     "app/dashBoard/(JobSeekerModel)/CreateTitle.jsx",
     "app/dashBoard/(JobSeekerModel)/cv/components/CVPDF.jsx",
-    "app/loading.js"
+    "app/loading.js",
+    "app/dashBoard/(Admin)/User-Management/components/UserTableRow.jsx",
+    "app/dashBoard/(Admin)/User-Management/components/UsersTable.jsx",
+    "app/dashBoard/(Admin)/User-Management/page.jsx",
+    "app/dashBoard/(Admin)/User-Management/components/UsersFiltersBar.jsx",
+    "app/dashBoard/(Admin)/User-Management/components/UserDetailsModal.jsx"
   ],
   "exclude": ["node_modules"]
 }
