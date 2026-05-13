@@ -50,7 +50,15 @@
     "app/dashBoard/(Admin)/User-Management/components/UsersTable.jsx",
     "app/dashBoard/(Admin)/User-Management/page.jsx",
     "app/dashBoard/(Admin)/User-Management/components/UsersFiltersBar.jsx",
-    "app/dashBoard/(Admin)/User-Management/components/UserDetailsModal.jsx"
+    "app/dashBoard/(Admin)/User-Management/components/UserDetailsModal.jsx",
+    "app/dashBoard/(Admin)/Company-verification/page.jsx",
+    "app/dashBoard/(Admin)/Company-verification/components/CompanyVerificationCard.jsx",
+    "app/dashBoard/(Admin)/Company-verification/components/CompanyCardHeader.jsx",
+    "app/dashBoard/(Admin)/Job-posting-management/page.jsx",
+    "app/dashBoard/(Admin)/Job-posting-management/components/JobsTable.jsx",
+    "app/dashBoard/(Admin)/Job-posting-management/components/JobTableRow.jsx",
+    "app/dashBoard/(Admin)/Job-posting-management/components/JobStatusBadge.jsx",
+    "app/dashBoard/(Admin)/Job-posting-management/components/JobDetailsModal.jsx"
   ],
   "exclude": ["node_modules"]
 }

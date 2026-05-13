@@ -1,22 +1,13 @@
 import { FaCheck, FaXmark } from "react-icons/fa6";
 import { Undo2 } from "lucide-react";
 
-type DecisionStatus = "pending" | "accepted" | "rejected";
-
-type Props = {
-  decision: DecisionStatus;
-  onAccept: () => void;
-  onReject: () => void;
-  onUndo: () => void;
-};
-
 export default function DecisionActions({
   decision,
   onAccept,
   onReject,
   onUndo,
-}: Props) {
-  if (decision === "rejected") {
+}) {
+  if (decision === "Verified" || decision === "Rejected") {
     return (
       <button
         type="button"
@@ -27,10 +18,6 @@ export default function DecisionActions({
         <span>تراجع</span>
       </button>
     );
-  }
-
-  if (decision === "accepted") {
-    return null;
   }
 
   return (

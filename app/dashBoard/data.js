@@ -290,7 +290,7 @@ export const AdminSideBar = (number) => [
     ),
     href: "/dashBoard/Job-posting-management",
   },
-  {
+  /* {
     id: 6,
     name: "مراقبة التطبيقات",
     icon: (
@@ -322,7 +322,7 @@ export const AdminSideBar = (number) => [
       />
     ),
     href: "/dashBoard/Support-Fund",
-  },
+  }, */
 ];
 
 export const TwoIcon = (number) => [

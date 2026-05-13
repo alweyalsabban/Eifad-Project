@@ -9,45 +9,30 @@ import AnalysisScoreBar from "./AnalysisScoreBar";
 import DecisionActions from "./DecisionActions";
 import CompanyProfileModal from "./CompanyProfileModal";
 import CompanyAnalysisModal from "./CompanyAnalysisModal";
+import { toast } from "react-toastify";
+import { ApiFetchServer } from "@/app/lib/ApiFetchServer";
 
-type VerificationStatus = "موثق" | "قيد الانتظار";
-type DecisionStatus = "pending" | "accepted" | "rejected";
-
-type CompanyDocument = {
-  id: number;
-  name: string;
-};
-
-type Company = {
-  id: number;
-  name: string;
-  registrationNumber: string;
-  industry: string;
-  employees: string;
-  website: string;
-  verificationStatus: VerificationStatus;
-  decisionStatus?: DecisionStatus;
-  icon?: string;
-  analysisScore: number;
-  documents: CompanyDocument[];
-  analysis: {
-    score: number;
-    missingInfo: string[];
-    riskLevel: "منخفض" | "متوسط" | "مرتفع";
-    aiRecommendation: "قبول" | "مراجعة" | "رفض";
-  };
-};
-
-type Props = {
-  company: Company;
-};
-
-export default function CompanyVerificationCard({ company }: Props) {
+export default function CompanyVerificationCard({ company }) {
   const [profileOpen, setProfileOpen] = useState(false);
   const [analysisOpen, setAnalysisOpen] = useState(false);
-  const [decision, setDecision] = useState<DecisionStatus>(
-    company.decisionStatus ?? "pending",
+  const [decision, setDecision] = useState(
+    company.VerificationStatus ?? "Pending",
   );
+
+  /// functions
+
+  const handleVerified = async (action) => {
+    console.log(action);
+    const res = await ApiFetchServer(
+      `/admin/companies/${company.CompanyID}/verify`,
+      "PUT",
+      {
+        status: action,
+      },
+    );
+    toast.success(res.dataResponse.message);
+    setDecision(action);
+  };
 
   return (
     <>
@@ -56,21 +41,21 @@ export default function CompanyVerificationCard({ company }: Props) {
         className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
       >
         <CompanyCardHeader
-          name={company.name}
-          registrationNumber={company.registrationNumber}
-          icon={company.icon}
-          verificationStatus={company.verificationStatus}
+          name={company.CompanyName}
+          registrationNumber={20327535637890}
+          logoPath={company.LogoPath}
+          verificationStatus={company.IsCompanyVerified}
           decision={decision}
         />
 
         <CompanyInfoList
-          industry={company.industry}
-          employees={company.employees}
+          industry={company.FieldOfWork}
+          employees={company.EmployeeCount}
         />
 
-        <div className="mt-4">
+        {/*  <div className="mt-4">
           <AnalysisScoreBar score={company.analysisScore} />
-        </div>
+        </div> */}
 
         <div className="mt-5 space-y-3">
           <button
@@ -95,9 +80,9 @@ export default function CompanyVerificationCard({ company }: Props) {
         <div className="mt-5">
           <DecisionActions
             decision={decision}
-            onAccept={() => setDecision("accepted")}
-            onReject={() => setDecision("rejected")}
-            onUndo={() => setDecision("pending")}
+            onAccept={() => handleVerified("Verified")}
+            onReject={() => handleVerified("Rejected")}
+            onUndo={() => setDecision("Pending")}
           />
         </div>
       </div>
@@ -108,11 +93,11 @@ export default function CompanyVerificationCard({ company }: Props) {
         company={company}
       />
 
-      <CompanyAnalysisModal
+      {/*    <CompanyAnalysisModal
         open={analysisOpen}
         onClose={() => setAnalysisOpen(false)}
         company={company}
-      />
+      /> */}
     </>
   );
 }

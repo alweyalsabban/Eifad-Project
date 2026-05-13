@@ -1,12 +1,24 @@
 import { tInfoCard } from "../../TypeAdmin";
 
+interface InfoCardProps extends tInfoCard {
+  growth?: number;
+}
+
 export default function InfoCard({
   title,
   value,
   description,
   icon: Icon,
   iconBg,
-}: tInfoCard) {
+  growth,
+}: InfoCardProps) {
+  const descColor =
+    growth === undefined || growth === 0
+      ? "text-gray-400"
+      : growth > 0
+        ? "text-green-500"
+        : "text-red-500";
+
   return (
     <div
       className="w-full rounded-2xl border border-gray-200 bg-auxiliaryColorWhite 
@@ -20,7 +32,7 @@ export default function InfoCard({
             {value}
           </p>
 
-          <p className="mt-3 text-sm font-medium text-green-500">
+          <p className={`mt-3 text-sm font-medium ${descColor}`}>
             {description}
           </p>
         </div>

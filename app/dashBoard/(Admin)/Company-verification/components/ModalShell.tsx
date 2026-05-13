@@ -6,17 +6,10 @@ type Props = {
   open: boolean;
   onClose: () => void;
   title: string;
-  icon?: React.ReactNode;
   children: React.ReactNode;
 };
 
-export default function ModalShell({
-  open,
-  onClose,
-  title,
-  icon,
-  children,
-}: Props) {
+export default function ModalShell({ open, onClose, title, children }: Props) {
   if (!open) return null;
 
   return (
@@ -25,11 +18,10 @@ export default function ModalShell({
       onClick={onClose}
     >
       <div
-        dir="rtl"
         className="w-full max-w-xl rounded-2xl bg-white p-5 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-5 flex items-center justify-between">
+        <div className="mb-5 flex">
           <button
             onClick={onClose}
             className="rounded-md p-1 text-gray-500 hover:bg-gray-100"
@@ -37,8 +29,7 @@ export default function ModalShell({
             <X size={18} />
           </button>
 
-          <div className="flex items-center gap-2">
-            {icon}
+          <div className="flex w-full items-center justify-center ">
             <h3 className="text-lg font-bold">{title}</h3>
           </div>
         </div>
