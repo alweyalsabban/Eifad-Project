@@ -58,7 +58,8 @@
     "app/dashBoard/(Admin)/Job-posting-management/components/JobsTable.jsx",
     "app/dashBoard/(Admin)/Job-posting-management/components/JobTableRow.jsx",
     "app/dashBoard/(Admin)/Job-posting-management/components/JobStatusBadge.jsx",
-    "app/dashBoard/(Admin)/Job-posting-management/components/JobDetailsModal.jsx"
+    "app/dashBoard/(Admin)/Job-posting-management/components/JobDetailsModal.jsx",
+    "app/dashBoard/(Admin)/Company-verification/components/CompanyAnalysisModal.jsx"
   ],
   "exclude": ["node_modules"]
 }

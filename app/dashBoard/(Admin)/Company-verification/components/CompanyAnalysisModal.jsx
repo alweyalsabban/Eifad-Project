@@ -3,32 +3,13 @@
 import { Brain } from "lucide-react";
 import ModalShell from "./ModalShell";
 
-type Analysis = {
-  score: number;
-  missingInfo: string[];
-  riskLevel: string;
-  aiRecommendation: string;
-};
-
-type Props = {
-  open: boolean;
-  onClose: () => void;
-  company: {
-    analysis: Analysis;
-  };
-};
-
-function getColor(score: number) {
+function getColor(score) {
   if (score >= 80) return { text: "text-green-600", bar: "bg-green-600" };
   if (score >= 60) return { text: "text-yellow-600", bar: "bg-yellow-500" };
   return { text: "text-red-600", bar: "bg-red-600" };
 }
 
-export default function CompanyAnalysisModal({
-  open,
-  onClose,
-  company,
-}: Props) {
+export default function CompanyAnalysisModal({ open, onClose, company }) {
   const styles = getColor(company.analysis.score);
 
   return (
@@ -74,7 +55,7 @@ export default function CompanyAnalysisModal({
       </div>
 
       {/* Bottom */}
-      <div className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-xl">
+      <div className="grid grid-cols-2 gap-4 rounded-xl bg-gray-50 p-4">
         <div>
           <p className="text-xs text-gray-500">المخاطر</p>
           <span className="text-sm font-semibold text-green-600">
