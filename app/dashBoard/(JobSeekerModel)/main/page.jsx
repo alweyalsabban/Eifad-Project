@@ -6,6 +6,7 @@ import QuckliyAction from "./components/QuckliyAction";
 import { ApiFetchServer } from "../../../lib/ApiFetchServer";
 import CreateTitle from "../CreateTitle";
 import Link from "next/link";
+import CvUpload from "./components/CvUpload";
 
 async function MainDashBorad() {
   const data = await ApiFetchServer("/profile/statistics");
@@ -14,7 +15,7 @@ async function MainDashBorad() {
 
   return (
     <section>
-      <CreateTitle title="لوحة التحكم" number={1} />
+      <CreateTitle title="الصفحة الرئيسية" number={1} />
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4  gap-2 mt-5 justify-between mr-3 flex-wrap w-[98%]">
         {InfoCardMain(data).map((i) => {
           return (
@@ -33,6 +34,7 @@ async function MainDashBorad() {
         textBtn={"استكشف"}
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3  gap-2 mt-5 justify-between m-auto  flex-wrap w-[95%]">
+        <CvUpload />
         {InfoCardAction.map((i) => {
           return (
             <Link key={i.id} href={i.link}>

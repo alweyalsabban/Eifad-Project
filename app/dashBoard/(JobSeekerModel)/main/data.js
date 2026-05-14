@@ -2,8 +2,18 @@ import { LuCircleCheckBig } from "react-icons/lu";
 import { HiOutlineTrendingUp } from "react-icons/hi";
 import { LuTarget } from "react-icons/lu";
 import { MdSearch } from "react-icons/md";
-import { LuUpload } from "react-icons/lu";
 export const InfoCardMain = (data) => [
+  {
+    id: 2,
+    icons: (
+      <LuCircleCheckBig
+        size={40}
+        className="bg-[#00C950] text-auxiliaryColorWhite p-2 rounded-xl"
+      />
+    ),
+    number: data?.dataResponse?.data?.profile_views ?? "خطأ في جلب البيانات",
+    name: "عدد المشاهدات للملف ",
+  },
   {
     id: 1,
     icons: (
@@ -15,17 +25,6 @@ export const InfoCardMain = (data) => [
     number:
       data?.dataResponse?.data?.accepted_applications ?? "خطأ في جلب البيانات",
     name: "الطلبات المقبولة",
-  },
-  {
-    id: 2,
-    icons: (
-      <LuCircleCheckBig
-        size={40}
-        className="bg-[#00C950] text-auxiliaryColorWhite p-2 rounded-xl"
-      />
-    ),
-    number: data?.dataResponse?.data?.profile_views ?? "خطأ في جلب البيانات",
-    name: "عدد المشاهدات للملف ",
   },
   {
     id: 3,
@@ -53,7 +52,7 @@ export const InfoCardMain = (data) => [
 ];
 
 export const InfoCardAction = [
-  /*   {
+  /* {
     id: 1,
     icons: <LuUpload size={45} className="text-primaryBlue p-2 rounded-xl" />,
     name: "رفع السيرة الذاتية",

@@ -22,7 +22,7 @@ import { FiBriefcase } from "react-icons/fi";
 export const JobseekerSideBar = (number) => [
   {
     id: 1,
-    name: "لوحة التحكم",
+    name: "الصفحة الرئيسية",
     icon: (
       <RiHome3Line
         size={20}

@@ -140,11 +140,11 @@ export default function JobDetailsModal({
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6" dir="rtl">
           {/* Company + Title */}
           <div className="flex  gap-4">
-            {job.company?.LogoPath && (
+            {job?.company?.LogoPath.length > 40 && (
               <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-gray-50">
                 <Image
-                  src={job.company.LogoPath}
-                  alt={job.company.CompanyName ?? "شعار الشركة"}
+                  src={job?.company?.LogoPath ?? ""}
+                  alt={job?.company?.CompanyName ?? "شعار الشركة"}
                   fill
                   className="object-contain p-1"
                 />

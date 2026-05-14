@@ -36,7 +36,7 @@ function JobPostingManagement() {
   }, [search, status, companyId]);
 
   return (
-    <div className="p-6" dir="rtl">
+    <div className="space-y-6 p-6 mb-40" dir="rtl">
       <TitlePage title="إدارة الإعلانات الوظيفية" number={5} />
       <ToastContainer
         position="top-left"

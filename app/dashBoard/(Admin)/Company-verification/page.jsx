@@ -28,7 +28,7 @@ export default function Page() {
   }, [search, status]);
 
   return (
-    <div className="p-6" dir="rtl">
+    <div className="space-y-6 p-6 mb-40" dir="rtl">
       <TitlePage title="التحقق من الشركات" number={3} />
 
       <ToastContainer

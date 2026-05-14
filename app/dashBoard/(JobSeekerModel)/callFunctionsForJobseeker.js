@@ -1,6 +1,7 @@
 import { ApiFetchServer } from "../../lib/ApiFetchServer";
 import { toast } from "react-toastify";
 import { ApiForm } from "../../lib/ApiForm";
+
 const getEducationId = (item) =>
   item?.EducationID ?? item?.education_id ?? item?.id ?? null;
 
@@ -93,15 +94,30 @@ export async function UpdateCv(NameFunction, dataCv) {
     }
 
     if (NameFunction === "AddEducation") {
+      console.log("AddEducation");
+      console.log(dataCv.objectEducation);
       for (let i = dataCv.Length; i < dataCv.objectEducation.length; i++) {
         const res = await ApiFetchServer(
           `/cvs/${dataCv.id}/education`,
           "POST",
           {
-            institution: dataCv.objectEducation[i].Institution,
-            degree_name: dataCv.objectEducation[i].DegreeName,
-            major: dataCv.objectEducation[i].Major,
-            graduation_year: dataCv.objectEducation[i].GraduationYear,
+            institution:
+              dataCv.objectEducation[i].Institution ??
+              dataCv.objectEducation[i].institution ??
+              "غير مدخل",
+
+            degree_name:
+              dataCv.objectEducation[i].DegreeName ??
+              dataCv.objectEducation[i].degree ??
+              "غير مدخل",
+            major:
+              dataCv.objectEducation[i].Major ??
+              dataCv.objectEducation[i].major ??
+              "غير مدخل",
+            graduation_year:
+              dataCv.objectEducation[i].GraduationYear ??
+              dataCv.objectEducation[i].graduation_year ??
+              2000,
           },
         );
 
@@ -131,11 +147,13 @@ export async function UpdateCv(NameFunction, dataCv) {
           `/cvs/${dataCv.id}/experience`,
           "POST",
           {
-            job_title: item?.JobTitle ?? "",
-            company_name: item?.CompanyName ?? "",
-            start_date: item?.StartDate || null,
-            end_date: item?.IsCurrent ? null : item?.EndDate || null,
-            responsibilities: item?.Responsibilities ?? "",
+            job_title: item?.JobTitle ?? item?.job_title ?? "غير مدخل",
+            company_name: item?.CompanyName ?? item?.company ?? "غير مدخل",
+            start_date: item?.StartDate ?? item?.start_date ?? null,
+            end_date: item?.IsCurrent
+              ? null
+              : (item?.EndDate ?? item?.end_date ?? null),
+            responsibilities: item?.Responsibilities ?? "غير مدخل",
           },
         );
 
@@ -191,10 +209,16 @@ export async function UpdateCv(NameFunction, dataCv) {
       }
 
       for (let i = 0; i < dataCv?.objectSkills?.length; i++) {
-        if (dataCv.objectSkills[i].SkillID === null) {
+        if (
+          dataCv.objectSkills[i].SkillID === null ||
+          dataCv.objectSkills[i].SkillID === undefined
+        ) {
           const res = await ApiFetchServer(`/skills`, "POST", {
-            skill_name: dataCv.objectSkills[i].skill.SkillName,
-            category_id: dataCv.objectSkills[i].skill.CategoryID,
+            skill_name:
+              dataCv.objectSkills[i].skill.SkillName ??
+              dataCv.objectSkills[i].skill.name ??
+              "غير مدخل",
+            category_id: dataCv.objectSkills[i].skill.CategoryID ?? 1,
           });
 
           if (!res.isSusses) {

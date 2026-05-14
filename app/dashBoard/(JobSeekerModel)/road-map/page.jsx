@@ -37,8 +37,14 @@ function RoadMap() {
 
   async function handelCreateRoad() {
     if (target.length > 10) {
-      await CreateRoadMap();
+      setisTargetTrue(false);
       setTarget(false);
+      window.scrollBy({
+        top: 500,
+        behavior: "smooth",
+      });
+      await CreateRoadMap();
+      setTargetTitle("");
     } else {
       setisTargetTrue(true);
     }
@@ -141,21 +147,39 @@ function RoadMap() {
                         موقعك الحالي
                       </span>
                       <span className="font-semibold text-slate-800">
-                        {RoadMap?.current_level}
+                        {loading ? (
+                          <h1 className="text-primaryBlue">
+                            جاري الإنشاء ....
+                          </h1>
+                        ) : (
+                          RoadMap?.current_level
+                        )}
                       </span>
                     </div>
 
                     <div className="flex gap-3 items-center bg-slate-50 rounded-2xl px-4 py-3">
                       <span className="text-slate-500 text-sm">هدفك</span>
                       <span className="font-semibold text-primaryBlue">
-                        {RoadMap?.target_level}
+                        {loading ? (
+                          <h1 className="text-primaryBlue">
+                            جاري الإنشاء ....
+                          </h1>
+                        ) : (
+                          RoadMap?.target_level
+                        )}
                       </span>
                     </div>
 
                     <div className="flex gap-3 items-center bg-slate-50 rounded-2xl px-4 py-3">
                       <span className="text-slate-500 text-sm">مدة الخطة</span>
                       <span className="font-semibold text-slate-800">
-                        {RoadMap?.total_estimated_time}
+                        {loading ? (
+                          <h1 className="text-primaryBlue">
+                            جاري الإنشاء ....
+                          </h1>
+                        ) : (
+                          RoadMap?.total_estimated_time
+                        )}
                       </span>
                     </div>
                   </div>

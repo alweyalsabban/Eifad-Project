@@ -9,33 +9,46 @@ export default function SearchCompany({
   onStatusChange,
 }) {
   return (
-    <div className="flex flex-col gap-4 rounded-2xl p-4 md:flex-row md:items-center">
-      <div className="relative w-full md:flex-1">
-        <FiSearch className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-xl text-gray-400" />
-
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => onSearchChange?.(e.target.value)}
-          placeholder="بحث عن شركة ..."
-          className="h-12 w-full rounded-xl border border-transparent bg-[#f7f7f8] pr-12 pl-4 text-right outline-none transition placeholder:text-gray-400 focus:border-gray-300"
-        />
+    <div
+      className="flex flex-col gap-3 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm md:flex-row md:items-end"
+      dir="rtl"
+    >
+      {/* ── البحث ── */}
+      <div className="flex flex-col gap-1.5 w-full md:flex-1">
+        <label className="text-xs font-semibold text-gray-500 px-1">
+          البحث
+        </label>
+        <div className="relative">
+          <FiSearch className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-lg text-gray-400" />
+          <input
+            type="text"
+            value={search ?? ""}
+            onChange={(e) => onSearchChange?.(e.target.value)}
+            placeholder="ابحث عن شركة..."
+            className="h-11 w-full rounded-xl border border-gray-200 bg-[#f7f7f8] pr-10 pl-4 text-right text-sm outline-none transition placeholder:text-gray-400 focus:border-blue-400 focus:bg-white"
+          />
+        </div>
       </div>
 
-      <div className="relative w-full md:w-56">
-        <select
-          value={status}
-          onChange={(e) => onStatusChange?.(e.target.value)}
-          className="h-12 w-full appearance-none rounded-xl border border-transparent bg-[#f7f7f8] px-4 text-right outline-none transition focus:border-gray-300"
-        >
-          <option value="">الكل</option>
-          <option value="Unverified">غير موثوق</option>
-          <option value="Rejected">مرفوض</option>
-          <option value="Verified">موثق</option>
-          <option value="Pending">قيد الانتظار</option>
-        </select>
-
-        <FiChevronDown className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+      {/* ── الحالة ── */}
+      <div className="flex flex-col gap-1.5 w-full md:w-48">
+        <label className="text-xs font-semibold text-gray-500 px-1">
+          الحالة
+        </label>
+        <div className="relative">
+          <select
+            value={status ?? ""}
+            onChange={(e) => onStatusChange?.(e.target.value)}
+            className="h-11 w-full appearance-none rounded-xl border border-gray-200 bg-[#f7f7f8] px-4 text-right text-sm outline-none transition focus:border-blue-400 focus:bg-white"
+          >
+            <option value="">الكل</option>
+            <option value="Unverified">غير موثوق</option>
+            <option value="Rejected">مرفوض</option>
+            <option value="Verified">موثق</option>
+            <option value="Pending">قيد الانتظار</option>
+          </select>
+          <FiChevronDown className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        </div>
       </div>
     </div>
   );
