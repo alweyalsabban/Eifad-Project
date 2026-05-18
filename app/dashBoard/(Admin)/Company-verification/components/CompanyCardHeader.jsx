@@ -24,11 +24,11 @@ export default function CompanyCardHeader({
             E
           </span>
         )}
-        <div>
+        <div className="flex flex-col justify-center">
           <h3 className="text-xl font-bold text-[#0f172a]">
             {name || "بدون اسم"}
           </h3>
-          <p className="mt-1 text-sm text-slate-600">{registrationNumber}</p>
+          {/*   <p className="mt-1 text-sm text-slate-600">{registrationNumber}</p> */}
         </div>
       </div>
 

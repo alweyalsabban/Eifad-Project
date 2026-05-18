@@ -173,7 +173,7 @@ function LogInPage() {
         </button>
       </form>
 
-      {/*       <div>
+      <div>
         <div className="relative">
           <hr className="mt-8" />
           <h1 className="absolute left-1/2 -translate-x-1/2 -top-3 bg-auxiliaryColorWhite px-3 text-center text-[#94A3B8]">
@@ -182,7 +182,7 @@ function LogInPage() {
         </div>
 
         <ScoialMeadia />
-      </div> */}
+      </div>
     </>
   );
 }

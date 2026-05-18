@@ -12,8 +12,7 @@ export default function UsersPage() {
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("");
   const [status, setStatus] = useState("");
-  const [verificationStatus, setVerificationStatus] = useState("");
-  const [userStatus, setuserStatus] = useState("");
+  const [verificationStatus, onVerificationStatusChange] = useState("");
   const [AllUser, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +26,6 @@ export default function UsersPage() {
         role,
         status,
         verificationStatus,
-        userStatus,
       });
       setUser(user.dataResponse.data ?? []);
       setLoading(false);
@@ -37,7 +35,7 @@ export default function UsersPage() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSearch(q);
     GetAllUser();
-  }, [searchParams, search, role, status, verificationStatus, userStatus]);
+  }, [searchParams, search, role, status, verificationStatus]);
 
   return (
     <div className="space-y-6 p-6 mb-40" dir="rtl">
@@ -47,13 +45,11 @@ export default function UsersPage() {
         search={search}
         role={role}
         status={status}
+        onStatusChange={setStatus}
         onSearchChange={setSearch}
         onRoleChange={setRole}
-        onStatusChange={setStatus}
         verificationStatus={verificationStatus}
-        onVerificationStatusChange={setVerificationStatus}
-        userStatus={userStatus}
-        onUserStatusChange={setuserStatus}
+        onVerificationStatusChange={onVerificationStatusChange}
       />
 
       {/* ── Loader ── */}

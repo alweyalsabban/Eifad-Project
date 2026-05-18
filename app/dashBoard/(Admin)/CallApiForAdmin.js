@@ -6,7 +6,9 @@ export async function UseManagmentAPI(NameApi, Data) {
     const query = new URLSearchParams();
     if (Data?.search) query.append("search", Data.search);
     if (Data?.role) query.append("role", Data.role);
-    if (Data?.status) query.append("status", Data.status);
+    if (Data?.status) query.append("account_status", Data.status);
+    if (Data?.verificationStatus)
+      query.append("user_status", Data.verificationStatus);
     /*   
     if (Data?.verificationStatus)
       query.append("verification_status", Data.verificationStatus);

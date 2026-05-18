@@ -63,18 +63,18 @@ export default function CompanyVerificationCard({ company }) {
             onClick={() => setProfileOpen(true)}
             className="flex w-full items-center justify-between rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-gray-50"
           >
-            <FiEye size={16} />
             <span>عرض الملف الشخصي</span>
+            <FiEye size={16} />
           </button>
 
-          <button
+          {/*  <button
             type="button"
             onClick={() => setAnalysisOpen(true)}
             className="flex w-full items-center justify-between rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-gray-50"
           >
             <Brain size={16} />
             <span>تحليل المستندات بالذكاء الاصطناعي</span>
-          </button>
+          </button> */}
         </div>
 
         <div className="mt-5">
