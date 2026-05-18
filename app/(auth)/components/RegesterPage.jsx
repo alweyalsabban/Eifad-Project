@@ -330,11 +330,13 @@ function RegesterPage() {
                 أنثى
               </label>
             </div>
-          </div>,
+          </div>
         )}
 
         <div className="flex flex-col gap-2 my-4 ">
-          <label className="font-semibold text-right">{!isManager ? "تاريخ الميلاد" : "تاريخ التأسيس"}</label>
+          <label className="font-semibold text-right">
+            {!isManager ? "تاريخ الميلاد" : "تاريخ التأسيس"}
+          </label>
 
           <input
             type="date"
@@ -362,17 +364,18 @@ function RegesterPage() {
           {loading ? "جاري الإنشاء..." : "إنشاء حساب"}
         </button>
       </form>
+      {!isManager && (
+        <div>
+          <div className="relative">
+            <hr className="mt-8" />
+            <h1 className="absolute left-1/2 -translate-x-1/2 -top-3 bg-auxiliaryColorWhite px-3 text-center text-[#94A3B8]">
+              أو سجل بواسطة
+            </h1>
+          </div>
 
-            <div>
-        <div className="relative">
-          <hr className="mt-8" />
-          <h1 className="absolute left-1/2 -translate-x-1/2 -top-3 bg-auxiliaryColorWhite px-3 text-center text-[#94A3B8]">
-            أو سجل بواسطة
-          </h1>
+          <ScoialMeadia />
         </div>
-
-        <ScoialMeadia />
-      </div>
+      )}
     </>
   );
 }
