@@ -9,12 +9,35 @@ import { useState } from "react";
 
 function verificationBadge(status) {
   switch (status) {
-    case true:
+    case "trusted":
       return "bg-green-100 text-green-700";
-    case false:
+    case "Verified":
+      return "bg-green-100 text-green-700";
+    case "notrusted":
+      return "bg-red-100 text-red-700";
+    case "Rejected":
+      return "bg-red-100 text-red-700";
+    case "Unverified":
       return "bg-red-100 text-red-700";
     default:
       return "bg-gray-100 text-gray-700";
+  }
+}
+
+function verif(status) {
+  switch (status) {
+    case "trusted":
+      return "موثوق";
+    case "notrusted":
+      return "غير موثوق";
+    case "Rejected":
+      return "مرفوض";
+    case "Unverified":
+      return "غير موثوق";
+    case "Verified":
+      return "موثوق";
+    default:
+      return "غير محدد";
   }
 }
 
@@ -84,11 +107,17 @@ export default function UserTableRow({
 
         <td className="px-4 py-5">
           <span
-            className={`inline-flex min-w-24 items-center justify-center rounded-full px-3 py-1 text-sm font-medium whitespace-nowrap ${verificationBadge(
-              user.IsVerified,
-            )}`}
+            className={`inline-flex min-w-24 items-center justify-center rounded-full px-3 py-1 
+              text-sm font-medium whitespace-nowrap 
+              ${verificationBadge(
+                user?.job_seeker_profile?.Status ??
+                  user.company_profile.VerificationStatus,
+              )}`}
           >
-            {user.IsVerified ? "موثوق" : "غير موثوق"}
+            {verif(
+              user?.job_seeker_profile?.Status ??
+                user.company_profile.VerificationStatus,
+            )}
           </span>
         </td>
 

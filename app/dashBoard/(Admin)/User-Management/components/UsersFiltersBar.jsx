@@ -76,7 +76,7 @@ export default function UsersFiltersBar({
       {/* ── هل حساب الشركة موثوق أولا  ── */}
       <div className="flex flex-col gap-1.5 w-full md:w-48">
         <label className="text-xs font-semibold text-gray-500 px-1">
-          حال حساب الشركة{" "}
+          حال حساب المستخدم
         </label>
         <div className="relative">
           <select

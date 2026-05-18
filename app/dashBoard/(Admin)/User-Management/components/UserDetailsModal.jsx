@@ -5,30 +5,26 @@ import { UseManagmentAPI } from "../../CallApiForAdmin";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import LoaderTwo from "@/app/dashBoard/(JobSeekerModel)/components/LoaderTwo";
+import { ApiFetchServer } from "@/app/lib/ApiFetchServer";
 
 export default function UserDetailsModal({ setOpenUsrDeail, user }) {
   const [formData, setFormData] = useState({
     name: user?.FullName,
     email: user?.Email,
     role: user?.roles[0]?.RoleName === "JobSeeker" ? "باحث عن عمل" : "شركة",
-    verificationStatus: user?.IsVerified,
+    verificationStatus:
+      user?.job_seeker_profile?.Status ??
+      user?.company_profile?.VerificationStatus,
   });
   const [loading, setLoading] = useState(false);
   const route = useRouter();
 
   function handleChange(e) {
     const { name, value } = e.target;
-    if (name === "verificationStatus") {
-      setFormData((prev) => ({
-        ...prev,
-        verificationStatus: JSON.parse(value),
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   }
   async function handleSubmit(e) {
     e.preventDefault();
@@ -37,9 +33,17 @@ export default function UserDetailsModal({ setOpenUsrDeail, user }) {
       idUser: user?.UserID,
       fullName: formData?.name,
       email: formData?.email,
-      isValidate: formData?.verificationStatus,
       /*       role: formData?.role, */
     });
+    const respo = await ApiFetchServer(
+      `/admin/users/${user?.UserID}/verify-jobseeker`,
+      "POST",
+      {
+        status: formData?.verificationStatus,
+      },
+    );
+    console.log(respo);
+
     route.refresh();
     setLoading(false);
 
@@ -113,8 +117,8 @@ export default function UserDetailsModal({ setOpenUsrDeail, user }) {
             onChange={handleChange}
             className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-blue-500"
           >
-            <option value={true}>موثوق</option>
-            <option value={false}>غير موثوق</option>
+            <option value="trusted">موثوق</option>
+            <option value="notrusted">غير موثوق</option>
           </select>
         </div>
       </div>
