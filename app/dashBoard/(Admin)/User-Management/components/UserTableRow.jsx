@@ -97,7 +97,7 @@ export default function UserTableRow({
             className={`inline-flex min-w-20 items-center justify-center rounded-full px-3 py-1 
             text-sm font-medium whitespace-nowrap ${accountBadge(isblock)}`}
           >
-            {isblock === 0 ? "نشط" : "محضور"}
+            {isblock === 0 ? "مفعل" : "غير مفعل"}
           </span>
         </td>
 

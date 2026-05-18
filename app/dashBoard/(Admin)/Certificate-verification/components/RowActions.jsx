@@ -1,6 +1,8 @@
+"use client";
+import { useState } from "react";
 import { FiEye } from "react-icons/fi";
 import { FaCheck, FaXmark } from "react-icons/fa6";
-import { Brain } from "lucide-react";
+import { Brain, Loader2 } from "lucide-react";
 
 export default function RowActions({
   showDecision = true,
@@ -9,28 +11,52 @@ export default function RowActions({
   onAccept,
   onReject,
 }) {
+  const [loadingAction, setLoadingAction] = useState(null);
+
+  const handleAccept = async () => {
+    setLoadingAction("accept");
+    await onAccept();
+    setLoadingAction(null);
+  };
+
+  const handleReject = async () => {
+    setLoadingAction("reject");
+    await onReject();
+    setLoadingAction(null);
+  };
+
   return (
     <div className="flex items-center gap-3">
       {showDecision && (
         <>
           <button
             type="button"
-            onClick={onReject}
-            className="text-red-500 transition hover:text-red-600"
+            onClick={handleReject}
+            disabled={loadingAction !== null}
+            className="text-red-500 transition hover:text-red-600 disabled:opacity-50"
             aria-label="رفض"
             title="رفض"
           >
-            <FaXmark size={16} />
+            {loadingAction === "reject" ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <FaXmark size={16} />
+            )}
           </button>
 
           <button
             type="button"
-            onClick={onAccept}
-            className="text-green-600 transition hover:text-green-700"
+            onClick={handleAccept}
+            disabled={loadingAction !== null}
+            className="text-green-600 transition hover:text-green-700 disabled:opacity-50"
             aria-label="قبول"
             title="قبول"
           >
-            <FaCheck size={16} />
+            {loadingAction === "accept" ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <FaCheck size={16} />
+            )}
           </button>
         </>
       )}

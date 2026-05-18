@@ -37,7 +37,7 @@ export default function UsersPage() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSearch(q);
     GetAllUser();
-  }, [searchParams, search, role, status, verificationStatus]);
+  }, [searchParams, search, role, status, verificationStatus, userStatus]);
 
   return (
     <div className="space-y-6 p-6 mb-40" dir="rtl">

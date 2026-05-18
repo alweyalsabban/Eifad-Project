@@ -6,6 +6,7 @@ export const NamePageContex = createContext();
 export const NamePageProvider = ({ children }) => {
   const [nameOfSideBar, setnameOfSideBar] = useState("");
   const [numberOfSideBar, setnumberOfSideBar] = useState(1);
+  const [showBackBtn, setShowBackBtn] = useState(false);
 
   return (
     <NamePageContex.Provider
@@ -14,6 +15,8 @@ export const NamePageProvider = ({ children }) => {
         setnameOfSideBar,
         numberOfSideBar,
         setnumberOfSideBar,
+        showBackBtn,
+        setShowBackBtn,
       }}
     >
       {children}

@@ -4,20 +4,7 @@ import { X, Brain, Award, Undo2 } from "lucide-react";
 import { FaCheck, FaXmark } from "react-icons/fa6";
 import { Loader2 } from "lucide-react";
 
-function getStatusText(status) {
-  switch (status) {
-    case "pending":
-      return "قيد الإنتظار";
-    case "ai_reviewed":
-      return "تم مراجعتها بـ AI ";
-    case "verified":
-      return "موثوق";
-    case "rejected":
-      return "غير موثوق";
-    default:
-      return "غير معروف";
-  }
-}
+import StatusBadge from "./StatusBadge";
 
 function getScoreStyles(score) {
   if (score >= 80) {
@@ -41,23 +28,6 @@ function getScoreStyles(score) {
     bar: "bg-red-600",
     icon: "text-red-600",
   };
-}
-
-function Badge({ text, variant }) {
-  const styles = {
-    verified: "bg-green-100 text-green-700",
-    ai_reviewed: "bg-green-100 text-green-700",
-    pending: "bg-yellow-100 text-yellow-700",
-    rejected: "bg-red-100 text-red-700",
-  };
-
-  return (
-    <span
-      className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${styles[variant]}`}
-    >
-      {text}
-    </span>
-  );
 }
 
 export default function CertificatePreviewModal({
@@ -84,7 +54,7 @@ export default function CertificatePreviewModal({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl"
+        className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl scale-80 "
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-5 flex items-center justify-between">
@@ -102,7 +72,8 @@ export default function CertificatePreviewModal({
           </button>
         </div>
 
-        {certificate.ExtractedData !== null ? (
+        {certificate?.ExtractedData !== null ||
+        certificate.FilePath !== null ? (
           <div className="">
             {/*          <Award size={56} className="mx-auto mb-5 text-blue-600" />
 
@@ -148,18 +119,23 @@ export default function CertificatePreviewModal({
             >
               رؤية الشهادة
             </button> */}
-
-            <iframe
-              src={`${certificate?.FilePath}`}
-              className="h-100 w-full rounded-2xl border-2 border-blue-500/90 bg-slate-50 text-center"
-            />
-            <button
-              onClick={() => window.open(certificate?.FilePath, "_blank")}
-              className="mt-2 bg-primaryBlue rounded-2xl p-2 text-white hover:cursor-pointer 
+            {certificate?.FilePath === null ? (
+              <p className="text-red-600 ">لم يرفع صورة للشهادة</p>
+            ) : (
+              <>
+                <iframe
+                  src={`${certificate?.FilePath}`}
+                  className="h-100 w-full rounded-2xl border-2 border-blue-500/90 bg-slate-50 text-center"
+                />
+                <button
+                  onClick={() => window.open(certificate?.FilePath, "_blank")}
+                  className="mt-2 bg-primaryBlue rounded-2xl p-2 text-white hover:cursor-pointer 
           hover:bg-blue-800 duration-500"
-            >
-              رؤية الشهادة
-            </button>
+                >
+                  رؤية الشهادة
+                </button>
+              </>
+            )}
           </div>
         ) : (
           "لا يوجد شهادة مرفوعة"
@@ -184,18 +160,7 @@ export default function CertificatePreviewModal({
             <p className="mb-2 text-sm text-slate-500">الحالة</p>
 
             <div className="flex flex-wrap gap-2">
-              <Badge
-                text={getStatusText(certificate.VerificationStatus)}
-                variant={certificate.VerificationStatus}
-              />
-
-              {decision === "accepted" && (
-                <Badge text="مقبول" variant="success" />
-              )}
-
-              {decision === "rejected" && (
-                <Badge text="مرفوض" variant="danger" />
-              )}
+              <StatusBadge status={certificate.VerificationStatus} />
             </div>
           </div>
 
@@ -228,8 +193,7 @@ export default function CertificatePreviewModal({
         </div>
 
         <div className="mt-6 border-t pt-5">
-          {decision === "pending" && (
-            <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={onAccept}
@@ -262,18 +226,6 @@ export default function CertificatePreviewModal({
                 )}
               </button>
             </div>
-          )}
-
-          {decision !== "pending" && (
-            <button
-              type="button"
-              onClick={onUndo}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 px-4 py-3 text-base font-semibold text-slate-700 transition hover:bg-gray-50"
-            >
-              <Undo2 size={16} />
-              <span>تراجع</span>
-            </button>
-          )}
         </div>
       </div>
     </div>

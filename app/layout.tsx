@@ -2,6 +2,7 @@ import { NamePageProvider } from "./dashBoard/(JobSeekerModel)/context/NamePageC
 import { PersentProfileProvider } from "./dashBoard/(JobSeekerModel)/context/PersentProfileContext";
 import { UpdateCvValueProvider } from "./dashBoard/(JobSeekerModel)/context/UpdateCvValue";
 import { ToastContainer } from "react-toastify";
+import NextTopLoader from 'nextjs-toploader';
 
 import "./globals.css";
 
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <NextTopLoader color="#2563eb" height={3} showSpinner={false} />
         <ToastContainer />
         <UpdateCvValueProvider>
           <PersentProfileProvider>

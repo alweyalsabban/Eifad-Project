@@ -64,6 +64,22 @@ export default function OTPVerificationPage() {
     }
   };
 
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasteData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, CONFIG.OTP_LEN);
+    
+    if (pasteData) {
+      const newOtp = [...otp];
+      for (let i = 0; i < pasteData.length; i++) {
+        newOtp[i] = pasteData[i];
+      }
+      setOtp(newOtp);
+      
+      const nextIndex = pasteData.length < CONFIG.OTP_LEN ? pasteData.length : CONFIG.OTP_LEN - 1;
+      inputsRef.current[nextIndex]?.focus();
+    }
+  };
+
   const handleVerify = async (e) => {
     if (e) e.preventDefault();
 
@@ -255,6 +271,7 @@ export default function OTPVerificationPage() {
                   value={digit}
                   onChange={(e) => handleInputChange(i, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(i, e)}
+                  onPaste={handlePaste}
                 />
               ))}
             </div>

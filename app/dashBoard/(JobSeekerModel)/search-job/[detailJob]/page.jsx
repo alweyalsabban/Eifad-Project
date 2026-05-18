@@ -44,9 +44,15 @@ function DeatilJob() {
       {CVInfo === undefined && (
         <NoCvMessage Message={"لا يوجد لديك سيرة ذاتية ، يرجى إنشائها"} />
       )}
-      <CreateTitle title="تفاصيل الوظيفة" number={5} />
+      <CreateTitle title="تفاصيل الوظيفة" number={5} showBack={true} />
 
-      <JobDetailsHeaderCard
+      {!JobDetials ? (
+        <div className="flex h-[50vh] items-center justify-center">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
+        </div>
+      ) : (
+        <>
+          <JobDetailsHeaderCard
         title={JobDetials?.Title}
         company={JobDetials?.company?.CompanyName}
         location={JobDetials?.Location}
@@ -108,6 +114,8 @@ function DeatilJob() {
           requirements={JobDetials?.Responsibilities}
         />
       </div>
+        </>
+      )}
     </>
   );
 }

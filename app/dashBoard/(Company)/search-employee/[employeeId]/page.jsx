@@ -1,17 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "next/navigation";
 import { Profile } from "../../callFunctionsForCompany";
 import { FiMail, FiPhone, FiMapPin, FiBriefcase } from "react-icons/fi";
+import { NamePageContex } from "../../(JobSeekerModel)/context/NamePageContext";
 
 export default function EmployeeProfilePage() {
   const [Employee, setEmployee] = useState([]);
+  const { setnameOfSideBar, setnumberOfSideBar, setShowBackBtn } = useContext(NamePageContex) || {};
 
   const params = useParams();
   const employeeId = params?.employeeId;
 
-  useEffect(() => {}, [employeeId]);
+  useEffect(() => {
+    if (setnameOfSideBar) setnameOfSideBar("تفاصيل الموظف");
+    if (setnumberOfSideBar) setnumberOfSideBar(5);
+    if (setShowBackBtn) setShowBackBtn(true);
+  }, [employeeId, setnameOfSideBar, setnumberOfSideBar, setShowBackBtn]);
+  
   return (
     <div dir="rtl" className="w-[98%] mx-auto mb-40">
       <div className="mt-5 rounded-3xl border border-slate-200 bg-white p-8">

@@ -64,6 +64,6 @@
     "app/dashBoard/(Admin)/Certificate-verification/components/RowActions.jsx",
     "app/dashBoard/(Admin)/Certificate-verification/components/CertificateRow.jsx",
     "app/dashBoard/(Admin)/Certificate-verification/components/CertificatesTable.jsx"
-  ],
+, "app/dashBoard/(Admin)/Certificate-verification/components/CertificateAnalysisModal.jsx"  ],
   "exclude": ["node_modules"]
 }

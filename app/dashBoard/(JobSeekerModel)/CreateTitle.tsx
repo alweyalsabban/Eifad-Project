@@ -6,15 +6,18 @@ import { useEffect } from "react";
 type tCteateProp = {
   title: string;
   number: number;
+  showBack?: boolean;
 };
 
-function CreateTitle({ title, number }: tCteateProp) {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
+function CreateTitle({ title, number, showBack = false }: tCteateProp) {
+  const { setnameOfSideBar, setnumberOfSideBar, setShowBackBtn } = useContext(NamePageContex) || {};
 
   useEffect(() => {
-    setnameOfSideBar(title);
-    setnumberOfSideBar(number);
-  }, [title, number, setnameOfSideBar, setnumberOfSideBar]);
+    if (setnameOfSideBar) setnameOfSideBar(title);
+    if (setnumberOfSideBar) setnumberOfSideBar(number);
+    if (setShowBackBtn) setShowBackBtn(showBack);
+  }, [title, number, showBack, setnameOfSideBar, setnumberOfSideBar, setShowBackBtn]);
+  
   return null;
 }
 

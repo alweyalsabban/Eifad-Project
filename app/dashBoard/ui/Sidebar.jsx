@@ -47,22 +47,29 @@ export default function Sidebar({
         <div className="flex flex-col items-center justify-center gap-9 py-10 ">
           {sidebar.map((j) => {
             return (
-              <div key={j.id}>
+              <div key={j.id} className="relative group flex items-center">
                 <span
                   onClick={() => {
                     setnumberOfSideBar(j.id);
                     setName(j.name);
                   }}
+                  className="cursor-pointer"
                 >
                   <Link href={j.href}>{j.icon}</Link>
                 </span>
+
+                {/* Tooltip */}
+                <div className="absolute right-full mr-4 px-2 py-1 bg-slate-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-lg pointer-events-none flex items-center">
+                  <div className="absolute -right-1 top-1/2 -translate-y-1/2 border-4 border-transparent border-l-slate-800"></div>
+                  {j.name}
+                </div>
               </div>
             );
           })}
           <span className="border w-full border-secondGray"></span>
           {smallSidebar.map((j) => {
             return (
-              <div key={j.id}>
+              <div key={j.id} className="relative group flex items-center">
                 <span
                   onClick={() => {
                     setnumberOfSideBar(j.id);
@@ -72,9 +79,16 @@ export default function Sidebar({
                       logout();
                     }
                   }}
+                  className="cursor-pointer"
                 >
                   <Link href={j.href}>{j.icon}</Link>
                 </span>
+
+                {/* Tooltip */}
+                <div className="absolute right-full mr-4 px-2 py-1 bg-slate-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-lg pointer-events-none flex items-center">
+                  <div className="absolute -right-1 top-1/2 -translate-y-1/2 border-4 border-transparent border-l-slate-800"></div>
+                  {j.name}
+                </div>
               </div>
             );
           })}

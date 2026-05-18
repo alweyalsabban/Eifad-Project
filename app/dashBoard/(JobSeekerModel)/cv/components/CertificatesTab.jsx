@@ -124,10 +124,10 @@ export default function CertificatesTab({
                 className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
               />
               <div className="flex items-center gap-10 cursor-pointer ">
-                <UploadIcon
-                  className="size-5 hover:cursor-pointer"
-                  htmlFor="certificate"
-                />
+                <label htmlFor="certificate">
+                  {" "}
+                  <UploadIcon className="size-5 hover:cursor-pointer" />
+                </label>
 
                 <input
                   id="certificate"

@@ -3,9 +3,16 @@ import { ApiFetchServer } from "@/app/lib/ApiFetchServer";
 
 export async function UseManagmentAPI(NameApi, Data) {
   if (NameApi === "GetAllUser") {
-    const res = await ApiFetchServer(
-      `/admin/users?search=${Data?.search}&role=${Data?.role}&account_status=${Data?.status}&verification_status=${Data?.verificationStatus}&user_status=${Data?.userStatus}`,
-    );
+    const query = new URLSearchParams();
+    if (Data?.search) query.append("search", Data.search);
+    if (Data?.role) query.append("role", Data.role);
+    if (Data?.status) query.append("status", Data.status);
+    /*   
+    if (Data?.verificationStatus)
+      query.append("verification_status", Data.verificationStatus);
+    if (Data?.userStatus) query.append("user_status", Data.userStatus); */
+
+    const res = await ApiFetchServer(`/admin/users?${query.toString()}`);
     console.log(res);
     return res;
   }
@@ -17,6 +24,14 @@ export async function UseManagmentAPI(NameApi, Data) {
       {
         reason: "Admin Block Him",
       },
+    );
+    return res;
+  }
+
+  if (NameApi === "UnBlocUser") {
+    const res = await ApiFetchServer(
+      `/admin/users/${Data.IdUser}/unblock`,
+      "POST",
     );
     return res;
   }

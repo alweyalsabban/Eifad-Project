@@ -13,6 +13,13 @@ async function AnalaizeCv() {
     "POST",
   );
   const data = await res?.dataResponse.data;
+
+  // Debug: Write data to file so we can inspect it
+  const fs = require('fs');
+  try {
+    fs.writeFileSync('cv_analyze_debug.json', JSON.stringify(data, null, 2));
+  } catch (e) {}
+
   return (
     <>
       {!res.isSusses && (

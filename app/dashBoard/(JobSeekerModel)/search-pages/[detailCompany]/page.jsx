@@ -5,6 +5,7 @@ import CompanyAboutCard from "../../search-job/components/CompanyAboutCard";
 import JobCard from "../../search-job/components/JobCard";
 import { useEffect, useState } from "react";
 import { Companies } from "../../callFunctionsForJobseeker";
+import CreateTitle from "../../CreateTitle";
 
 function DetailCompany() {
   const path = useParams();
@@ -21,6 +22,7 @@ function DetailCompany() {
 
   return (
     <>
+      <CreateTitle title="تفاصيل الشركة" number={6} showBack={true} />
       <CompanyAboutCard
         title={DeatilCompany?.CompanyName}
         companyName={DeatilCompany?.CompanyName}

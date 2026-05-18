@@ -5,15 +5,18 @@ import { useContext, useEffect } from "react";
 type tTitlePagePro = {
   title: string;
   number: number;
+  showBack?: boolean;
 };
 
-function TitlePage({ title, number }: tTitlePagePro) {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
+function TitlePage({ title, number, showBack = false }: tTitlePagePro) {
+  const { setnameOfSideBar, setnumberOfSideBar, setShowBackBtn } = useContext(NamePageContex) || {};
 
   useEffect(() => {
-    setnameOfSideBar(title);
-    setnumberOfSideBar(number);
-  }, [setnameOfSideBar, setnumberOfSideBar, title, number]);
+    if (setnameOfSideBar) setnameOfSideBar(title);
+    if (setnumberOfSideBar) setnumberOfSideBar(number);
+    if (setShowBackBtn) setShowBackBtn(showBack);
+  }, [setnameOfSideBar, setnumberOfSideBar, setShowBackBtn, title, number, showBack]);
+  
   return <></>;
 }
 

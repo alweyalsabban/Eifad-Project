@@ -18,7 +18,7 @@ function DeatilStap() {
   }, []);
   return (
     <div>
-      <CreateTitle title="تفاصيل الخطوة" number={8} />
+      <CreateTitle title="تفاصيل الخطوة" number={8} showBack={true} />
 
       <section className="w-full rounded-2xl border border-slate-200 bg-white p-6 mt-5">
         <h3 className="text-right text-lg font-semibold text-slate-900">

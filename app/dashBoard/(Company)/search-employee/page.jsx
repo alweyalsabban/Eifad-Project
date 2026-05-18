@@ -20,7 +20,7 @@ function buildQuery({ search, location, page }) {
 }
 
 function SearchEmployee() {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
+  const { setnameOfSideBar, setnumberOfSideBar, setShowBackBtn } = useContext(NamePageContex);
 
   const [filters, setFilters] = useState({
     search: "",
@@ -44,7 +44,8 @@ function SearchEmployee() {
     }));
     setnameOfSideBar("البحث عن موظفين");
     setnumberOfSideBar(5);
-  }, [setnameOfSideBar, setnumberOfSideBar, searchParams]);
+    if (setShowBackBtn) setShowBackBtn(false);
+  }, [setnameOfSideBar, setnumberOfSideBar, setShowBackBtn, searchParams]);
 
   async function fetchEmployees(pageNumber = 1, reset = false) {
     if (loading) return;

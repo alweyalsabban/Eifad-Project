@@ -137,7 +137,14 @@ const ResumePage = forwardRef(function ResumePage({ CVInfo, Profile }, ref) {
                   {certifications.map((certi) => (
                     <article key={certi.CertificationID}>
                       <h3 className="text-base font-bold">
-                        {certi.CertificateName}
+                        {certi.CertificateName}{" "}
+                        <span
+                          className={`text-xs font-semibold bg-green-100
+                         ${certi.IsVerified ? "text-green-700 " : "text-yellow-700"} 
+                         ${certi.IsVerified ? "bg-green-100 " : "bg-yellow-100"} px-2 py-1 rounded-full`}
+                        >
+                          {certi.IsVerified ? "موثق" : "لم يتم التحقق"}
+                        </span>
                       </h3>
                       <p className="mt-2 text-sm leading-7 text-neutral-700">
                         {certi.IssuingOrganization}
