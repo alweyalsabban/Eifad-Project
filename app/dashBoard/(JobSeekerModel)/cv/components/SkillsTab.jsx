@@ -140,7 +140,7 @@ export default function SkillsTab({
                 </datalist>
 
                 <select
-                  value={Number(item.skill?.CategoryID)}
+                  value={Number(item?.skill?.CategoryID ?? 0)}
                   onChange={(e) => handleCategoryChange(index, e.target.value)}
                   className="h-12 w-full rounded-xl border border-secondGray bg-white px-3 text-center outline-none focus:ring-2 focus:ring-blue-500"
                 >

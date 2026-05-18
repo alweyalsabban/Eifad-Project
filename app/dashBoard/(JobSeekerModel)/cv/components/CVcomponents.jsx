@@ -22,6 +22,8 @@ import LanguagesTab from "../components/LanguagesTab";
 import CertificatesTab from "../components/CertificatesTab";
 import CustomSectionsTab from "../components/CustomSectionsTab";
 
+import { useUpdateCvValue } from "../../context/UpdateCvValue";
+
 const createClientId = () => {
   if (typeof crypto !== "undefined" && crypto.randomUUID) {
     return crypto.randomUUID();
@@ -91,21 +93,43 @@ function CVcomponents({
   Profile,
 }) {
   const router = useRouter();
+
+  // context value
+  const {
+    summary,
+    setSummary,
+    title,
+    setTitle,
+    objectEducation,
+    setObjectEducation,
+    objectexperience,
+    setexperience,
+    objectSkills,
+    setObjectSkills,
+    objectLanguage,
+    setObjectLanguage,
+    objectCertificates,
+    setObjectCertificates,
+    objectCustomSections,
+    setObjectCustomSections,
+  } = useUpdateCvValue();
+
   const [showPreview, setShowPreview] = useState(false);
 
   const [isLoading, setLoading] = useState(false);
-  const [summary, setSummary] = useState(CVInfo?.PersonalSummary ?? "");
-  const [title, setTitle] = useState(CVInfo?.Title ?? "");
+  /*  const [summary, setSummary] = useUpdateCvValue(CVInfo?.PersonalSummary ?? "");
+  const [title, setTitle] = useUpdateCvValue(CVInfo?.Title ?? "");
+ */
   const [currentCvId, setCurrentCvId] = useState(
     CVInfo?.CVID ?? CVInfo?.id ?? null,
   );
-  const [objectEducation, setObjectEducation] = useState(
+  /*   const [objectEducation, setObjectEducation] = useState(
     CVInfo?.education ?? [],
-  );
+  ); */
   const [DeletedField, setDeletedField] = useState([]);
   const [lengthOfEducationFelid] = useState(objectEducation.length);
 
-  const [objectexperience, setexperience] = useState(
+  /*   const [objectexperience, setexperience] = useState(
     (CVInfo?.experiences ?? []).map((item) => {
       const endDate = item?.EndDate ?? item?.end_date ?? null;
 
@@ -115,23 +139,23 @@ function CVcomponents({
         IsCurrent: item?.IsCurrent ?? item?.is_current ?? endDate === null,
       };
     }),
-  );
+  ); */
   const [DeletedExperienceField, setDeletedExperienceField] = useState([]);
   const [lengthOfExperienceFelid] = useState(objectexperience.length);
 
   const [backUpSkills] = useState(CVInfo?.skills ?? []);
-  const [objectSkills, setObjectSkills] = useState(CVInfo?.skills ?? []);
+  //const [objectSkills, setObjectSkills] = useState(CVInfo?.skills ?? []);
   const [categoryIdSkills, setCategoryIdSkills] = useState(CategoryIdSkills);
   const [lengthOfSkillFelid] = useState(objectSkills.length);
 
   const [backUpLanguage] = useState(CVInfo?.languages ?? []);
-  const [objectLanguage, setObjectLanguage] = useState(CVInfo?.languages ?? []);
+  //const [objectLanguage, setObjectLanguage] = useState(CVInfo?.languages ?? []);
   const [DeletedLanguageField, setDeletedLanguageField] = useState([]);
   const [lengthOfLanguageFelid] = useState(objectLanguage.length);
 
-  const [objectCertificates, setObjectCertificates] = useState(
-    CVInfo?.certifications ?? [],
-  );
+  //const [objectCertificates, setObjectCertificates] = useState(
+  // CVInfo?.certifications ?? [],
+  // );
   const [DeletedCertificateField, setDeletedCertificateField] = useState([]);
   const [lengthOfCertificateFelid] = useState(objectCertificates.length);
 
@@ -508,6 +532,38 @@ function CVcomponents({
   };
 
   useEffect(() => {
+    setTitle(CVInfo?.Title ?? "");
+    if (summary === "") {
+      setSummary(CVInfo?.PersonalSummary ?? "");
+    }
+    if (objectEducation.length === 0) {
+      setObjectEducation(CVInfo?.education ?? []);
+    }
+    console.log("objectEducation =========== ");
+    console.log(objectEducation);
+    if (objectexperience.length === 0) {
+      setexperience(CVInfo?.experiences ?? []);
+    }
+
+    if (objectSkills.length === 0) {
+      setObjectSkills(CVInfo?.skills ?? []);
+    }
+    if (objectLanguage.length === 0) {
+      setObjectLanguage(CVInfo?.languages ?? []);
+    }
+
+    if (objectCertificates.length === 0) {
+      setObjectCertificates(CVInfo?.certifications ?? []);
+    }
+
+    if (objectCustomSections.length === 0) {
+      setObjectCustomSections(
+        normalizeCustomSections(
+          CVInfo?.custom_sections ?? CVInfo?.customSections ?? [],
+        ),
+      );
+    }
+
     if (showPreview) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
@@ -521,6 +577,71 @@ function CVcomponents({
       document.documentElement.style.overflow = "";
     };
   }, [showPreview]);
+
+  useEffect(() => {
+    let hasSkillChanges = false;
+    const mappedSkills = objectSkills.map((item) => {
+      if (item.SkillID === null && item.skill?.SkillName) {
+        const found = AllSkills?.find(
+          (s) =>
+            s.SkillName?.toLowerCase() === item.skill.SkillName.toLowerCase(),
+        );
+        if (found) {
+          hasSkillChanges = true;
+          return {
+            ...item,
+            SkillID: found.SkillID,
+            skill: {
+              ...item.skill,
+              SkillID: found.SkillID,
+              SkillName: found.SkillName,
+              CategoryID: Number(found.CategoryID || item.skill.CategoryID),
+            },
+          };
+        }
+      }
+      return item;
+    });
+
+    if (hasSkillChanges) {
+      setObjectSkills(mappedSkills);
+    }
+
+    let hasLangChanges = false;
+    const mappedLanguages = objectLanguage.map((item) => {
+      if (item.LanguageID === null && item.language?.LanguageName) {
+        const found = GetLanguages?.find(
+          (l) =>
+            l.LanguageName?.toLowerCase() ===
+            item.language.LanguageName.toLowerCase(),
+        );
+        if (found) {
+          hasLangChanges = true;
+          return {
+            ...item,
+            LanguageID: found.LanguageID,
+            language: {
+              ...item.language,
+              LanguageID: found.LanguageID,
+              LanguageName: found.LanguageName,
+            },
+          };
+        }
+      }
+      return item;
+    });
+
+    if (hasLangChanges) {
+      setObjectLanguage(mappedLanguages);
+    }
+  }, [
+    objectSkills,
+    AllSkills,
+    objectLanguage,
+    GetLanguages,
+    setObjectSkills,
+    setObjectLanguage,
+  ]);
 
   return (
     <>

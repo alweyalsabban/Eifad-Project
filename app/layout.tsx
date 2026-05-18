@@ -1,5 +1,6 @@
 import { NamePageProvider } from "./dashBoard/(JobSeekerModel)/context/NamePageContext";
 import { PersentProfileProvider } from "./dashBoard/(JobSeekerModel)/context/PersentProfileContext";
+import { UpdateCvValueProvider } from "./dashBoard/(JobSeekerModel)/context/UpdateCvValue";
 import { ToastContainer } from "react-toastify";
 
 import "./globals.css";
@@ -21,9 +22,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ToastContainer />
-        <PersentProfileProvider>
-          <NamePageProvider>{children}</NamePageProvider>
-        </PersentProfileProvider>
+        <UpdateCvValueProvider>
+          <PersentProfileProvider>
+            <NamePageProvider>{children}</NamePageProvider>
+          </PersentProfileProvider>
+        </UpdateCvValueProvider>
       </body>
     </html>
   );

@@ -138,7 +138,7 @@ export default function CertificatesTab({
                 />
 
                 {item.FilePath !== null ? (
-                  <Link href={item?.FilePath} target="_blank">
+                  <Link href={item?.FilePath ?? "#"} target="_blank">
                     <FaEye />
                   </Link>
                 ) : (

@@ -69,7 +69,7 @@ export async function UpdateCv(NameFunction, dataCv) {
 
     if (NameFunction === "EditEducation") {
       if (dataCv.objectEducation.length !== 0) {
-        for (let i = 0; i < dataCv.Length; i++) {
+        for (let i = 0; i < dataCv.objectEducation.length; i++) {
           const item = dataCv?.objectEducation?.[i];
           const educationId = getEducationId(item);
 
@@ -96,28 +96,20 @@ export async function UpdateCv(NameFunction, dataCv) {
     if (NameFunction === "AddEducation") {
       console.log("AddEducation");
       console.log(dataCv.objectEducation);
-      for (let i = dataCv.Length; i < dataCv.objectEducation.length; i++) {
+      for (let i = 0; i < dataCv.objectEducation.length; i++) {
+        const item = dataCv?.objectEducation?.[i];
+        if (!item || getEducationId(item)) continue;
+
         const res = await ApiFetchServer(
           `/cvs/${dataCv.id}/education`,
           "POST",
           {
-            institution:
-              dataCv.objectEducation[i].Institution ??
-              dataCv.objectEducation[i].institution ??
-              "غير مدخل",
+            institution: item.Institution ?? item.institution ?? "غير مدخل",
 
-            degree_name:
-              dataCv.objectEducation[i].DegreeName ??
-              dataCv.objectEducation[i].degree ??
-              "غير مدخل",
-            major:
-              dataCv.objectEducation[i].Major ??
-              dataCv.objectEducation[i].major ??
-              "غير مدخل",
+            degree_name: item.DegreeName ?? item.degree ?? "غير مدخل",
+            major: item.Major ?? item.major ?? "غير مدخل",
             graduation_year:
-              dataCv.objectEducation[i].GraduationYear ??
-              dataCv.objectEducation[i].graduation_year ??
-              2000,
+              item.GraduationYear ?? item.graduation_year ?? 2000,
           },
         );
 
@@ -140,8 +132,9 @@ export async function UpdateCv(NameFunction, dataCv) {
     }
 
     if (NameFunction === "AddExperience") {
-      for (let i = dataCv.Length; i < dataCv.objectexperience.length; i++) {
+      for (let i = 0; i < dataCv.objectexperience.length; i++) {
         const item = dataCv.objectexperience[i];
+        if (!item || getExperienceId(item)) continue;
 
         const res = await ApiFetchServer(
           `/cvs/${dataCv.id}/experience`,
@@ -164,7 +157,7 @@ export async function UpdateCv(NameFunction, dataCv) {
     }
     if (NameFunction === "EditExperience") {
       if (dataCv.objectexperience.length !== 0) {
-        for (let i = 0; i < dataCv.Length; i++) {
+        for (let i = 0; i < dataCv.objectexperience.length; i++) {
           const item = dataCv?.objectexperience?.[i];
           const experienceId = getExperienceId(item);
 
@@ -256,7 +249,7 @@ export async function UpdateCv(NameFunction, dataCv) {
     }
 
     if (NameFunction === "AddLanguage") {
-      for (let i = dataCv.Length; i < dataCv.objectLanguage.length; i++) {
+      for (let i = 0; i < dataCv.objectLanguage.length; i++) {
         const item = dataCv.objectLanguage[i];
 
         if (item.LanguageID === null) {
@@ -283,10 +276,22 @@ export async function UpdateCv(NameFunction, dataCv) {
           if (!cvLanguageRes.isSusses) {
             toast.error(`${cvLanguageRes.dataResponse.message}`);
           }
-        } else {
+        }
+      }
+    }
+
+    if (NameFunction === "EditLanguage") {
+      if (dataCv.objectLanguage.length !== 0) {
+        for (let i = 0; i < dataCv.objectLanguage.length; i++) {
+          const item = dataCv.objectLanguage[i];
+          const oldItem = dataCv.oldObjectLanguage?.[i];
+
+          if (!item || item.LanguageID === null || !oldItem) continue;
+
+          // تعديل مستوى اللغة أو اختيار لغة موجودة
           const res = await ApiFetchServer(
-            `/cvs/${dataCv.id}/languages`,
-            "POST",
+            `/cvs/${dataCv.id}/languages/${oldItem.LanguageID}`,
+            "PUT",
             {
               language_id: item.LanguageID,
               language_level: item.LanguageLevel,
@@ -295,59 +300,6 @@ export async function UpdateCv(NameFunction, dataCv) {
 
           if (!res.isSusses) {
             toast.error(`${res.dataResponse.message}`);
-          }
-        }
-      }
-    }
-
-    if (NameFunction === "EditLanguage") {
-      if (dataCv.objectLanguage.length !== 0) {
-        for (let i = 0; i < dataCv.Length; i++) {
-          const item = dataCv.objectLanguage[i];
-
-          if (!item) continue;
-
-          // لو المستخدم غيّر الاسم إلى لغة جديدة
-          if (item.LanguageID === null) {
-            // أنشئ اللغة الجديدة
-            const createLangRes = await ApiFetchServer(`/languages`, "POST", {
-              language_name: item.language.LanguageName,
-            });
-
-            if (!createLangRes.isSusses) {
-              toast.error(`${createLangRes.dataResponse.message}`);
-              continue;
-            }
-
-            const newLanguageId = createLangRes.dataResponse.data.LanguageID;
-
-            // حدّث لغة الـ CV الحالية إلى اللغة الجديدة
-            const updateRes = await ApiFetchServer(
-              `/cvs/${dataCv.id}/languages/${dataCv.oldObjectLanguage[i].LanguageID}`,
-              "PUT",
-              {
-                language_id: newLanguageId,
-                language_level: item.LanguageLevel,
-              },
-            );
-
-            if (!updateRes.isSusses) {
-              toast.error(`${updateRes.dataResponse.message}`);
-            }
-          } else {
-            // تعديل مستوى اللغة أو اختيار لغة موجودة
-            const res = await ApiFetchServer(
-              `/cvs/${dataCv.id}/languages/${dataCv.oldObjectLanguage[i].LanguageID}`,
-              "PUT",
-              {
-                language_id: item.LanguageID,
-                language_level: item.LanguageLevel,
-              },
-            );
-
-            if (!res.isSusses) {
-              toast.error(`${res.dataResponse.message}`);
-            }
           }
         }
       }
@@ -366,7 +318,7 @@ export async function UpdateCv(NameFunction, dataCv) {
       console.log("EditCertificate API Called");
       console.log(dataCv.objectCertificates);
       if (dataCv.objectCertificates.length !== 0) {
-        for (let i = 0; i < dataCv.Length; i++) {
+        for (let i = 0; i < dataCv.objectCertificates.length; i++) {
           const item = dataCv.objectCertificates[i];
 
           if (!item?.CertificationID) continue;
@@ -393,8 +345,9 @@ export async function UpdateCv(NameFunction, dataCv) {
       console.log("AddCertificate API Called");
       console.log(dataCv.objectCertificates);
 
-      for (let i = dataCv.Length; i < dataCv.objectCertificates.length; i++) {
+      for (let i = 0; i < dataCv.objectCertificates.length; i++) {
         const item = dataCv.objectCertificates[i];
+        if (item?.CertificationID) continue;
 
         const res = await ApiFetchServer(
           `/cvs/${dataCv.id}/certifications`,
@@ -423,7 +376,7 @@ export async function UpdateCv(NameFunction, dataCv) {
     }
 
     if (NameFunction === "EditCustomSection") {
-      for (let i = 0; i < dataCv.Length; i++) {
+      for (let i = 0; i < dataCv.objectCustomSections.length; i++) {
         const currentSection = dataCv?.objectCustomSections?.[i];
         const sectionId = getSectionId(currentSection);
 
@@ -444,8 +397,10 @@ export async function UpdateCv(NameFunction, dataCv) {
     if (NameFunction === "AddCustomSection") {
       const createdSections = [];
 
-      for (let i = dataCv.Length; i < dataCv.objectCustomSections.length; i++) {
+      for (let i = 0; i < dataCv.objectCustomSections.length; i++) {
         const currentSection = dataCv.objectCustomSections[i];
+        if (getSectionId(currentSection)) continue;
+
         const res = await ApiFetchServer(
           `/cvs/${dataCv.id}/custom-sections`,
           "POST",
