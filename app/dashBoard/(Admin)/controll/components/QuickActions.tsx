@@ -5,10 +5,10 @@ export default function QuickActions({
   actions,
 }: QuickActionsProps) {
   return (
-    <div className="w-full h-90 rounded-[22px] border border-gray-200 p-6">
+    <div className="w-full  rounded-[22px] border border-gray-200 p-6">
       <h2 className="mb-8 text-xl font-extrabold text-[#0b1b46]">{heading}</h2>
 
-      <div className="space-y-4">
+      <div className=" grid grid-cols-1 md:grid-cols-3 gap-5">
         {actions.map((action) => {
           return (
             <button

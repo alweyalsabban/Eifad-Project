@@ -12,10 +12,13 @@ export default function SearchFieldBar({
     <div className="w-[40%]  mr-5 mt-5">
       <div className="flex gap-4">
         {/* Input */}
-        <div className="relative flex-1">
+        <div className="w-full ">
+          <label className="block mb-2 text-sm font-medium text-gray-700">
+            اختر التخصص
+          </label>
           <select
             onChange={(e) => setSelectedMajor(e.target.value)}
-            className="h-12 w-full rounded-xl border border-slate-200 bg-white pr-5 pl-4 text-sm text-slate-700
+            className="h-12 rounded-xl border border-slate-200 bg-white pr-5 pl-4 text-sm text-slate-700
                        placeholder:text-slate-400 outline-none transition
                        focus:border-blue-500 focus:border-3
                        disabled:cursor-not-allowed disabled:bg-slate-50"
@@ -31,7 +34,7 @@ export default function SearchFieldBar({
         </div>
 
         {/* Button */}
-        <button
+        {/*      <button
           type="button"
           onClick={onSearch}
           disabled={disabled}
@@ -43,7 +46,7 @@ export default function SearchFieldBar({
             {buttonText}
             <FiSearch size={18} />
           </span>
-        </button>
+        </button> */}
       </div>
     </div>
   );

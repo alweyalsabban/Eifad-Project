@@ -2,21 +2,13 @@ import { FiEye } from "react-icons/fi";
 import { FaCheck, FaXmark } from "react-icons/fa6";
 import { Brain } from "lucide-react";
 
-type Props = {
-  showDecision?: boolean;
-  onView?: () => void;
-  onAnalysis?: () => void;
-  onAccept?: () => void;
-  onReject?: () => void;
-};
-
 export default function RowActions({
   showDecision = true,
   onView,
   onAnalysis,
   onAccept,
   onReject,
-}: Props) {
+}) {
   return (
     <div className="flex items-center gap-3">
       {showDecision && (

@@ -169,17 +169,18 @@ function Candidates() {
             title: getJobTitle(job),
           }))}
         />
+        {applications.length > 0 && (
+          <button
+            type="button"
+            disabled={applications.length > 0 ? false : true}
+            onClick={nominateByAi}
+            className="mt-5 rounded-xl bg-purple-600 px-8 py-3 text-white font-semibold hover:bg-purple-700 transition hover:cursor-pointer"
+          >
+            <FiZap className="inline ml-2" />
 
-        <button
-          type="button"
-          disabled={applications.length > 0 ? false : true}
-          onClick={nominateByAi}
-          className="mt-5 rounded-xl bg-purple-600 px-8 py-3 text-white font-semibold hover:bg-purple-700 transition hover:cursor-pointer"
-        >
-          <FiZap className="inline ml-2" />
-
-          {aiLoading ? "جاري الترشيح..." : "ترشيح الوظيفة بـ AI"}
-        </button>
+            {aiLoading ? "جاري الترشيح..." : "ترشيح المتقدمين بـ AI"}
+          </button>
+        )}
       </div>
       <CandidateTab tabs={tabs} active={active} setActive={setActive} />
       {!jobId ? (

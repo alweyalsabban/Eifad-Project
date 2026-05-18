@@ -55,7 +55,7 @@ export default function EducationTab({
                 onChange={(e) =>
                   handleChange(index, "DegreeName", e.target.value)
                 }
-                placeholder="الشهادة العلمية"
+                placeholder="الدرجة العلمية"
                 className="h-12 w-full rounded-xl border border-slate-200 px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
               />
 

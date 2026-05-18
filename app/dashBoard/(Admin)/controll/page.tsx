@@ -221,8 +221,9 @@ export default function ControllPage() {
           </div>
 
           {/* ── RecentActivities + QuickActions ── */}
-          <div className="p-2 mt-5 grid grid-cols-1 md:grid-cols-[auto_40%] gap-5">
-            <RecentActivities activities={activitiesData} />
+          <div className="p-2 mt-5 grid grid-cols-1  gap-5">
+            {/*             <RecentActivities activities={activitiesData} />
+             */}{" "}
             <QuickActions actions={quickActionsData} />
           </div>
         </>

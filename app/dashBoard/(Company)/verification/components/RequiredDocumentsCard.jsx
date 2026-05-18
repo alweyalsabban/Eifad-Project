@@ -14,19 +14,9 @@ function getStatusText(status, uploaded) {
 
 export default function RequiredDocumentsCard({
   title = "المستندات المطلوبة",
-  documents = [],
+  documents,
   onUpload,
 }) {
-  async function viewFile(doc) {
-    const res = await Employer("GetFirts", { NumberDoc: doc.id });
-    if (res.isSusses) {
-      const url = window.URL.createObjectURL(res.dataResponse);
-      window.open(url);
-    } else {
-      toast.error("لا يوجد ملف مرفوع");
-    }
-  }
-
   return (
     <div
       dir="rtl"
@@ -57,32 +47,32 @@ export default function RequiredDocumentsCard({
                   <h4 className="text-[16px] font-bold text-slate-900">
                     {doc.name}
                   </h4>
-                  <p className="text-[12px] text-slate-500">
+                  {/*       <p className="text-[12px] text-slate-500">
                     {getStatusText(doc.status, uploaded)}
-                  </p>
+                  </p> */}
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                {/*  {uploaded ? (
-                  <FiCheckCircle className="text-[20px] text-emerald-500" />
-                ) : (
-                  <FiAlertTriangle className="text-[20px] text-yellow-500" />
-                )}
- */}
                 <label className="h-9 cursor-pointer rounded-xl border border-blue-300 bg-white px-4 leading-9 text-[13px] font-medium text-blue-600 hover:bg-blue-50">
                   رفع الملف
                   <input
                     type="file"
                     accept="application/pdf"
                     className="hidden"
-                    onChange={(e) => onUpload(doc.id, e.target.files?.[0])}
+                    onChange={(e) => onUpload(e.target.files?.[0], doc.id)}
                   />
                 </label>
 
                 <button
                   type="button"
-                  onClick={() => viewFile(doc)}
+                  onClick={() => {
+                    if (doc.fileUrl.length > 20) {
+                      window.open(doc.fileUrl, "_blank");
+                    } else {
+                      toast.error("لم يتم رفع الملف");
+                    }
+                  }}
                   className="h-9 rounded-xl border border-slate-300 bg-white px-4 text-[13px] font-medium text-slate-700 hover:bg-slate-50"
                 >
                   عرض

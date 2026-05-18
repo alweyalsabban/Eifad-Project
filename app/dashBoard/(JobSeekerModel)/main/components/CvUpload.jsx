@@ -17,9 +17,10 @@ async function fillCVData(
   objectSkills = [],
   objectLanguage = [],
 ) {
+  /* 
   const response = await ApiFetchServer("/cvs");
   const cvId = await response.dataResponse.data[0].CVID;
-  if (title !== null && summary !== null) {
+    if (title !== null && summary !== null) {
     await UpdateCv("EditProfCv", {
       id: cvId,
       Summary: summary,
@@ -40,8 +41,8 @@ async function fillCVData(
       Length: 0,
       objectexperience: objectexperience,
     });
-  }
-
+  } */
+  // -----------------------------
   /*
     if (objectCertificates.length > 0) {
     await UpdateCv("AddCertificate", {

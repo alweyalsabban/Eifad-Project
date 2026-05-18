@@ -6,6 +6,12 @@ import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
+import { UploadIcon } from "lucide-react";
+import { useState } from "react";
+import { uploadPdf } from "../../../(Company)/callFunctionsForCompany";
+import { FaEye } from "react-icons/fa";
+import Link from "next/link";
+import { toast } from "react-toastify";
 
 export default function CertificatesTab({
   objectCertificates,
@@ -14,6 +20,39 @@ export default function CertificatesTab({
   setDeletedCertificateField,
   CVID,
 }) {
+  const handleFileUpload = async (index, file) => {
+    if (file.type !== "application/pdf") {
+      toast.error("ارفع ملف PDF فقط");
+      return;
+    }
+
+    const url = await uploadPdf(file);
+    UploadImgUrl(index, url);
+
+    /*
+     */
+    //setLoading(true);
+    /*     const url = await uploadPdf(e);
+     */
+    /*  if (url) {
+      toast.success("تم رفع الملف");
+    }
+    */
+    //setImage(url);
+    //setLoading(false);
+    /*  if (file.value != "pdf") {
+      toast.error("يرجى اختيار ملف بصيغة pdf");
+    }
+    */
+  };
+  const UploadImgUrl = (index, value) => {
+    const updated = [...objectCertificates];
+    updated[index] = {
+      ...updated[index],
+      FilePath: value,
+    };
+    setObjectCertificates(updated);
+  };
   const handleCertificateNameChange = (index, value) => {
     const updated = [...objectCertificates];
     updated[index] = {
@@ -41,6 +80,7 @@ export default function CertificatesTab({
         CertificateName: "",
         IssuingOrganization: "",
         IsVerified: false,
+        FilePath: null,
       },
     ]);
   };
@@ -65,7 +105,7 @@ export default function CertificatesTab({
       <div className="mt-5 space-y-4">
         {objectCertificates.map((item, index) => (
           <div key={index} className="space-y-4">
-            <div className="grid grid-cols-[1fr_1fr_140px_28px] items-center gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_100px_70px_28px]  items-center gap-3">
               <input
                 value={item.CertificateName || ""}
                 onChange={(e) =>
@@ -83,6 +123,33 @@ export default function CertificatesTab({
                 placeholder="المكان التعليمي"
                 className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
               />
+              <div className="flex items-center gap-10 cursor-pointer ">
+                <UploadIcon
+                  className="size-5 hover:cursor-pointer"
+                  htmlFor="certificate"
+                />
+
+                <input
+                  id="certificate"
+                  type="file"
+                  accept=".pdf"
+                  onChange={(e) => handleFileUpload(index, e.target.files[0])}
+                  className="hidden"
+                />
+
+                {item.FilePath !== null ? (
+                  <Link href={item?.FilePath} target="_blank">
+                    <FaEye />
+                  </Link>
+                ) : (
+                  <FaEye
+                    className="text-slate-500 hover:cursor-pointer"
+                    onClick={() => {
+                      toast.error("لا يوجد ملف");
+                    }}
+                  />
+                )}
+              </div>
 
               {item.IsVerified ? (
                 <div className="flex h-12 items-center justify-center gap-2 rounded-xl bg-green-100 px-4 text-green-700">

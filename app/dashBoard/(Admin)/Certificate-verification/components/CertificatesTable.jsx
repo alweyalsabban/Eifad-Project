@@ -4,27 +4,20 @@ import { useMemo, useState } from "react";
 import CertificateRow from "./CertificateRow";
 import CertificatePreviewModal from "./CertificatePreviewModal";
 import CertificateAnalysisModal from "./CertificateAnalysisModal";
-import type { CertificateDecision, CertificateItem } from "../../TypeAdmin";
+import { ApiFetchServer } from "@/app/lib/ApiFetchServer";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
-type Props = {
-  data: CertificateItem[];
-};
-
-export default function CertificatesTable({ data }: Props) {
-  const [selectedCert, setSelectedCert] = useState<CertificateItem | null>(
-    null,
-  );
+export default function CertificatesTable({ data }) {
+  const router = useRouter();
+  const [selectedCert, setSelectedCert] = useState(null);
   const [openPreview, setOpenPreview] = useState(false);
   const [openAnalysis, setOpenAnalysis] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [rejectLoader, setRejectLoader] = useState(false);
 
-  const [decisions, setDecisions] = useState<
-    Record<number, CertificateDecision>
-  >(
-    () =>
-      Object.fromEntries(data.map((item) => [item.id, "pending"])) as Record<
-        number,
-        CertificateDecision
-      >,
+  const [decisions, setDecisions] = useState(() =>
+    Object.fromEntries(data.map((item) => [item.id, "pending"])),
   );
 
   const selectedDecision = useMemo(() => {
@@ -32,22 +25,34 @@ export default function CertificatesTable({ data }: Props) {
     return decisions[selectedCert.id] ?? "pending";
   }, [selectedCert, decisions]);
 
-  function handleView(cert: CertificateItem) {
+  function handleView(cert) {
     setSelectedCert(cert);
     setOpenPreview(true);
   }
 
-  function handleAnalysis(cert: CertificateItem) {
+  function handleAnalysis(cert) {
     setSelectedCert(cert);
     setOpenAnalysis(true);
   }
 
-  function handleAccept(id: number) {
-    setDecisions((prev) => ({ ...prev, [id]: "accepted" }));
+  async function handleAccept(id) {
+    setLoader(true);
+    const res = await ApiFetchServer(`/admin/certificates/${id}/verify`, "PUT");
+    toast.success("تم قبول الشهادة بنجاح");
+    router.refresh();
+    setLoader(false);
   }
 
-  function handleReject(id: number) {
-    setDecisions((prev) => ({ ...prev, [id]: "rejected" }));
+  async function handleReject(id) {
+    setRejectLoader(true);
+    const res = await ApiFetchServer(
+      `/admin/certificates/${id}/reject`,
+      "PUT",
+      { reason: "الشهادة غير صالحة أو مزورة" },
+    );
+    toast.success("تم رفض الشهادة بنجاح");
+    router.refresh();
+    setRejectLoader(false);
   }
 
   function handleUndo() {
@@ -57,7 +62,7 @@ export default function CertificatesTable({ data }: Props) {
 
   return (
     <>
-      <div className="overflow-hidden rounded-2xl border bg-white">
+      <div className=" rounded-2xl border bg-white overflow-x-auto">
         <table className="w-full text-right">
           <thead className="bg-gray-50 text-sm font-semibold text-gray-700">
             <tr>
@@ -74,9 +79,9 @@ export default function CertificatesTable({ data }: Props) {
           <tbody>
             {data.map((cert) => (
               <CertificateRow
-                key={cert.id}
+                key={cert.CertificationID}
                 cert={cert}
-                decision={decisions[cert.id] ?? "pending"}
+                decision={decisions[cert.VerificationStatus] ?? "pending"}
                 onView={handleView}
                 onAnalysis={handleAnalysis}
                 onAccept={handleAccept}
@@ -92,8 +97,14 @@ export default function CertificatesTable({ data }: Props) {
         onClose={() => setOpenPreview(false)}
         certificate={selectedCert}
         decision={selectedDecision}
-        onAccept={() => selectedCert && handleAccept(selectedCert.id)}
-        onReject={() => selectedCert && handleReject(selectedCert.id)}
+        loader={loader}
+        rejectLoader={rejectLoader}
+        onAccept={() =>
+          selectedCert && handleAccept(selectedCert.CertificationID)
+        }
+        onReject={() =>
+          selectedCert && handleReject(selectedCert.CertificationID)
+        }
         onUndo={handleUndo}
       />
 

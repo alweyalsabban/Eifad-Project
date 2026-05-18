@@ -10,7 +10,6 @@ export default function CompanyCard({
   name,
   city,
   companyId,
-
   AllFollowPage,
   setAllFollowPage,
   AllConmpnies,
@@ -78,11 +77,13 @@ export default function CompanyCard({
           )}
 
           <div className="flex flex-col">
-            <span className="text-lg font-semibold text-gray-900">{name}</span>
+            <span className="text-lg font-semibold text-gray-900">
+              {name ?? "مجهول"}
+            </span>
 
             <span className="mt-1 flex items-center gap-2 text-sm text-gray-500">
               <FiMapPin className="text-gray-400" />
-              {city}
+              {city ?? "مجهول"}
             </span>
           </div>
         </div>

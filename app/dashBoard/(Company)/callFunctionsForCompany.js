@@ -124,3 +124,26 @@ export async function Employer(NameFunction, dataProfile) {
     return await ApiPdf(`/employer/verify/documents/${dataProfile.NumberDoc}`);
   }
 }
+
+export const uploadPdf = async (file) => {
+  const formData = new FormData();
+
+  formData.append("file", file);
+  formData.append("upload_preset", "EfiadProject");
+
+  const res = await fetch(
+    "https://api.cloudinary.com/v1_1/drspmn3gd/raw/upload",
+    {
+      method: "POST",
+      body: formData,
+    },
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error?.message || "PDF upload failed");
+  }
+
+  return data.secure_url;
+};

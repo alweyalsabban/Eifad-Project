@@ -11,10 +11,10 @@ export default function SkillsTab({
   categoryIdSkills,
 }) {
   const LEVELS = [
-    { value: "Beginner", label: "Beginner" },
-    { value: "Intermediate", label: "Intermediate" },
-    { value: "Advanced", label: "Advanced" },
-    { value: "Expert", label: "Expert" },
+    { value: "Beginner", label: "مبتدئ" },
+    { value: "Intermediate", label: "متوسط" },
+    { value: "Advanced", label: "متقدم" },
+    { value: "Expert", label: "خبير" },
   ];
 
   const CATEGORIES = categoryIdSkills;

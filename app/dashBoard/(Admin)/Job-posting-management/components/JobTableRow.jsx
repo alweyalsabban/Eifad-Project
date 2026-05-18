@@ -24,7 +24,7 @@ export default function JobTableRow({ job, onView, onEdit, onDelete }) {
       <td className="px-4 py-4">
         <div className="flex items-center justify-start gap-2">
           <Users size={16} className="text-gray-500" />
-          <span>22</span>
+          <span>{job.applications_count ?? 0}</span>
         </div>
       </td>
 

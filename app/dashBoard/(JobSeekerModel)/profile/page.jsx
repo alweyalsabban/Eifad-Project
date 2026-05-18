@@ -7,7 +7,14 @@ import { ApiFetchServer } from "../../../lib/ApiFetchServer";
 
 async function ProfilePage() {
   const data = await ApiFetchServer("/profile");
+
   const anathorDataForProfile = await ApiFetchServer("/auth/me");
+
+  console.log("Profile");
+  console.log(data.dataResponse.data);
+  console.log("Me");
+  console.log(anathorDataForProfile.dataResponse.data);
+
   return (
     <section
       className="grid grid-cols-1 md:grid-cols-[30%_70%] m-auto w-[98%] justify-between mt-5 gap-2 mb-40"

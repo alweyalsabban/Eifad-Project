@@ -62,7 +62,9 @@ export default function Page() {
             <Building2 size={32} className="text-slate-400" />
           </div>
           <div>
-            <p className="text-lg font-semibold text-slate-700">لا توجد شركات</p>
+            <p className="text-lg font-semibold text-slate-700">
+              لا توجد شركات
+            </p>
             <p className="text-sm text-slate-400 mt-1">
               لم يتم العثور على أي شركة تطابق البحث الحالي
             </p>

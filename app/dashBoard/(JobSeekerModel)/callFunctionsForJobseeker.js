@@ -363,6 +363,8 @@ export async function UpdateCv(NameFunction, dataCv) {
     }
 
     if (NameFunction === "EditCertificate") {
+      console.log("EditCertificate API Called");
+      console.log(dataCv.objectCertificates);
       if (dataCv.objectCertificates.length !== 0) {
         for (let i = 0; i < dataCv.Length; i++) {
           const item = dataCv.objectCertificates[i];
@@ -376,6 +378,7 @@ export async function UpdateCv(NameFunction, dataCv) {
               certificate_name: item.CertificateName,
               issuing_organization: item.IssuingOrganization,
               is_verified: item.IsVerified,
+              cloudinary_url: item.FilePath,
             },
           );
 
@@ -387,6 +390,9 @@ export async function UpdateCv(NameFunction, dataCv) {
     }
 
     if (NameFunction === "AddCertificate") {
+      console.log("AddCertificate API Called");
+      console.log(dataCv.objectCertificates);
+
       for (let i = dataCv.Length; i < dataCv.objectCertificates.length; i++) {
         const item = dataCv.objectCertificates[i];
 
@@ -397,6 +403,7 @@ export async function UpdateCv(NameFunction, dataCv) {
             certificate_name: item.CertificateName,
             issuing_organization: item.IssuingOrganization,
             is_verified: item.IsVerified,
+            cloudinary_url: item.FilePath,
           },
         );
 

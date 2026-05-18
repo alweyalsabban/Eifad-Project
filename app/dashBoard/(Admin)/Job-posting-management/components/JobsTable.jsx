@@ -107,7 +107,7 @@ export default function JobsTable({ data }) {
                 <th className="px-4 py-4">الشركة</th>
                 <th className="px-4 py-4">تاريخ النشر</th>
                 <th className="px-4 py-4">الحالة</th>
-                <th className="px-4 py-4">عدد التطبيقات</th>
+                <th className="px-4 py-4">عدد المتقدمين</th>
                 <th className="px-4 py-4">الإجراءات</th>
               </tr>
             </thead>

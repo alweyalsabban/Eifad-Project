@@ -4,7 +4,7 @@ import { ApiFetchServer } from "@/app/lib/ApiFetchServer";
 export async function UseManagmentAPI(NameApi, Data) {
   if (NameApi === "GetAllUser") {
     const res = await ApiFetchServer(
-      `/admin/users?search=${Data?.search}&role=${Data?.role}&status=${Data?.status}&verification_status=${Data?.verificationStatus}`,
+      `/admin/users?search=${Data?.search}&role=${Data?.role}&account_status=${Data?.status}&verification_status=${Data?.verificationStatus}&user_status=${Data?.userStatus}`,
     );
     console.log(res);
     return res;

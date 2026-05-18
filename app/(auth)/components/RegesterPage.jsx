@@ -299,41 +299,42 @@ function RegesterPage() {
         {isPhoneError && (
           <p className="errorMessageStayle"> * رقم الجوال غير صحيح</p>
         )}
+        {!isManager && (
+          <div className="flex flex-col gap-2 items-start mt-4 ">
+            <label>الجنس</label>
+            <div className="flex gap-6 justify-end">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Male"
+                  className="accent-teal-700"
+                  defaultChecked
+                  onClick={() => {
+                    setForm({ ...form, gender: "Male" });
+                  }}
+                />
+                ذكر
+              </label>
 
-        <div className="flex flex-col gap-2 items-start mt-4 ">
-          <label>الجنس</label>
-          <div className="flex gap-6 justify-end">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="gender"
-                value="Male"
-                className="accent-teal-700"
-                defaultChecked
-                onClick={() => {
-                  setForm({ ...form, gender: "Male" });
-                }}
-              />
-              ذكر
-            </label>
-
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="gender"
-                value="Female"
-                className="accent-teal-700"
-                onClick={() => {
-                  setForm({ ...form, gender: "Female" });
-                }}
-              />
-              أنثى
-            </label>
-          </div>
-        </div>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Female"
+                  className="accent-teal-700"
+                  onClick={() => {
+                    setForm({ ...form, gender: "Female" });
+                  }}
+                />
+                أنثى
+              </label>
+            </div>
+          </div>,
+        )}
 
         <div className="flex flex-col gap-2 my-4 ">
-          <label className="font-semibold text-right">تاريخ الميلاد</label>
+          <label className="font-semibold text-right">{!isManager ? "تاريخ الميلاد" : "تاريخ التأسيس"}</label>
 
           <input
             type="date"

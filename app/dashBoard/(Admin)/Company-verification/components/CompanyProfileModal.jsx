@@ -82,13 +82,16 @@ export default function CompanyProfileModal({ open, onClose, company }) {
             <p className="text-center text-gray-500">لا يوجد مستندات مرفوعة</p>
           ) : (
             company?.VerificationDocuments?.map((doc, index) => (
-              <div
+              <Link
+                href={doc.path}
+                target="_blank"
+                rel="noreferrer"
                 key={index}
                 className="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2"
               >
                 <FileText size={16} />
                 <span className="text-sm">{doc.name}</span>
-              </div>
+              </Link>
             ))
           )}
         </div>

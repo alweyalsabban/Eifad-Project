@@ -4,10 +4,10 @@ import { useEffect } from "react";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const LEVELS = [
-  { value: "Beginner", label: "Beginner" },
-  { value: "Intermediate", label: "Intermediate" },
-  { value: "Advanced", label: "Advanced" },
-  { value: "Native", label: "Native" },
+  { value: "Beginner", label: "مبتدئ" },
+  { value: "Intermediate", label: "متوسط" },
+  { value: "Advanced", label: "متقدم" },
+  { value: "Native", label: "لغة أم" },
 ];
 
 export default function LanguagesTab({

@@ -13,6 +13,7 @@ export default function UsersPage() {
   const [role, setRole] = useState("");
   const [status, setStatus] = useState("");
   const [verificationStatus, setVerificationStatus] = useState("");
+  const [userStatus, setuserStatus] = useState("");
   const [AllUser, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,6 +27,7 @@ export default function UsersPage() {
         role,
         status,
         verificationStatus,
+        userStatus,
       });
       setUser(user.dataResponse.data ?? []);
       setLoading(false);
@@ -50,6 +52,8 @@ export default function UsersPage() {
         onStatusChange={setStatus}
         verificationStatus={verificationStatus}
         onVerificationStatusChange={setVerificationStatus}
+        userStatus={userStatus}
+        onUserStatusChange={setuserStatus}
       />
 
       {/* ── Loader ── */}

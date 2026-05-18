@@ -59,7 +59,11 @@
     "app/dashBoard/(Admin)/Job-posting-management/components/JobTableRow.jsx",
     "app/dashBoard/(Admin)/Job-posting-management/components/JobStatusBadge.jsx",
     "app/dashBoard/(Admin)/Job-posting-management/components/JobDetailsModal.jsx",
-    "app/dashBoard/(Admin)/Company-verification/components/CompanyAnalysisModal.jsx"
+    "app/dashBoard/(Admin)/Company-verification/components/CompanyAnalysisModal.jsx",
+    "app/dashBoard/(Admin)/Certificate-verification/components/CertificatePreviewModal.jsx",
+    "app/dashBoard/(Admin)/Certificate-verification/components/RowActions.jsx",
+    "app/dashBoard/(Admin)/Certificate-verification/components/CertificateRow.jsx",
+    "app/dashBoard/(Admin)/Certificate-verification/components/CertificatesTable.jsx"
   ],
   "exclude": ["node_modules"]
 }

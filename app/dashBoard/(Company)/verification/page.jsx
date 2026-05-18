@@ -6,34 +6,16 @@ import ActivityTimelineCard from "./components/ActivityTimelineCard";
 import { useContext, useEffect, useState } from "react";
 import { NamePageContex } from "../../(JobSeekerModel)/context/NamePageContext";
 import { Profile } from "../callFunctionsForCompany";
+import { uploadPdf } from "../callFunctionsForCompany";
 import { toast } from "react-toastify";
-
-const defaultDocuments = [
-  {
-    id: 0,
-    name: "السجل التجاري",
-    fileUrl: "",
-    status: "pending",
-  },
-  {
-    id: 1,
-    name: "شهادة الضريبة",
-    fileUrl: "",
-    status: "pending",
-  },
-  {
-    id: 2,
-    name: "رخصة الشركة",
-    fileUrl: "",
-    status: "pending",
-  },
-];
+import { ApiFetchServer } from "../../../lib/ApiFetchServer";
 
 export default function Verification() {
   const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
 
   const [isVerified, setIsVerified] = useState(false);
-  const [documents, setDocuments] = useState(defaultDocuments);
+  const [documents, setDocuments] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [activities, setActivities] = useState([]);
 
   useEffect(() => {
@@ -42,72 +24,97 @@ export default function Verification() {
   }, [setnameOfSideBar, setnumberOfSideBar]);
 
   useEffect(() => {
+    async function IsVerified() {
+      const res = await ApiFetchServer("/auth/me");
+      setIsVerified(res.dataResponse.data.company_profile.IsCompanyVerified);
+    }
+    IsVerified();
     async function loadData() {
       try {
-        const me = await Profile("GetMe");
-        setIsVerified(
-          Boolean(me?.is_verified ?? me?.isVerified ?? me?.IsVerified),
+        const res = await ApiFetchServer(
+          "/employer/verify/documents",
+          "Post",
+          {},
         );
+        const defaultDocuments = [
+          {
+            id: 0,
+            name: "السجل التجاري",
+            fileUrl: res.dataResponse.data.documents[0].url,
+            status: "pending",
+          },
+          {
+            id: 1,
+            name: "شهادة الضريبة",
+            fileUrl: res.dataResponse.data.documents[1].url,
+            status: "pending",
+          },
+          {
+            id: 2,
+            name: "رخصة الشركة",
+            fileUrl: res.dataResponse.data.documents[2].url,
+            status: "pending",
+          },
+        ];
 
-        const docs = await Profile("GetVerificationDocuments");
-
-        if (Array.isArray(docs?.documents)) {
-          setDocuments(docs.documents);
-        }
-
-        if (Array.isArray(docs?.activities)) {
-          setActivities(docs.activities);
-        }
-      } catch {
         setDocuments(defaultDocuments);
+      } catch {
+        setDocuments([
+          {
+            id: 0,
+            name: "السجل التجاري",
+            fileUrl: "",
+            status: "pending",
+          },
+          {
+            id: 1,
+            name: "شهادة الضريبة",
+            fileUrl: "",
+            status: "pending",
+          },
+          {
+            id: 2,
+            name: "رخصة الشركة",
+            fileUrl: "",
+            status: "pending",
+          },
+        ]);
       }
     }
-
     loadData();
-  }, []);
+  }, [loading]);
 
-  async function uploadDocument(type, file) {
-    if (!file) return;
-    if (file.type !== "application/pdf") {
+  async function uploadDocument(e, index) {
+    if (e.type !== "application/pdf") {
       toast.error("ارفع ملف PDF فقط");
       return;
     }
-    const formData = new FormData();
-    formData.append(`document_${type}`, file);
+    setLoading(true);
 
-    try {
-      const res = await Profile("UploadVerificationDocument", { formData });
-      toast.success("تم الرفع");
+    const url = await uploadPdf(e);
+    await ApiFetchServer("/employer/verify/documents", "POST", {
+      document_urls: {
+        [index]: url,
+      },
+      document_names: {
+        [index]: e.name,
+      },
+    });
 
-      setDocuments((prev) =>
-        prev.map((doc) =>
-          doc.id === type
-            ? {
-                ...doc,
-                uploaded: true,
-                status: "under_review",
-                fileUrl: URL.createObjectURL(file),
-              }
-            : doc,
-        ),
-      );
-
-      setActivities((prev) => [
-        {
-          id: Date.now(),
-          title: "تم رفع مستند",
-          date: new Date().toLocaleString("ar"),
-        },
-        ...prev,
-      ]);
-    } catch {
-      toast.error("حدث خطأ أثناء رفع الملف");
+    if (url) {
+      toast.success("تم رفع الملف");
     }
+    setLoading(false);
   }
 
   return (
     <section className="mx-auto w-[98%] space-y-5 mb-40">
       <VerificationAlert isVerified={isVerified} />
+      {loading && (
+        <div className="fixed top-1/2 left-1/2 z-50 bg-black p-4 rounded-2xl text-white">
+          جاري الرفع ...
+        </div>
+      )}
       <RequiredDocumentsCard documents={documents} onUpload={uploadDocument} />
       {/*       <ActivityTimelineCard activities={activities} />
        */}

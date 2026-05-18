@@ -22,11 +22,11 @@ export default function BasicInfoCard({ dataProfile, anathorData }) {
     PersentProfileContext,
   );
   const [formData, setFormData] = useState({
-    fullName: anathorData.full_name || "",
-    location: dataProfile.Location || "",
-    email: anathorData.email || "",
-    phone: anathorData.phone || "",
-    bio: dataProfile.ProfileSummary || "",
+    fullName: anathorData?.full_name ?? "",
+    location: dataProfile?.Location ?? "",
+    email: anathorData?.email ?? "",
+    phone: anathorData?.phone ?? "",
+    bio: dataProfile?.ProfileSummary ?? "",
   });
 
   const router = useRouter();
@@ -138,10 +138,13 @@ export default function BasicInfoCard({ dataProfile, anathorData }) {
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-2 rounded-[10px] bg-green-100 px-3 py-1 text-sm text-green-700">
               <FiCheckCircle className="h-4 w-4 text-green-700" />
-              {anathorData.is_verified ? "موثوق" : "لم يتحقق"}
+              {anathorData?.is_verified ? "موثوق" : "لم يتحقق"}
             </span>
-            <span className="inline-flex items-center gap-2 rounded-[10px] bg-green-100 px-3 py-1 text-sm text-green-700">
-              {anathorData.is_verified ? "وضع الباحث" : "مطلع"}
+            <span
+              className={`inline-flex items-center gap-2 rounded-[10px] 
+              ${anathorData?.is_active ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"} px-3 py-1 text-sm `}
+            >
+              {anathorData?.is_active ? "نشط" : "محظور"}
             </span>
           </div>
         </div>
