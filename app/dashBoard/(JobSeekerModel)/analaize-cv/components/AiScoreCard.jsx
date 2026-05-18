@@ -4,7 +4,7 @@ export default function AiScoreCard({ score }) {
   const clamped = Math.max(0, Math.min(100, Number(score) || 0));
 
   return (
-    <section className="w-full rounded-2xl bg-linear-to-r from-green-500 to-emerald-600 p-6 text-white">
+    <section className="w-full rounded-2xl bg-linear-to-r from-green-500 to-emerald-600 p-6 text-white mt-10">
       <div className="flex items-start justify-between gap-6">
         <div>
           <div className="flex gap-3">

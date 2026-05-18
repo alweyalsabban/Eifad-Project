@@ -1,56 +1,55 @@
-"use client";
-import { useContext, useEffect } from "react";
-import { NamePageContex } from "../context/NamePageContext";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import AiScoreCard from "./components/AiScoreCard";
 import InsightListCard from "./components/InsightListCard";
 import SkillGapCard from "./components/SkillGapCard";
+import CreateTitle from "../CreateTitle";
+import { ApiFetchServer } from "../../../lib/ApiFetchServer";
+import CvAnalysisPdfReport from "./components/DownloadCvAnalysisPdf";
+import NoCvMessage from "../components/NoCvMessage";
+async function AnalaizeCv() {
+  const cvInfo = await ApiFetchServer("/cvs");
+  const res = await ApiFetchServer(
+    `/cvs/${cvInfo?.dataResponse.data[0]?.CVID}/analyze`,
+    "POST",
+  );
+  const data = await res?.dataResponse.data;
 
-function AnalaizeCv() {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
-  useEffect(() => {
-    setnameOfSideBar("تحليل السيرة الذاتية");
-    setnumberOfSideBar(4);
-  }, [setnameOfSideBar, setnumberOfSideBar]);
+  // Debug: Write data to file so we can inspect it
+  const fs = require('fs');
+  try {
+    fs.writeFileSync('cv_analyze_debug.json', JSON.stringify(data, null, 2));
+  } catch (e) {}
+
   return (
     <>
-      <AiScoreCard score={82} />
+      {!res.isSusses && (
+        <NoCvMessage
+          Message={"لا يوجد لديك سيرة ذاتية ، يرجى إنشاءها أولا ."}
+        />
+      )}
+      <CreateTitle title="تحليل السيرة الذاتية" number={4} />
+      <AiScoreCard score={data?.scores.overall} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <InsightListCard
           title="نقاط القوة"
           variant="success"
-          items={[
-            "مهارات تقنية قوية في React و Node.js",
-            "خبرة تزيد عن 5 سنوات ذات صلة",
-            "ملخص مهني واضح وموجز",
-            "تاريخ عمل منظم بشكل جيد",
-          ]}
+          items={data?.strengths}
         />
         <InsightListCard
           title="نقاط التحسين"
           variant="warning"
-          items={[
-            "قسم الشهادات مفقود",
-            "لا توجد روابط للمشاريع",
-            "قسم المهارات يحتاج المزيد من التفاصيل",
-          ]}
+          items={data?.weaknesses}
         />
       </div>
-      <SkillGapCard
-        items={[
-          { label: "Cloud Architecture", current: 60, target: 90 },
-          { label: "Leadership", current: 40, target: 80 },
-          { label: "System Design", current: 70, target: 95 },
-        ]}
-      />
-
-      <button
+      <SkillGapCard items={data?.gaps} />
+      <CvAnalysisPdfReport data={data} />
+      {/*   <button
         className="flex w-full items-center justify-center gap-3 rounded-2xl bg-blue-600 py-4 text-white text-sm 
       font-medium hover:bg-blue-700 transition mt-5 mb-15 hover:cursor-pointer"
       >
         <span>تحميل تقرير التحليل (PDF)</span>
         <ArrowDownTrayIcon className="h-5 w-5" />
-      </button>
+      </button> */}
     </>
   );
 }

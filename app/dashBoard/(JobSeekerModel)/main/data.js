@@ -1,22 +1,8 @@
 import { LuCircleCheckBig } from "react-icons/lu";
-
 import { HiOutlineTrendingUp } from "react-icons/hi";
 import { LuTarget } from "react-icons/lu";
 import { MdSearch } from "react-icons/md";
-import { LuUpload } from "react-icons/lu";
-
-export const InfoCardMain = [
-  {
-    id: 1,
-    icons: (
-      <LuCircleCheckBig
-        size={40}
-        className="bg-primaryBlue text-auxiliaryColorWhite p-2 rounded-xl"
-      />
-    ),
-    number: "75%",
-    name: "اكتمال الملف",
-  },
+export const InfoCardMain = (data) => [
   {
     id: 2,
     icons: (
@@ -25,8 +11,20 @@ export const InfoCardMain = [
         className="bg-[#00C950] text-auxiliaryColorWhite p-2 rounded-xl"
       />
     ),
-    number: "23",
-    name: "الوظائف المطابقة",
+    number: data?.dataResponse?.data?.profile_views ?? "خطأ في جلب البيانات",
+    name: "عدد المشاهدات للملف ",
+  },
+  {
+    id: 1,
+    icons: (
+      <LuCircleCheckBig
+        size={40}
+        className="bg-primaryBlue text-auxiliaryColorWhite p-2 rounded-xl"
+      />
+    ),
+    number:
+      data?.dataResponse?.data?.accepted_applications ?? "خطأ في جلب البيانات",
+    name: "الطلبات المقبولة",
   },
   {
     id: 3,
@@ -36,8 +34,9 @@ export const InfoCardMain = [
         className="bg-[#AD46FF] text-auxiliaryColorWhite p-2 rounded-xl"
       />
     ),
-    number: "12",
-    name: "الطلبات النشطة",
+    number:
+      data?.dataResponse?.data?.rejected_applications ?? "خطأ في جلب البيانات",
+    name: "الطلبات المرفوضة",
   },
   {
     id: 4,
@@ -47,26 +46,29 @@ export const InfoCardMain = [
         className="bg-[#FF6900] text-auxiliaryColorWhite p-2 rounded-xl"
       />
     ),
-    number: "5%",
-    name: "دعوات المقابلات",
+    number: data.dataResponse.data?.total_applications ?? "خطأ في جلب البيانات",
+    name: "إجمالي الطلبات",
   },
 ];
 
 export const InfoCardAction = [
-  {
+  /* {
     id: 1,
     icons: <LuUpload size={45} className="text-primaryBlue p-2 rounded-xl" />,
     name: "رفع السيرة الذاتية",
-  },
+    link: "/dashBoard/cv",
+  }, */
   {
     id: 2,
     icons: <MdSearch size={45} className=" text-[#00C950] p-2 rounded-xl" />,
     name: "البحث عن وظائف",
+    link: "/dashBoard/search-job",
   },
   {
     id: 3,
     icons: <LuTarget size={45} className=" text-[#AD46FF] p-2 rounded-xl" />,
     name: "الوظائف الموصى بها",
+    link: "/dashBoard/recommed-job",
   },
   {
     id: 4,
@@ -77,6 +79,7 @@ export const InfoCardAction = [
       />
     ),
     name: "خارطة الطريق",
+    link: "/dashBoard/road-map",
   },
 ];
 

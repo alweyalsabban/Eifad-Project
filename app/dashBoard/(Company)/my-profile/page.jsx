@@ -1,28 +1,25 @@
-"use client";
-import { useContext, useEffect } from "react";
-import { NamePageContex } from "../../(JobSeekerModel)/context/NamePageContext";
 import CompanyInfoForm from "./components/CompanyInfoForm";
 import CompanyStatsCard from "./components/CompanyStatsCard";
-import ProfileCompletionCard from "./components/ProfileCompletionCard";
+import CreateTitle from "../../(JobSeekerModel)/CreateTitle";
+import { ApiFetchServer } from "../../../lib/ApiFetchServer";
 
-function CompanyProfile() {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
+async function CompanyProfile() {
+  async function FetchProfileData() {
+    const res = await ApiFetchServer("/profile");
 
-  useEffect(() => {
-    setnameOfSideBar("ملف الشركة");
-    setnumberOfSideBar(2);
-  }, [setnameOfSideBar, setnumberOfSideBar]);
+    return res.dataResponse.data;
+  }
+  async function FetchMainData() {
+    const res = await ApiFetchServer("/auth/me");
+
+    return res.dataResponse.data;
+  }
+  const infoProfile = await FetchProfileData();
+  const mainData = await FetchMainData();
   return (
-    <div
-      className="w-[98%] grid grid-cols-1 md:grid-cols-[70%_auto] 
-    gap-2 mx-auto mb-40"
-    >
-      <CompanyInfoForm />
-
-      <div>
-        <CompanyStatsCard />
-        <ProfileCompletionCard />
-      </div>
+    <div className="w-[98%]  mb-40">
+      <CreateTitle title="ملف الشركة" number={2} />
+      <CompanyInfoForm infoProfile={infoProfile} mainData={mainData} />
     </div>
   );
 }

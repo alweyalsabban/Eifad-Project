@@ -1,19 +1,11 @@
 "use client";
-import { NamePageContex } from "../context/NamePageContext";
-import { useEffect, useState, useContext } from "react";
-
 import dynamic from "next/dynamic";
 import ThreadsList from "./components/ThreadsList";
-
+import CreateTitle from "../CreateTitle";
+import { useState } from "react";
 const ChatWindow = dynamic(() => import("./components/ChatWindow"));
 
 function Messages() {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
-  useEffect(() => {
-    setnameOfSideBar("الرسائل");
-    setnumberOfSideBar(12);
-  }, [setnameOfSideBar, setnumberOfSideBar]);
-
   const [activeId, setActiveId] = useState("t1");
 
   const threads = [
@@ -62,6 +54,8 @@ function Messages() {
 
   return (
     <div className="flex gap-2 mb-40">
+      <CreateTitle title="الرسائل" number={12} />
+
       <div className="hidden md:block">
         <ThreadsList
           threads={threads}

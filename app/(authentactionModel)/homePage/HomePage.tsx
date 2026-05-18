@@ -1,4 +1,3 @@
-"use client";
 import dynamic from "next/dynamic";
 import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";

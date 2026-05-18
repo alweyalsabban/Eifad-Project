@@ -54,12 +54,11 @@ function HeroSection() {
           style={{ animationDelay: "0.4s" }}
         >
           <Image
-            src="/assets/bg.png"
+            src="/assets/bg.webp"
             alt="bg"
             width={490}
             height={300}
             className="mb-1 sm:mb-3 rounded-3xl w-full max-w-130 h-auto"
-            priority
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-3 sm:gap-4 w-full max-w-130 m-auto">

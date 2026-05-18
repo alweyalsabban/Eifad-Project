@@ -16,6 +16,7 @@ export default function SmSidebar({
   setnumberOfSideBar,
 }) {
   const [role, setRole] = useState("");
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     setRole(localStorage.getItem("role"));
@@ -41,6 +42,7 @@ export default function SmSidebar({
     }
 
     if (item.id === 14) {
+      setIsLoggingOut(true);
       localStorage.clear();
       logout();
     }
@@ -48,6 +50,11 @@ export default function SmSidebar({
 
   return (
     <>
+      {isLoggingOut && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/70 backdrop-blur-sm">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+        </div>
+      )}
       {/* --- Mobile Bottom Nav (اللون الأزرق هنا) --- */}
       <div
         className="md:hidden  fixed bottom-5 left-0 right-0 bg-white border-t w-[80%] m-auto rounded-2xl
@@ -67,7 +74,7 @@ export default function SmSidebar({
               >
                 {j.icon}
               </span>
-              <span className="text-[10px] mt-1 whitespace-nowrap">
+              <span className="text-[10px] mt-1 text-center ">
                 {j.name || (j.id === 14 ? "خروج" : "")}
               </span>
             </Link>

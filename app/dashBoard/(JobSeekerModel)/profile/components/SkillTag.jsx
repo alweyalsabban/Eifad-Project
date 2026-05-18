@@ -1,4 +1,4 @@
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { CiBookmark } from "react-icons/ci";
 
 export default function SkillTag({ skill, onRemove }) {
   return (
@@ -7,7 +7,7 @@ export default function SkillTag({ skill, onRemove }) {
     hover:bg-blue-200 transition hover:cursor-pointer w-fit"
       onClick={onRemove}
     >
-      <XMarkIcon className="w-4 h-4 hover:cursor-pointer" />
+      <CiBookmark className="w-4 h-4 hover:cursor-pointer" />
 
       <span className="text-sm font-medium">{skill}</span>
     </div>

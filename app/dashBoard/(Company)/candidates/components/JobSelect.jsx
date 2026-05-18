@@ -8,8 +8,7 @@ export default function JobSelect({ value, onChange, jobs }) {
       <select
         value={value}
         onChange={onChange}
-        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm
-        text-gray-700 outline-none focus:border-blue-500 focus:ring-0"
+        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-0"
       >
         <option value="">اختر الوظيفة</option>
 

@@ -1,66 +1,162 @@
 "use client";
-
-import { useState } from "react";
+import { useEffect } from "react";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { v4 as uuidv4 } from "uuid";
 
-const LEVELS = [
-  { value: "beginner", label: "Beginner" },
-  { value: "intermediate", label: "Intermediate" },
-  { value: "advanced", label: "Advanced" },
-  { value: "expert", label: "Expert" },
-];
+export default function SkillsTab({
+  objectSkills,
+  setObjectSkills,
+  CVID,
+  AllSkills,
+  categoryIdSkills,
+}) {
+  const LEVELS = [
+    { value: "Beginner", label: "مبتدئ" },
+    { value: "Intermediate", label: "متوسط" },
+    { value: "Advanced", label: "متقدم" },
+    { value: "Expert", label: "خبير" },
+  ];
 
-export default function SkillsTab() {
-  const [rows, setRows] = useState([
-    { id: 1, skill: "React", level: "expert" },
-    { id: 2, skill: "Node.js", level: "expert" },
-    { id: 3, skill: "TypeScript", level: "expert" },
-    { id: 4, skill: "AWS", level: "expert" },
-  ]);
+  const CATEGORIES = categoryIdSkills;
+  useEffect(() => {}, [objectSkills, AllSkills]);
 
-  const updateRow = (id, key, value) => {
-    setRows((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, [key]: value } : r)),
-    );
+  const handleSkillNameChange = (index, value) => {
+    const found = AllSkills.find((item) => value === item.SkillName);
+    const updated = [...objectSkills];
+
+    if (found) {
+      updated[index] = {
+        ...updated[index],
+        SkillID: found.SkillID,
+        skill: {
+          ...updated[index].skill,
+          SkillID: found.SkillID,
+          SkillName: found.SkillName,
+          CategoryID: Number(found.CategoryID),
+        },
+      };
+    } else {
+      updated[index] = {
+        ...updated[index],
+        SkillID: null, // مهم جدًا
+        skill: {
+          ...updated[index].skill,
+          SkillID: null, // مهم جدًا
+          SkillName: value,
+        },
+      };
+    }
+
+    setObjectSkills(updated);
+  };
+  const handleLevelChange = (index, value) => {
+    const updated = [...objectSkills];
+    updated[index] = {
+      ...updated[index],
+      SkillLevel: value,
+    };
+    setObjectSkills(updated);
+  };
+
+  const handleCategoryChange = (index, value) => {
+    const updated = [...objectSkills];
+    updated[index] = {
+      ...updated[index],
+      skill: {
+        ...updated[index].skill,
+        CategoryID: Number(value),
+      },
+    };
+    setObjectSkills(updated);
   };
 
   const addRow = () => {
-    setRows((prev) => [
-      ...prev,
-      { id: Date.now(), skill: "", level: "expert" },
+    setObjectSkills([
+      ...objectSkills,
+      {
+        CVID: CVID,
+        CVSkillID: Date.now(),
+        SkillID: null,
+        SkillLevel: "Beginner",
+        skill: {
+          CategoryID: Number(categoryIdSkills?.[0]?.CategoryID),
+          SkillID: null,
+          SkillName: "",
+        },
+      },
     ]);
   };
 
-  const removeRow = (id) => {
-    setRows((prev) => prev.filter((r) => r.id !== id));
+  const removeRow = (index) => {
+    const updated = objectSkills.filter((_, i) => i !== index);
+    setObjectSkills(updated);
   };
 
   return (
-    <section className="w-full rounded-2xl border border-secondGray bg-auxiliaryColorWhite p-6 mt-5">
+    <section className="mt-5 w-full rounded-2xl border border-secondGray bg-auxiliaryColorWhite p-6">
       <h3 className="text-right text-lg font-semibold text-slate-900">
         المهارات
       </h3>
 
       <div className="mt-5 space-y-4">
-        <div className="rounded-2xl border border-secondGray p-4">
-          <div className="space-y-4">
-            {rows.map((row) => (
-              <div
-                key={row.id}
-                className="grid grid-cols-[1fr_140px_28px] items-center gap-3"
-              >
-                {/* Input المهارة */}
-                <input
-                  value={row.skill}
-                  onChange={(e) => updateRow(row.id, "skill", e.target.value)}
-                  placeholder="أضف مهارة"
-                  className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
-                />
+        {objectSkills?.map((item, index) => {
+          const currentValue = item.skill?.SkillName || "";
 
-                {/* Dropdown المستوى */}
+          const filteredSkills = AllSkills.filter((skill) =>
+            skill.SkillName.toLowerCase().includes(currentValue.toLowerCase()),
+          ).slice(0, 4);
+
+          const datalistId = `skills-list-${index}`;
+
+          return (
+            <div className="space-y-4" key={index}>
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_140px_140px_28px] items-center gap-3">
+                <div className="flex gap-2 justify-center items-center">
+                  <input
+                    value={currentValue}
+                    list={datalistId}
+                    onChange={(e) =>
+                      handleSkillNameChange(index, e.target.value)
+                    }
+                    placeholder="أضف مهارة"
+                    className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 
+                    text-right outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeRow(index)}
+                    className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600 md:hidden hover:cursor-pointer"
+                    aria-label="حذف"
+                    title="حذف"
+                  >
+                    <TrashIcon className="h-5 w-5" />
+                  </button>
+                </div>
+
+                <datalist id={datalistId}>
+                  {filteredSkills.map((skill, i) => (
+                    <option value={skill.SkillName} key={i} />
+                  ))}
+                </datalist>
+
                 <select
-                  value={row.level}
-                  onChange={(e) => updateRow(row.id, "level", e.target.value)}
+                  value={Number(item?.skill?.CategoryID ?? 0)}
+                  onChange={(e) => handleCategoryChange(index, e.target.value)}
+                  className="h-12 w-full rounded-xl border border-secondGray bg-white px-3 text-center outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {CATEGORIES.map((category) => (
+                    <option
+                      key={category.CategoryID}
+                      value={category.CategoryID}
+                    >
+                      {category.CategoryName}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={item.SkillLevel || ""}
+                  onChange={(e) => handleLevelChange(index, e.target.value)}
                   className="h-12 w-full rounded-xl border border-secondGray bg-white px-3 text-center outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {LEVELS.map((l) => (
@@ -69,23 +165,21 @@ export default function SkillsTab() {
                     </option>
                   ))}
                 </select>
-
-                {/* حذف */}
+                <div className="mt-5 md:hidden block "></div>
                 <button
                   type="button"
-                  onClick={() => removeRow(row.id)}
-                  className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600"
+                  onClick={() => removeRow(index)}
+                  className="md:flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600 hidden hover:cursor-pointer"
                   aria-label="حذف"
                   title="حذف"
                 >
                   <TrashIcon className="h-5 w-5" />
                 </button>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          );
+        })}
 
-        {/* زر الإضافة */}
         <button
           type="button"
           onClick={addRow}

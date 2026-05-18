@@ -1,35 +1,96 @@
+"use client";
 import { FiMapPin } from "react-icons/fi";
 import Link from "next/link";
-
+import { Companies } from "../../callFunctionsForJobseeker";
+import { useEffect, useState } from "react";
+import LoaderTwo from "../../components/LoaderTwo";
+import { toast } from "react-toastify";
+import Image from "next/image";
 export default function CompanyCard({
-  name = "شركة جسر",
-  city = "الرياض",
-  logoText = "G",
-  onDetails,
-  onFollow,
+  name,
+  city,
+  companyId,
+  AllFollowPage,
+  setAllFollowPage,
+  AllConmpnies,
+  UrlImage,
 }) {
+  const [page, setPage] = useState(null);
+
+  useEffect(() => {
+    const isFollow = AllFollowPage?.some(
+      (item) => item.CompanyID === companyId,
+    );
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPage(Boolean(isFollow));
+  }, [AllFollowPage, companyId]);
+
+  const [loading, setLoadign] = useState(false);
+  async function onFollow() {
+    setLoadign(true);
+
+    if (page) {
+      const res = await Companies("UnFollowPage", { companyId });
+      const newFolowPages = AllFollowPage.filter((item) => {
+        return item.CompanyID !== companyId;
+      });
+      setAllFollowPage(newFolowPages);
+      if (res.isSusses) {
+        setPage(false);
+        toast.success("تم إلغاء المتابعة");
+      }
+    } else {
+      const res = await Companies("FollowPage", { companyId });
+      const newFollowCompany = AllConmpnies.find(
+        (item) => item.CompanyID === companyId,
+      );
+
+      setAllFollowPage([
+        ...AllFollowPage,
+        {
+          CompanyID: companyId,
+          company: newFollowCompany,
+        },
+      ]);
+      if (res.isSusses) {
+        setPage(true);
+        toast.success("تم المتابعة");
+      }
+    }
+
+    setLoadign(false);
+  }
+
   return (
     <div className="w-full rounded-2xl border border-gray-200 bg-white px-6 py-5 mt-5">
-      <div className="flex flex-wrap items-center justify-between">
+      <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-lg font-bold text-white">
-            {logoText}
-          </div>
+          {UrlImage?.length > 40 ? (
+            <div className=" h-12 w-12 rounded-xl border p-1 border-blue-950">
+              <Image src={UrlImage} width={300} height={200} alt="LogoImage" />
+            </div>
+          ) : (
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-lg font-bold text-white">
+              G
+            </div>
+          )}
 
           <div className="flex flex-col">
-            <span className="text-lg font-semibold text-gray-900">{name}</span>
+            <span className="text-lg font-semibold text-gray-900">
+              {name ?? "مجهول"}
+            </span>
 
             <span className="mt-1 flex items-center gap-2 text-sm text-gray-500">
               <FiMapPin className="text-gray-400" />
-              {city}
+              {city ?? "مجهول"}
             </span>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-3 mt-3 md:mt-0">
-          <Link href={"/dashBoard/search-pages/deatil-pages"}>
+        <div className="flex items-center gap-3 ms-auto mt-3 md:mt-0">
+          <Link href={`/dashBoard/search-pages/${companyId}`}>
             <button
-              onClick={onDetails}
               className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition
              hover:bg-blue-700 hover:cursor-pointer"
             >
@@ -39,10 +100,18 @@ export default function CompanyCard({
 
           <button
             onClick={onFollow}
-            className="rounded-xl bg-green-100 px-5 py-2.5 text-sm font-semibold text-green-700 
+            disabled={loading}
+            className="rounded-xl bg-green-100 px-5 py-2.5 text-sm font-semibold text-green-700 flex items-center justify-center
+
             transition hover:bg-green-200 hover:cursor-pointer"
           >
-            متابعة
+            {loading ? (
+              <LoaderTwo colorLoading="fill-green-500" />
+            ) : page ? (
+              "إلغاء المتابعة"
+            ) : (
+              "متابعة"
+            )}
           </button>
         </div>
       </div>

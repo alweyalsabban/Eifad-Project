@@ -1,8 +1,6 @@
-export default function ProfileCompletionCard() {
-  const progress = 85;
-
+export default function ProfileCompletionCard({ progress }) {
   return (
-    <div className="rounded-2xl max-w-sm bg-blue-600 p-4 text-white mt-5">
+    <div className="rounded-2xl  bg-blue-600 p-4 text-white mt-5 h-30 max-w-full">
       <div className="flex items-center justify-between">
         <h3 className="text-[14px] font-extrabold">اكتمال الملف</h3>
         <span className="text-[13px] font-bold">{progress}%</span>

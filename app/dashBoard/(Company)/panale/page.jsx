@@ -1,6 +1,3 @@
-"use client";
-import { useContext, useEffect } from "react";
-import { NamePageContex } from "../../(JobSeekerModel)/context/NamePageContext";
 import InfoCard from "../../(JobSeekerModel)/main/components/InfoCard";
 import RecommedAI from "../../(JobSeekerModel)/main/components/RecommedAI";
 import ActionCard from "../../(JobSeekerModel)/main/components/ActionCard";
@@ -10,22 +7,25 @@ import ActiveJobsSection from "./components/ActiveJobsSection";
 import JobCard from "./components/JobCard";
 import { jobs } from "../companyData";
 import CandidateCard from "./components/CandidateCard";
+import CreateTitle from "../../(JobSeekerModel)/CreateTitle";
+import { ApiFetchServer } from "../../../lib/ApiFetchServer";
+import Link from "next/link";
 
-function CompanyPage() {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
-
-  useEffect(() => {
-    setnameOfSideBar("لوحة التحكم");
-    setnumberOfSideBar(1);
-  }, [setnameOfSideBar, setnumberOfSideBar]);
-
+async function CompanyPage() {
+  async function FetchData() {
+    const res = await ApiFetchServer("/profile/statistics");
+    return res.dataResponse.data;
+  }
+  const data = await FetchData();
   return (
     <div className="mb-40">
+      <CreateTitle title="الواجهة الرئيسية" number={1} />
+
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4  
+        className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3  
       gap-2 mt-5  justify-between mr-3 flex-wrap w-[98%] "
       >
-        {InfoMainCard.map((i) => {
+        {InfoMainCard(data).map((i) => {
           return (
             <InfoCard
               key={i.id}
@@ -37,18 +37,18 @@ function CompanyPage() {
         })}
       </div>
 
-      <RecommedAI
-        title={"توصيات الذكاء الاصطناعي "}
-        description={`لديك 12 مرشح ذو مطابقة عالية (90%+) للوظائف المفتوحة`}
-        textBtn={"عرض المرشحين"}
-      />
+      <hr className="mt-5 text-auxiliaryColorGray w-[98%]" />
 
-      <div className="grid grid-cols-1  md:grid-cols-3  gap-2 mt-5 justify-between mr-3 flex-wrap w-[98%]">
+      <div className="grid grid-cols-1  md:grid-cols-2  gap-2 mt-5 justify-between mr-3 flex-wrap w-[98%]">
         {InfoCardActionCompany.map((i) => {
-          return <ActionCard key={i.id} icons={i.icons} name={i.name} />;
+          return (
+            <Link key={i.id} href={i.hr}>
+              <ActionCard icons={i.icons} name={i.name} />
+            </Link>
+          );
         })}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-[98%] mx-auto ">
+      {/*  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full mx-auto ">
         <ActiveJobsSection title={"الوظائف النشطة"}>
           {jobs.map((job) => (
             <JobCard
@@ -64,7 +64,7 @@ function CompanyPage() {
         <ActiveJobsSection title={"أحدث المتقدمين"}>
           <CandidateCard />
         </ActiveJobsSection>
-      </div>
+      </div> */}
     </div>
   );
 }

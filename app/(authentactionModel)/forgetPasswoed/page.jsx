@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ErroeMessage from "../../(auth)/components/erroeMessage";
 import { ValiEmail } from "@/app/lib/validators";
+import { ApiFetchClient } from "@/app/lib/ApiFetchClient";
 
 function Page() {
   const [email, setEmail] = useState("");
@@ -21,15 +22,19 @@ function Page() {
 
     if (ValiEmail(email)) {
       setLoading(true);
-      const response = await fetch("/api/auth/forgot-password", {
+
+      const response = await ApiFetchClient("/auth/forgot-password", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({ email: email }),
       });
-      const responseData = await response.json();
 
-      if (!response.ok) {
+      if (!response.isSusses) {
         setEmailError(true);
-        setErrorMessage(responseData.message);
+        setErrorMessage(response.dataResponse.message);
         setLoading(false);
       } else {
         setLoading(false);

@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
+import { ApiFetchClient } from "@/app/lib/ApiFetchClient";
 
 import { CgMail } from "react-icons/cg";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-import SetCookies from "@/app/lib/setCookies";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -24,7 +24,7 @@ function LogInPage() {
   });
 
   async function sendCode() {
-    await fetch("/api/auth/send-verification", {
+    await ApiFetchClient("/auth/send-verification", {
       method: "POST",
       body: JSON.stringify({ email: form.email }),
     });
@@ -48,35 +48,45 @@ function LogInPage() {
       setPasswordError(false);
       setLoading(true);
 
-      const response = await fetch("/api/auth/login", {
+      const response = await ApiFetchClient("/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      setLoading(false);
-      const data = await response.json();
 
-      if (data.requires_verification) {
+      if (response.dataResponse.requires_verification) {
         sendCode();
         localStorage.clear();
         localStorage.setItem("pending_email", form.email);
         route.replace("/verify");
       }
-      if (!response.ok) {
+      if (!response.isSusses) {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        setErrorMessage(data.message);
+        setErrorMessage(response.dataResponse.message);
         setisError(true);
       } else {
         setisError(false);
         localStorage.clear();
         sessionStorage.clear();
-        SetCookies(data.data.token);
+
+        await fetch("/api/save-session", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: response.dataResponse.data.token,
+            role: response.dataResponse.data.role,
+            name: response.dataResponse.data.name,
+          }),
+        });
         route.replace("/dashBoard");
       }
     } else {
       // البريد
       setEmailError(true);
     }
+    setLoading(false);
   }
 
   return (

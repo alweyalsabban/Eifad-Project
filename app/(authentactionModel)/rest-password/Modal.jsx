@@ -108,8 +108,6 @@ export default function ResetPasswordPage() {
           window.sessionStorage.removeItem("token"); // ✅ كان عندك localStorage بالغلط
           //window.localStorage.removeItem("pending_email");
         } catch (_) {}
-        console.log("al");
-        console.log(data);
         SetCookies(token);
         window.location.replace("/dashBoard");
       }, 900);

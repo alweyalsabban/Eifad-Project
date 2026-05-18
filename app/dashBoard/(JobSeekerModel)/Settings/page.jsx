@@ -1,17 +1,12 @@
 "use client";
-import { useContext, useState, useEffect } from "react";
-import { NamePageContex } from "../context/NamePageContext";
+import { useEffect, useState } from "react";
 import SettingsCard from "./components/SettingsCard";
 import { FiUser, FiLock, FiBell } from "react-icons/fi";
 
 import SettingsPanel from "./components/SettingsPanel";
-
+import CreateTitle from "../CreateTitle";
+import { Profile } from "../callFunctionsForJobseeker";
 function Setting() {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
-  useEffect(() => {
-    setnameOfSideBar("الإعدادات");
-    setnumberOfSideBar(13);
-  }, [setnameOfSideBar, setnumberOfSideBar]);
   const [notify, setNotify] = useState({
     jobs: true,
     updates: false,
@@ -19,21 +14,34 @@ function Setting() {
   });
 
   const [lang, setLang] = useState("ar");
+  const [email, setEmail] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await Profile("MainInfoUser");
+      setEmail(res.email);
+    }
+    fetchData();
+  }, []);
 
   return (
     <div className="mb-10">
+      <CreateTitle title="الإعدادات" number={13} />
+
       <SettingsCard
         title="إعدادات الحساب"
         icon={<FiUser className="text-blue-600" size={18} />}
         label="البريد الإلكتروني"
+        value={email}
       />
 
-      <SettingsCard
+      {/*       <SettingsCard
         title="الأمان"
         icon={<FiLock className="text-red-500" size={18} />}
         iconBg="bg-red-100"
         label={"تغيير كلمة المرور"}
-      />
+        value={"*******************"}
+      /> */}
 
       <SettingsPanel
         title="الإشعارات"

@@ -10,6 +10,7 @@ import ErroeMessage from "./erroeMessage";
 import { useRouter } from "next/navigation";
 import ScoialMeadia from "./scoialMeadia";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import { ApiFetchClient } from "@/app/lib/ApiFetchClient";
 
 /// validate
 import { Valiname } from "@/app/lib/validators";
@@ -49,8 +50,12 @@ function RegesterPage() {
     useState(false);
 
   async function sendCode() {
-    await fetch("/api/auth/send-verification", {
+    await ApiFetchClient("/auth/send-verification", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
       body: JSON.stringify({ email: form.email }),
     });
   }
@@ -69,16 +74,17 @@ function RegesterPage() {
             if (form.phone.length >= 9) {
               setPhoneError(false);
               setLoading(true);
-              const response = await fetch("/api/auth/register", {
+              const response = await ApiFetchClient("/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form),
               });
+
               setLoading(false);
-              const data = await response.json();
-              if (!response.ok) {
+
+              if (!response.isSusses) {
                 if (
-                  data.message ===
+                  response.dataResponse.message ===
                   "البريد الإلكتروني مسجل مسبقاً ولكنه غير مفعل. يرجى تفعيل الحساب."
                 ) {
                   sendCode();
@@ -86,7 +92,7 @@ function RegesterPage() {
 
                   router.replace("/verify");
                 } else {
-                  setErrorMessage(data.message);
+                  setErrorMessage(response.dataResponse.message);
                   window.scrollTo({ top: 0, behavior: "smooth" });
                   setisError(true);
                 }
@@ -94,7 +100,7 @@ function RegesterPage() {
                 setisError(false);
                 sendCode();
                 localStorage.setItem("pending_email", form.email);
-                localStorage.setItem("token", data.data.token);
+                localStorage.setItem("token", response.dataResponse.data.token);
 
                 //localStorage.setItem("token", data.data.token);
                 sessionStorage.setItem("is_registering", "true");
@@ -293,41 +299,44 @@ function RegesterPage() {
         {isPhoneError && (
           <p className="errorMessageStayle"> * رقم الجوال غير صحيح</p>
         )}
+        {!isManager && (
+          <div className="flex flex-col gap-2 items-start mt-4 ">
+            <label>الجنس</label>
+            <div className="flex gap-6 justify-end">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Male"
+                  className="accent-teal-700"
+                  defaultChecked
+                  onClick={() => {
+                    setForm({ ...form, gender: "Male" });
+                  }}
+                />
+                ذكر
+              </label>
 
-        <div className="flex flex-col gap-2 items-start mt-4 ">
-          <label>الجنس</label>
-          <div className="flex gap-6 justify-end">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="gender"
-                value="Male"
-                className="accent-teal-700"
-                defaultChecked
-                onClick={() => {
-                  setForm({ ...form, gender: "Male" });
-                }}
-              />
-              ذكر
-            </label>
-
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="gender"
-                value="Female"
-                className="accent-teal-700"
-                onClick={() => {
-                  setForm({ ...form, gender: "Female" });
-                }}
-              />
-              أنثى
-            </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Female"
+                  className="accent-teal-700"
+                  onClick={() => {
+                    setForm({ ...form, gender: "Female" });
+                  }}
+                />
+                أنثى
+              </label>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="flex flex-col gap-2 my-4 ">
-          <label className="font-semibold text-right">تاريخ الميلاد</label>
+          <label className="font-semibold text-right">
+            {!isManager ? "تاريخ الميلاد" : "تاريخ التأسيس"}
+          </label>
 
           <input
             type="date"
@@ -355,17 +364,18 @@ function RegesterPage() {
           {loading ? "جاري الإنشاء..." : "إنشاء حساب"}
         </button>
       </form>
+      {!isManager && (
+        <div>
+          <div className="relative">
+            <hr className="mt-8" />
+            <h1 className="absolute left-1/2 -translate-x-1/2 -top-3 bg-auxiliaryColorWhite px-3 text-center text-[#94A3B8]">
+              أو سجل بواسطة
+            </h1>
+          </div>
 
-      <div>
-        <div className="relative">
-          <hr className="mt-8" />
-          <h1 className="absolute left-1/2 -translate-x-1/2 -top-3 bg-auxiliaryColorWhite px-3 text-center text-[#94A3B8]">
-            أو سجل بواسطة
-          </h1>
+          <ScoialMeadia />
         </div>
-
-        <ScoialMeadia />
-      </div>
+      )}
     </>
   );
 }

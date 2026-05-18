@@ -3,11 +3,6 @@
 import React from "react";
 import { ArrowTrendingUpIcon } from "@heroicons/react/24/outline";
 
-function clamp(n) {
-  const v = Number(n) || 0;
-  return Math.max(0, Math.min(100, v));
-}
-
 export default function SkillGapCard({
   title = "تحليل فجوة المهارات",
   items = [],
@@ -22,33 +17,13 @@ export default function SkillGapCard({
       </div>
 
       <div className="mt-4 space-y-5">
-        {items.map((it, idx) => {
-          const current = clamp(it.current);
-          const target = clamp(it.target);
-
+        {items.map((item, index) => {
           return (
-            <div key={it.label + idx} className="space-y-2">
-              {/* top row: label */}
+            <div key={index} className="space-y-2">
               <div className="flex items-center justify-between">
-                <div className="text-right text-sm text-slate-900">
-                  {it.label}
+                <div className="text-sm text-slate-900 leading-relaxed text-justify w-[90%]">
+                  {item.ar}
                 </div>
-
-                <div className="flex items-center gap-4 text-xs">
-                  <span className="text-slate-500">الحالي: {current}%</span>
-                  <span className="text-blue-600">الهدف: {target}%</span>
-                </div>
-              </div>
-
-              {/* bar */}
-              <div className="relative h-2 w-full rounded-full bg-slate-100">
-                {/* target (blue fill) */}
-                <div
-                  className="h-2 rounded-full bg-blue-600"
-                  style={{ width: `${target}%` }}
-                />
-
-                {/* current marker (green line) */}
               </div>
             </div>
           );

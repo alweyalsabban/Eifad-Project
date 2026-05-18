@@ -1,66 +1,133 @@
 "use client";
 
-import React, { useState } from "react";
+import { useEffect } from "react";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const LEVELS = [
-  { value: "beginner", label: "Beginner" },
-  { value: "intermediate", label: "Intermediate" },
-  { value: "advanced", label: "Advanced" },
-  { value: "expert", label: "Expert" },
+  { value: "Beginner", label: "مبتدئ" },
+  { value: "Intermediate", label: "متوسط" },
+  { value: "Advanced", label: "متقدم" },
+  { value: "Native", label: "لغة أم" },
 ];
 
-export default function LanguagesTab() {
-  const [rows, setRows] = useState([
-    { id: 1, language: "English", level: "expert" },
-    { id: 2, language: "Arabic", level: "expert" },
-  ]);
+export default function LanguagesTab({
+  objectLanguage,
+  setObjectLanguage,
+  DeletedLanguageField,
+  setDeletedLanguageField,
+  CVID,
+  GetLanguages,
+}) {
+  const handleLanguageNameChange = (index, value) => {
+    const found = GetLanguages.find((item) => value === item.LanguageName);
+    const updated = [...objectLanguage];
 
-  const updateRow = (id, key, value) => {
-    setRows((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, [key]: value } : r)),
-    );
+    if (found) {
+      updated[index] = {
+        ...updated[index],
+        LanguageID: found.LanguageID,
+        language: {
+          ...updated[index].language,
+          LanguageID: found.LanguageID,
+          LanguageName: found.LanguageName,
+        },
+      };
+    } else {
+      updated[index] = {
+        ...updated[index],
+        LanguageID: null,
+        language: {
+          ...updated[index].language,
+          LanguageID: null,
+          LanguageName: value,
+        },
+      };
+    }
+
+    setObjectLanguage(updated);
+  };
+
+  const handleLevelChange = (index, value) => {
+    const updated = [...objectLanguage];
+    updated[index] = {
+      ...updated[index],
+      LanguageLevel: value,
+    };
+    setObjectLanguage(updated);
   };
 
   const addRow = () => {
-    setRows((prev) => [
-      ...prev,
-      { id: Date.now(), language: "", level: "expert" },
+    setObjectLanguage([
+      ...objectLanguage,
+      {
+        CVID: CVID,
+        CVLanguageID: Date.now(),
+        LanguageID: null,
+        LanguageLevel: "Beginner",
+        language: {
+          LanguageID: null,
+          LanguageName: "",
+        },
+      },
     ]);
   };
 
-  const removeRow = (id) => {
-    setRows((prev) => prev.filter((r) => r.id !== id));
+  const removeRow = (index) => {
+    const item = objectLanguage[index];
+
+    if (item?.LanguageID) {
+      setDeletedLanguageField([...DeletedLanguageField, item]);
+    }
+
+    const updated = objectLanguage.filter((_, i) => i !== index);
+    setObjectLanguage(updated);
   };
 
+  useEffect(() => {}, [objectLanguage, GetLanguages]);
+
   return (
-    <section className="w-full rounded-2xl border border-secondGray bg-auxiliaryColorWhite p-6 mt-5">
+    <section className="mt-5 w-full rounded-2xl border border-secondGray bg-auxiliaryColorWhite p-6">
       <h3 className="text-right text-lg font-semibold text-slate-900">
         اللغات
       </h3>
 
       <div className="mt-5 space-y-4">
-        <div className="rounded-2xl border border-secondGray p-4">
-          <div className="space-y-4">
-            {rows.map((row) => (
+        <div className="space-y-4">
+          {objectLanguage.map((item, index) => {
+            const currentValue = item.language?.LanguageName || "";
+
+            const filteredLanguages = GetLanguages.filter((lang) =>
+              lang.LanguageName.toLowerCase().includes(
+                currentValue.toLowerCase(),
+              ),
+            ).slice(0, 4);
+
+            const datalistId = `languages-list-${index}`;
+
+            return (
               <div
-                key={row.id}
+                key={index}
                 className="grid grid-cols-[1fr_140px_28px] items-center gap-3"
               >
-                {/* Input اللغة */}
                 <input
-                  value={row.language}
+                  value={currentValue}
+                  list={datalistId}
                   onChange={(e) =>
-                    updateRow(row.id, "language", e.target.value)
+                    handleLanguageNameChange(index, e.target.value)
                   }
                   placeholder="أضف لغة"
                   className="h-12 w-full rounded-xl border border-secondGray bg-white px-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
                 />
 
-                {/* Dropdown المستوى */}
+                <datalist id={datalistId}>
+                  {filteredLanguages.map((lang, i) => (
+                    <option value={lang.LanguageName} key={i} />
+                  ))}
+                </datalist>
+
                 <select
-                  value={row.level}
-                  onChange={(e) => updateRow(row.id, "level", e.target.value)}
+                  value={item.LanguageLevel || ""}
+                  onChange={(e) => handleLevelChange(index, e.target.value)}
                   className="h-12 w-full rounded-xl border border-secondGray bg-white px-3 text-center outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {LEVELS.map((l) => (
@@ -70,10 +137,9 @@ export default function LanguagesTab() {
                   ))}
                 </select>
 
-                {/* حذف */}
                 <button
                   type="button"
-                  onClick={() => removeRow(row.id)}
+                  onClick={() => removeRow(index)}
                   className="flex h-8 w-8 items-center justify-center text-red-500 hover:text-red-600"
                   aria-label="حذف"
                   title="حذف"
@@ -81,11 +147,10 @@ export default function LanguagesTab() {
                   <TrashIcon className="h-5 w-5" />
                 </button>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
-        {/* زر الإضافة */}
         <button
           type="button"
           onClick={addRow}

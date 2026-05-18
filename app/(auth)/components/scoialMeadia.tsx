@@ -1,15 +1,18 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaLinkedin } from "react-icons/fa";
+import { ApiFetchServer } from "@/app/lib/ApiFetchServer";
 
 function ScoialMeadia() {
-  const onGoogle = () => {
+  const onGoogle = async () => {
+    const res = await ApiFetchServer("/auth/login/google");
     //window.open("/api/auth/login/google", "popup", "width=500,height=600");
-    window.location.href = "/api/auth/login/google";
+    window.location.href = res.dataResponse.url;
   };
-  const onlinkedin = () => {
+  const onlinkedin = async () => {
     //window.open("/api/auth/login/linkedin", "popup", "width=500,height=600");
-    window.location.href = "/auth/login/linkedin";
+    const res = await ApiFetchServer("/auth/login/linkedin");
+    window.location.href = res.dataResponse.url;
   };
 
   return (

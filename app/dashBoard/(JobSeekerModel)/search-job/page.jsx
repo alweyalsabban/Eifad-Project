@@ -1,41 +1,128 @@
 "use client";
-import { NamePageContex } from "../context/NamePageContext";
-import { useEffect, useState, useContext } from "react";
+
 import JobSearchBar from "./components/JobSearchBar";
 import JobCard from "./components/JobCard";
+import CreateTitle from "../CreateTitle";
+import { useEffect, useState } from "react";
+import { JobApplication } from "../callFunctionsForJobseeker";
+import LoaderTwo from "../components/LoaderTwo";
+import { useSearchParams } from "next/navigation";
+import NoCvMessage from "../components/NoCvMessage";
 
 function JobSearchPage() {
-  const { setnameOfSideBar, setnumberOfSideBar } = useContext(NamePageContex);
-  const [sort, setSort] = useState("latest");
+  const [allJob, setAllJob] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [params, setParams] = useState({
+    search: "",
+    location: "",
+    work_type: "",
+    workplace_type: "",
+    salary_min: "",
+    salary_max: "",
+    company_id: "",
+    skill_ids: "",
+    industry: "",
+    sort: "",
+    per_page: "",
+  });
+  const [CvInfo, setCvInfo] = useState(null);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    setnameOfSideBar("البحث عن وظائف");
-    setnumberOfSideBar(5);
-  }, [setnameOfSideBar, setnumberOfSideBar]);
+    const q = searchParams.get("q") || "";
+
+    setParams((prev) => {
+      if (prev.search === q) return prev;
+      return { ...prev, search: q };
+    });
+  }, [searchParams]);
+
+  useEffect(() => {
+    async function fetchJobs() {
+      try {
+        setLoading(true);
+
+        const data = await JobApplication("GetAllJob", params);
+        const cvInfo = await JobApplication("GetCVInfo");
+
+        setCvInfo(cvInfo);
+        setAllJob(data ?? []);
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchJobs();
+  }, [params]);
   return (
     <>
-      <JobSearchBar />
+      <CreateTitle title="البحث عن وظائف" number={5} />
+      {CvInfo === undefined && (
+        <NoCvMessage
+          Message={
+            "لا يوجد لديك سيرة ذاتية ، يرجى إنشاءها أولا لكي تتمكن من حساب درجة المطابقة ."
+          }
+        />
+      )}
+      <JobSearchBar params={params} setParams={setParams} />
       <div className="flex justify-between items-center mt-5">
         <h1 className="w-[95%] m-auto mt-5 font-bold ">
-          تم العثور على 5 وظائف
+          تم العثور على {allJob.length ?? "0"} وظائف
         </h1>
 
         <div dir="rtl" className="w-56 ">
           <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
+            value={params.sort}
+            onChange={(e) => setParams({ ...params, sort: e.target.value })}
             className="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-right text-slate-900
                    outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600 hover:cursor-pointer"
           >
-            <option value="best">الأعلى مطابقة</option>
+            <option value="popular">الأكثر طلبا</option>
             <option value="latest">الأحدث</option>
-            <option value="salary">الراتب: من الأعلى للأدنى</option>
+            <option value="salary_desc">الراتب: من الأعلى للأدنى</option>
+            <option value="salary_asc">الراتب: من الأدنى إلى الأعلى</option>
           </select>
         </div>
       </div>
-      <div className="mb-40">
-        <JobCard />
-      </div>
+      {isLoading ? (
+        <div className="items-center justify-center flex mt-30">
+          <LoaderTwo />
+        </div>
+      ) : (
+        <>
+          <div className="mb-40">
+            {allJob.map((item, index) => {
+              return (
+                <JobCard
+                  CVId={CvInfo?.CVID}
+                  JobAdID={item?.JobAdID}
+                  key={index}
+                  title={item?.Title}
+                  company={item?.company?.CompanyName ?? ""}
+                  location={item?.Location ?? ""}
+                  workType={item?.WorkType ?? ""}
+                  mode={item?.WorkplaceType ?? ""}
+                  postedAgo={new Date(item?.PostedAt ?? "").toLocaleDateString(
+                    "ar-EG",
+                    {
+                      weekday: "long",
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    },
+                  )}
+                  ExpiryDate={item?.ExpiryDate}
+                  salaryFrom={item?.SalaryMin ?? ""}
+                  salaryTo={item?.SalaryMax ?? ""}
+                  currency={item?.Currency ?? ""}
+                  logoPath={item?.company?.LogoPath}
+                />
+              );
+            })}
+          </div>
+        </>
+      )}
     </>
   );
 }

@@ -1,9 +1,8 @@
-"use client";
-
-import React from "react";
 import { CalendarDaysIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
+import { ApiFetchServer } from "../../../../lib/ApiFetchServer";
+import { toast } from "react-toastify";
 
-const STEPS = ["مقدّم", "مراجعة", "مقابلة", "قرار"];
+const STEPS = ["مقدّم", "مقبول"];
 
 function getStepIndex(step) {
   const idx = STEPS.indexOf(step);
@@ -11,6 +10,7 @@ function getStepIndex(step) {
 }
 
 export default function ApplicationCard({
+  applicationId,
   title,
   company,
   date, // "01-02-2024"
@@ -18,9 +18,19 @@ export default function ApplicationCard({
   statusVariant = "info", // "info" | "success"
   currentStep = "مراجعة",
   showWithdraw = false,
-  onWithdraw,
+  onWithdrawSuccess,
 }) {
   const activeIdx = getStepIndex(currentStep);
+  async function onWithdraw() {
+    const res = await ApiFetchServer(
+      `/applications/${applicationId}/withdraw`,
+      "POST",
+    );
+    if (res.isSusses) {
+      toast.success("تم سحب الطلب");
+      onWithdrawSuccess?.(applicationId);
+    } else toast.error("هناك مشكلة في سحب الطلب");
+  }
 
   const badge =
     statusVariant === "success"
@@ -45,26 +55,30 @@ export default function ApplicationCard({
           className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium ${badge}`}
         >
           <Icon className="h-5 w-5" />
-          <span>{statusLabel}</span>
+          <span>{statusLabel === "Pending" ? "مقدّم" : "مقبول"}</span>
         </div>
       </div>
 
       {/* Steps bar */}
       <div className="mt-6">
-        <div className="grid grid-cols-4 gap-4">
-          {STEPS.map((step, idx) => {
-            const active = idx <= activeIdx;
-            return (
-              <div key={step} className="flex flex-col items-center gap-2">
-                <div
-                  className={`h-2 w-full rounded-full ${
-                    active ? "bg-blue-600" : "bg-slate-200"
-                  }`}
-                />
-                <span className="text-xs text-slate-600">{step}</span>
-              </div>
-            );
-          })}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col items-center gap-2">
+            <div className={`h-2 w-full rounded-full  bg-blue-600`} />
+            <span className="text-xs text-slate-600">
+              {statusLabel === "Pending" ? "مقدّم" : "مقبول"}
+            </span>
+          </div>
+
+          <div className="flex flex-col items-center gap-2">
+            <div
+              className={`h-2 w-full rounded-full ${
+                statusLabel !== "Pending" ? "bg-blue-600" : "bg-slate-200"
+              }`}
+            />
+            <span className="text-xs text-slate-600">
+              {statusLabel !== "Pending" ? "مقدّم" : "مقبول"}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -74,7 +88,7 @@ export default function ApplicationCard({
           <button
             type="button"
             onClick={onWithdraw}
-            className="text-sm text-red-500 hover:text-red-600"
+            className="text-sm text-red-500 hover:text-red-600 hover:cursor-pointer"
           >
             سحب الطلب
           </button>

@@ -4,6 +4,16 @@ export default function ActivityTimelineCard({
   title = "الجدول الزمني للأنشطة",
   activities = [],
 }) {
+  const list = activities.length
+    ? activities
+    : [
+        {
+          id: 1,
+          title: "لا توجد أنشطة حتى الآن",
+          date: "",
+        },
+      ];
+
   return (
     <div
       dir="rtl"
@@ -14,7 +24,7 @@ export default function ActivityTimelineCard({
       </h3>
 
       <div className="space-y-5">
-        {activities.map((item) => (
+        {list.map((item) => (
           <div key={item.id} className="flex items-start justify-between gap-3">
             <FiCheckCircle className="mt-1 text-[20px] text-emerald-500" />
 
@@ -22,7 +32,9 @@ export default function ActivityTimelineCard({
               <h4 className="text-[15px] font-bold text-slate-900">
                 {item.title}
               </h4>
-              <p className="mt-1 text-[12px] text-slate-500">{item.date}</p>
+              {item.date && (
+                <p className="mt-1 text-[12px] text-slate-500">{item.date}</p>
+              )}
             </div>
           </div>
         ))}

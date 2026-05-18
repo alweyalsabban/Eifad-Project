@@ -1,0 +1,63 @@
+"use client";
+
+import { useParams } from "next/navigation";
+import CompanyAboutCard from "../../search-job/components/CompanyAboutCard";
+import JobCard from "../../search-job/components/JobCard";
+import { useEffect, useState } from "react";
+import { Companies } from "../../callFunctionsForJobseeker";
+import CreateTitle from "../../CreateTitle";
+
+function DetailCompany() {
+  const path = useParams();
+  const [DeatilCompany, setDeatilCompany] = useState(null);
+  const [AllJobForCompany, setAllJobForCompany] = useState(null);
+  useEffect(() => {
+    async function Fetch() {
+      const res = await Companies("CompanyDeatils", { id: path.detailCompany });
+      setDeatilCompany(res);
+      setAllJobForCompany(res.job_ads);
+    }
+    Fetch();
+  }, [path.detailCompany]);
+
+  return (
+    <>
+      <CreateTitle title="تفاصيل الشركة" number={6} showBack={true} />
+      <CompanyAboutCard
+        title={DeatilCompany?.CompanyName}
+        companyName={DeatilCompany?.CompanyName}
+        category={DeatilCompany?.FieldOfWork}
+        description={DeatilCompany?.Description}
+        employees={DeatilCompany?.EmployeeCount}
+        city={DeatilCompany?.Address}
+        email={DeatilCompany?.user?.Email ?? "لا يوجد"}
+        phone={DeatilCompany?.user?.Phone ?? "لا يوجد"}
+        UrlImage={DeatilCompany?.LogoPath}
+      />
+      <h1 className="font-bold text-2xl mt-15 mr-5">الوظائف المنشورة</h1>
+      <div className="mt-10">
+        {AllJobForCompany?.map((item, index) => {
+          return (
+            <JobCard
+              key={index}
+              CVId={6}
+              JobAdID={item?.JobAdID}
+              title={item?.Title}
+              company={DeatilCompany?.CompanyName}
+              location={DeatilCompany?.Address}
+              workType={item?.WorkType}
+              mode={item?.WorkplaceType}
+              postedAgo={item?.PostedAt.slice(0, 10)}
+              ExpiryDate={item?.ExpiryDate}
+              salaryFrom={item?.SalaryMin}
+              salaryTo={item?.SalaryMax}
+              currency={item?.Currency}
+            />
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+export default DetailCompany;

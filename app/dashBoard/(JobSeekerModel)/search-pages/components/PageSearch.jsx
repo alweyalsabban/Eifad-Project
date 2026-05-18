@@ -6,12 +6,11 @@ import {
   MapPinIcon,
   BriefcaseIcon,
 } from "@heroicons/react/24/outline";
+import { PiBag } from "react-icons/pi";
+
 import { useState } from "react";
 
-export default function PageSearch({ onSearch }) {
-  const [keyword, setKeyword] = useState("");
-  const [location, setLocation] = useState("");
-
+export default function PageSearch({ onSearch, params, setParams }) {
   const handleSearch = () => {
     onSearch?.({ keyword, location });
   };
@@ -23,32 +22,32 @@ export default function PageSearch({ onSearch }) {
         <div className="relative">
           <BriefcaseIcon className="absolute right-3 top-3 h-5 w-5 text-slate-400" />
           <input
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            placeholder="المسمى الوظيفي أو الكلمات المفتاحية"
+            value={params.name}
+            onChange={(e) => setParams({ ...params, name: e.target.value })}
+            placeholder="اسم الشركة"
             className="h-12 w-full rounded-xl border border-secondGray pr-10 pl-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
-        {/* Location */}
+        <div className="relative">
+          <PiBag className="absolute right-3 top-3 h-5 w-5 text-slate-400" />
+          <input
+            value={params.field}
+            onChange={(e) => setParams({ ...params, field: e.target.value })}
+            placeholder="مجال العمل"
+            className="h-12 w-full rounded-xl border border-secondGray pr-10 pl-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
         <div className="relative">
           <MapPinIcon className="absolute right-3 top-3 h-5 w-5 text-slate-400" />
           <input
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            value={params.location}
+            onChange={(e) => setParams({ ...params, location: e.target.value })}
             placeholder="الموقع"
             className="h-12 w-full rounded-xl border border-secondGray pr-10 pl-4 text-right outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
-        <button
-          onClick={handleSearch}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl
-           bg-blue-600 text-white h-12 hover:bg-blue-700 transition hover:cursor-pointer "
-        >
-          <span>بحث</span>
-          <MagnifyingGlassIcon className="h-5 w-5" />
-        </button>
       </div>
     </section>
   );
