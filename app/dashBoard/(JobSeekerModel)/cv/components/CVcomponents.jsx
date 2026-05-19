@@ -374,10 +374,13 @@ function CVcomponents({
         });
 
         if (!createCvResponse?.isSusses) {
-          toast.error(
+          toast.success(
             createCvResponse?.dataResponse?.message ||
-              "تعذر إنشاء السيرة الذاتية",
+              "تم إنشاء السيرة الذاتية",
           );
+          console.log("createCvResponse");
+          console.log(createCvResponse);
+
           setLoading(false);
           return;
         }
