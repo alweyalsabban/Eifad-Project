@@ -33,8 +33,8 @@ async function MainDashBorad() {
         description={`أعرف أشهر الوظائف و المهارات في عدد من المجالات المختلفة`}
         textBtn={"استكشف"}
       />
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4  gap-2 mt-5 justify-between m-auto  flex-wrap w-[95%]">
-        <CvUpload />
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3  gap-2 mt-5 justify-between m-auto  flex-wrap w-[95%]">
+        {/*   <CvUpload /> */}
         {InfoCardAction.map((i) => {
           return (
             <Link key={i.id} href={i.link}>
